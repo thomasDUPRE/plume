@@ -10,3 +10,38 @@ block content
     br
 
     | Hello {{ sometext }}
+
+    br
+    br
+
+    ul(class="nav nav-tabs")
+        li(class="active")
+            a(href="#") Collaborateur
+        li
+            a(href="#") RH
+        li
+            a(href="#") Dirigeant
+    br
+
+    ul(class="nav nav-tabs")
+        li
+            a(href="#") Calendrier
+        li(class="active")
+            a(href="#") Services
+
+    div(class="panel-group servicesc ")
+        div(class="panel panel-default")
+            div(class="panel-heading")
+                h4(class="panel-title") Congés
+            div(class="panel-body")
+
+            div(class="panel-heading")
+                h4(class="panel-title") Note de frais
+            div(class="panel-body")
+               table
+                           tr
+                               td
+                                   div(class="widget") Ma note de frais
+                               td
+                                   div(class="widget") Mes missions
+
