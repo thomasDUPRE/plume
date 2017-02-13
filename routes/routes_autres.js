@@ -46,4 +46,28 @@ module.exports = function(app) {
         // Display Error
         else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
     });
+
+    app.get('/mesdemandesinfo', function (req, res) {
+        // if the request exists
+        if (typeof req.query !== 'undefined' && req.query) {
+            // Session : recup l'id du collaboration
+            var data = {
+                id_collaborateur: 1
+            };
+            var DemandeInfoCRUD = require('../crud/DemandeInfoCRUD');
+
+            DemandeInfoCRUD.recupererMesDemandes(data, function callback(result) {
+                console.log("Result :" + JSON.stringify(result));
+                // Send result to the browser
+                res.send(JSON.stringify(result));
+            })
+
+        }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
+
+    });
+
+
+
 }
