@@ -17,8 +17,6 @@ app.get('/',function(req,res){
     var erreur = new Erreur("ErreurLogin", "You have a login error");
     console.log("hey");
     MissionCRUD.fetchMission();
-
-
     //console.log(erreur);
     //res.sendFile('home.html');
 

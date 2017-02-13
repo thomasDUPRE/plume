@@ -10,3 +10,4 @@ class Service{
         return "Service "+this.nom;
     }
 }
+module.exports = Service;

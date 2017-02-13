@@ -1,11 +1,11 @@
 /**
  * Created by Thomas on 13/02/2017.
  */
-class Role extends Enum{}
+/*class Role extends Enum{}
 Role.initEnum(['COLLABORATEUR', 'CHEF_SERVICE', 'CHEF_SERVICE_A', 'DIRIGEANT', 'ADMIN']);
 
 class Fonction extends Enum{}
-Fonction.initEnum(['COMPTA', 'RH', 'INFO', 'LOGIS', 'NULL']);
+Fonction.initEnum(['COMPTA', 'RH', 'INFO', 'LOGIS', 'NULL']);*/
 
 class Collaborateur{
     constructor(id, nom, prenom, role, fonction, telephone, mail, nb_jours_restants){
@@ -23,3 +23,4 @@ class Collaborateur{
         return this.prenom + " " + this.nom;
     }
 }
+module.exports = Collaborateur;

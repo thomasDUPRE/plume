@@ -6,3 +6,4 @@ constructor(id, date , description, somme) {
         this.somme=somme;
     }
 }
+module.exports = AvanceNoteFrais;
