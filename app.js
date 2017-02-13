@@ -8,9 +8,20 @@ app.use(express.static(__dirname + '/views'));
 app.use(express.static(__dirname + '/public'));
 //Store all JS and CSS in Scripts folder.
 
+var Erreur = require('./beans/Erreur');
+//var TypeErreur = require('./beans/Erreur').TypeErreur;
+var MissionCRUD = require('./sqlhandlers/MissionCRUD');
+
+
 app.get('/',function(req,res){
-    res.sendFile('index.html');
-    //It will find and locate index.html from View or Scripts
+    var erreur = new Erreur("ErreurLogin", "You have a login error");
+    console.log("hey");
+    MissionCRUD.fetchMission();
+
+
+    //console.log(erreur);
+    //res.sendFile('home.html');
+
 });
 
 app.listen(3000);
