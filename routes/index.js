@@ -1,26 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
+app.set('views', __dirname + '/views');
+app.use(express.static(path.join(__dirname, '/public')));
+app.engine('html', require('ejs').renderFile);
+
+
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Plume' });
 });
-
-router.get('/apanel', function(req, res) {
-  res.render('apanel', { title: 'Plume' });
-});
-
-router.post('/login', function(req, res) {
-  var username = req.param('username');
-  var password = req.password('password');
-
-  // Verify password in the DB
-
-  console.log("");
-
-  res.json({ user: 'tobi' });
-});
-
 
 
 module.exports = router;
