@@ -8,7 +8,8 @@ class Fonction extends Enum{}
 Fonction.initEnum(['COMPTA', 'RH', 'INFO', 'LOGIS', 'NULL']);
 
 class Collaborateur{
-    constructor(nom, prenom, role, fonction, telephone, mail, nb_jours_restants){
+    constructor(id, nom, prenom, role, fonction, telephone, mail, nb_jours_restants){
+        this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.role = role;
