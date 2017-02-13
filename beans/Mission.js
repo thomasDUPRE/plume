@@ -10,3 +10,4 @@ class Mission {
         this.dateFin = dateFin;;
     }
 }
+module.exports = Mission;

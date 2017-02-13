@@ -1,8 +1,8 @@
-class CategorieDemande extends Enum {}
+/*class CategorieDemande extends Enum {}
 CategorieDemande.initEnum(['Conge', 'Frais', 'General']);
-   
+  */
 
-class DemandeInformations { 
+class DemandeInformation {
 constructor(id, categorieDemande , contenu, sujet ) {
         this.id = id;
         this.categorieDemande = categorieDemande;
@@ -10,3 +10,4 @@ constructor(id, categorieDemande , contenu, sujet ) {
         this.sujet=sujet;
     }
 }
+module.exports = DemandeInformation;

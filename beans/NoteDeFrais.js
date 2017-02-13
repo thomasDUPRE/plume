@@ -7,3 +7,4 @@ class NoteDeFrais {
         this.date = date;
     }
 }
+module.exports = NoteDeFrais;
