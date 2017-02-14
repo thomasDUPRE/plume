@@ -1,0 +1,39 @@
+/// ---- ROUTES ------ ////
+/// Syntaxe :
+/// {fichier}
+/// TODO/DONE: /route (type de requête) [paramètres]: description *commentaire*
+
+{routes_main.js}
+// Home
+DONE: / (GET) []: page d'accueil
+
+{routes_conge.js}
+
+{routes_ndf.js}
+
+{routes_autres.js}
+// Catégorie de demande d'information
+TODO: /inserercdi (POST) [nom]: inserer une catégorie de demande
+TODO: /selectdi (GET) [ID]: sélectionner une catégorie de demande
+TODO: /selectdis (GET) []: sélectioner les catégories de demande
+TODO: /modifdi (POST) [ID, nom]: modifier une catégorie de demande
+TODO: /supprdi (POST) [ID]: supprimer une catégorie de demande
+
+
+// Demandes d'information
+DONE: /inserercdi (GET) []: insérer une demande d'information *à modifier en POST*
+TODO: /selectcdi (GET) [ID]: sélectionner une demande d'information
+TODO: /selectcdis (GET) [*voir BDD*]: sélectioner des demandes d'information
+TODO: /modifcdi (POST) [*voir BDD*]: modifier une demande d'information
+TODO: /supprcdi (POST) [ID]: supprimer une demande d'information
+
+{routes_admin.js}
+// Home
+TODO: /admin (POST) [*voir BDD*] : connexion à l'interface d'administration
+
+// Services
+TODO: /insererservice (POST) [*voir BDD*]: insérer un service
+TODO: /selectservice (GET) [*voir BDD*]: sélectionner un service
+TODO: /selectservices (GET) [*voir BDD*]: sélectionner des services
+TODO: /modifservice (POST) [*voir BDD*]: modifier un service
+TODO: /supprservice (POST) [ID]: supprimer un service

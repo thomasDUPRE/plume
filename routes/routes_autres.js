@@ -16,8 +16,8 @@ module.exports = function(app) {
     app.post('/modifercollaborateur', function(req, res) {});
     app.post('/supcollaborateur', function(req, res) {});
 
-    // DemandeInformation
-    app.get('/insererdemandeinfo', function (req, res) {
+    // DemandeInformation (di)
+    app.get('/insererdi', function (req, res) {
         // if the request exists
         if (typeof req.query !== 'undefined' && req.query) {
             // if the parameters are ok
@@ -47,7 +47,7 @@ module.exports = function(app) {
         else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
     });
 
-    app.get('/mesdemandesinfo', function (req, res) {
+    app.get('/mesdi', function (req, res) {
         // if the request exists
         if (typeof req.query !== 'undefined' && req.query) {
             // Session : recup l'id du collaboration
@@ -69,5 +69,10 @@ module.exports = function(app) {
     });
 
 
+
+
+    /// -- Catégorie de demandes d'informations
+    // CategorieDemande (cdi)
+    app.get('/inserercdi', function (req, res) {});
 
 }
