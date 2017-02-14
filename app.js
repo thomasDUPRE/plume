@@ -8,19 +8,12 @@ app.use(express.static(__dirname + '/views'));
 app.use(express.static(__dirname + '/public'));
 //Store all JS and CSS in Scripts folder.
 
-var Erreur = require('./beans/Erreur');
-//var TypeErreur = require('./beans/Erreur').TypeErreur;
-var MissionCRUD = require('./sqlhandlers/MissionCRUD');
-
-
-app.get('/',function(req,res){
-    var erreur = new Erreur("ErreurLogin", "You have a login error");
-    console.log("hey");
-    MissionCRUD.fetchMission();
-    //console.log(erreur);
-    //res.sendFile('home.html');
-
-});
+// -- Routing
+require('./routes/routes_main')(app);
+require('./routes/routes_admin')(app);
+require('./routes/routes_conge')(app);
+require('./routes/routes_ndf')(app);
+require('./routes/routes_autres')(app);
 
 app.listen(3000);
 

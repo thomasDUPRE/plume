@@ -8,9 +8,12 @@
   "keywords": [],
   "author": "",
   "dependencies": {
+    "body-parser": "^1.7.0",
+    "ejs": "^1.0.0",
     "debug": "~2.2.0",
     "express": "~4.14.0",
-    "bootstrap" : "~3.3.7"
+    "bootstrap" : "~3.3.7",
+    "express-session": "^1.7.6"
   },
   "repository": {},
   "description": "Polytech Paris-Sud Software Project",

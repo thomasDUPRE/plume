@@ -3,9 +3,9 @@ CategorieDemande.initEnum(['Conge', 'Frais', 'General']);
   */
 
 class DemandeInformation {
-constructor(id, categorieDemande , contenu, sujet ) {
+constructor(id, typeDemande, contenu, sujet ) {
         this.id = id;
-        this.categorieDemande = categorieDemande;
+        this.typeDemande = typeDemande;
         this.contenu=contenu;
         this.sujet=sujet;
     }
