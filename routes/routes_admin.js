@@ -15,10 +15,11 @@ module.exports = function(app) {
     app.get('/admin', function(req, res) {});
 
 // Services
-    app.get('/services', function(req, res) {});
     app.post('/insererservice', function(req, res) {});
+    app.get('/selectservice', function(req, res) {});
+    app.get('/selectservices', function(req, res) {});
     app.post('/modifierservice', function(req, res) {});
-    app.post('/supservice', function(req, res) {});
+    app.post('/supprservice', function(req, res) {});
 
 
 }
