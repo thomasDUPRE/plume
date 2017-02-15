@@ -1,11 +1,11 @@
-/**
- * Created by Thomas on 13/02/2017.
- */
+var express = require("express");
 // Routes principales
 module.exports = function(app) {
-
+    console.log(__dirname);
     app.get('/', function (req, res) {
         // Homepage
-        res.sendFile(__dirname + '/views' + '/home.html');
+    	var path = require("path"),
+        fs = require("fs");
+        res.sendFile(path.join(__dirname, '../', 'views/home.html'));
     });
 }

@@ -1,6 +1,3 @@
-/**
- * Created by Thomas on 13/02/2017.
- */
 var express = require("express");
 var app     = express();
 app.use(express.static(__dirname + '/views'));
