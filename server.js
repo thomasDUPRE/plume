@@ -10,22 +10,23 @@ app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true}));
 app.use(bodyParser.json());      
 app.use(bodyParser.urlencoded({extended: true}));
 
-var sess;
 
 app.get('/',function(req,res){
 	sess=req.session;
+
 	if(sess.email)
 	{
 		res.redirect('/admin');
 	}
 	else{
-	res.render('index.html');
+		res.render('login.html');
 	}
 });
 
 app.post('/login',function(req,res){
 	sess = req.session;	
 	sess.email = req.body.email;
+	console.log("email:"+req.body.email);
 	res.end('done');
 });
 
@@ -60,3 +61,4 @@ app.get('/logout',function(req,res){
 app.listen(3000,function(){
 	console.log("App Started on PORT 3000");
 });
+
