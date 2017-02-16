@@ -5,6 +5,7 @@
 // Routes Note de Frais
 module.exports = function(app) {
     var Erreur = require('../crud/beans/Erreur');
+    var NoteDeFraisCRUD = require('../crud/NoteDeFraisCRUD');
 
     function doesParamExist(param) {
         if (typeof param !== 'undefined' && param) return true;
@@ -27,7 +28,6 @@ module.exports = function(app) {
                     date_fin : req.body.date_fin
                 };
                 // Operation
-                var NoteDeFraisCRUD = require('../crud/NoteDeFraisCRUD');
                 NoteDeFraisCRUD.creerMission(data, function callback(result) {
                     console.log("Missions :" + JSON.stringify(result));
                     // Send result to the browser
@@ -54,7 +54,6 @@ module.exports = function(app) {
                     id_collaborateur: parseInt(req.body.id_collaborateur)
                 };
                // Operation
-                var NoteDeFraisCRUD = require('../crud/NoteDeFraisCRUD');
                 NoteDeFraisCRUD.recupererNoteDeFrais(data, function callback(result) {
                     console.log("NDF :" + JSON.stringify(result));
                     // Send result to the browser
@@ -79,7 +78,6 @@ module.exports = function(app) {
                     somme: parseInt(req.body.somme)
                 };
                // Operation
-                var NoteDeFraisCRUD = require('../crud/NoteDeFraisCRUD');
                 NoteDeFraisCRUD.recupererAvanceNoteDeFrais(data, function callback(result) {
                     console.log("ANDF :" + JSON.stringify(result));
                     // Send result to the browser
@@ -87,7 +85,7 @@ module.exports = function(app) {
                 });
             }
             // Display error
-            else res.send(JSON.stringify(new Erreur("ANDFErreur", "Les paramètres ne sont pas corrects")));
+            else res.send(JSON.stringify(new Erreur("ParamErreur", "Les paramètres ne sont pas corrects")));
         }
         // Display Error
         else res.send(JSON.stringify(new Erreur("ANDFErreur", "La requête est vide")));
@@ -128,14 +126,13 @@ module.exports = function(app) {
 
         if (typeof req.query !== 'undefined' && req.query) {
             
-            if (req.query.id_collaborateur) {
+            if (req.query.idMission) {
                
                 var data = {
-                    'id_collaborateur' : req.query.id_collaborateur
+                    id : req.query.idMission
                 };
-                var NoteDeFraisCRUD = require('../crud/NoteDeFraisCRUD');
-
-                NoteDeFraisCRUD.recupererMesIDMissions(data, function callback(result) {
+                
+                NoteDeFraisCRUD.recupererMesMissions(data, function callback(result) {
                     console.log("Missions :" + JSON.stringify(result));
                     // Send result to the browser
                     res.send(JSON.stringify(result));
@@ -143,7 +140,7 @@ module.exports = function(app) {
 
             }
             // Display error
-            else res.send(JSON.stringify(new Erreur("ANDFErreur", "Les paramètres ne sont pas corrects")));
+            else res.send(JSON.stringify(new Erreur("ParamErreur", "Les paramètres ne sont pas corrects")));
          }
         // Display Error
         else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));

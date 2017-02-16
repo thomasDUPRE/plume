@@ -4,7 +4,7 @@
 class Mission {
     constructor(id, nom, description, dateDebut, dateFin){
         this.id = id;
-        this.nom = etat;
+        this.nom = nom;
         this.description = description;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
