@@ -6,8 +6,8 @@ class Mission {
         this.id = id;
         this.nom = etat;
         this.description = description;
-        this.dateDebut = dateDebut
-        this.dateFin = dateFin;;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
     }
 }
 module.exports = Mission;

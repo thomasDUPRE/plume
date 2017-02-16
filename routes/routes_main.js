@@ -6,6 +6,6 @@ module.exports = function(app) {
         // Homepage
     	var path = require("path"),
         fs = require("fs");
-        res.sendFile(path.join(__dirname, '../', 'views/home.html'));
+        res.sendFile(path.join(__dirname, '../', 'views/login.html'));
     });
 }
