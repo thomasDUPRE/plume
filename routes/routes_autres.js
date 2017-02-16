@@ -4,6 +4,8 @@
 // Autres routes
 module.exports = function(app) {
     var Erreur = require('../crud/beans/Erreur');
+    var DemandeInfoCRUD = require('../crud/DemandeInfoCRUD');
+    var CategorieDemande = require('../crud/CategorieDemandeCRUD');
 
     function doesParamExist(param) {
         if (typeof param !== 'undefined' && param) return true;
@@ -33,7 +35,7 @@ module.exports = function(app) {
                     //id_categorie_demande: parseInt(req.query.id_cdemande)
                 };
                 // Operation
-                var DemandeInfoCRUD = require('../crud/DemandeInfoCRUD');
+
                 DemandeInfoCRUD.creerDemande(data, function callback(result) {
                     console.log("Result :" + JSON.stringify(result));
                     // Send result to the browser
@@ -47,7 +49,7 @@ module.exports = function(app) {
         else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
     });
 
-    app.get('/mesdi', function (req, res) {
+    /*app.get('/mesdi', function (req, res) {
         // if the request exists
         if (typeof req.query !== 'undefined' && req.query) {
             // Session : recup l'id du collaboration
@@ -66,13 +68,96 @@ module.exports = function(app) {
         // Display Error
         else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
 
-    });
+    });*/
 
 
 
 
     /// -- Catégorie de demandes d'informations
-    // CategorieDemande (cdi)
-    app.get('/inserercdi', function (req, res) {});
+    // Inserer catégorie de demande d'informations
+    app.get('/inserercdi', function (req, res) {
+        if (typeof req.query !== 'undefined' && req.query) {
+            // if the parameters are ok
+            if (doesParamExist(req.query.nom)){
+                var data = {
+                    nom : req.query.nom
+                };
+                CategorieDemande.insererCategorieDemande(data, function callback(result){
+                    console.log("Result :" + JSON.stringify(result));
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
 
+            }
+        }
+    });
+    // Modifier catégorie de demande d'informations
+    app.get('/modifcdi', function (req, res) {
+        if (typeof req.query !== 'undefined' && req.query) {
+            // if the parameters are ok
+            if (doesParamExist(req.query.nom)){
+                var selector = {
+                    id: 4
+                };
+                var data = {
+                    nom: req.query.nom
+                };
+                CategorieDemande.modifCategorieDemande(selector, data, function callback(result){
+                    console.log("Result :" + JSON.stringify(result));
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
+
+            }
+        }
+    });
+    app.get('/supprcdi', function (req, res) {
+        if (typeof req.query !== 'undefined' && req.query) {
+            // if the parameters are ok
+            if (doesParamExist(req.query.id)){
+                var selector = {
+                    id: req.query.id
+                };
+                CategorieDemande.supprimerCategorieDemande(selector, function callback(result){
+                    console.log("Result :" + JSON.stringify(result));
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
+
+            }
+        }
+    });
+/*
+
+    app.get('/selectcdi', function (req, res) {
+        if (typeof req.query !== 'undefined' && req.query) {
+            // if the parameters are ok
+            if (doesParamExist(req.query.id)){
+                var selector = {
+                    id: req.query.id
+                };
+                CategorieDemande.selectUneCategoriesDemande(selector, function callback(result){
+                    console.log("Result :" + JSON.stringify(result));
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
+
+            }
+        }
+    });
+    app.get('/selectcdis', function (req, res) {
+        if (typeof req.query !== 'undefined' && req.query) {
+            // if the parameters are ok
+            if (doesParamExist(req.query.id)){
+                var selector = {};
+                CategorieDemande.selectLesCategoriesDemande(selector, function callback(result){
+                    console.log("Result :" + JSON.stringify(result));
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
+
+            }
+        }
+    });
+    */
 }

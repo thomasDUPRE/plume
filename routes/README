@@ -13,19 +13,19 @@ DONE: / (GET) []: page d'accueil
 
 {routes_autres.js}
 // Catégorie de demande d'information
-TODO: /inserercdi (POST) [nom]: inserer une catégorie de demande
+DONE: /inserercdi (POST) [nom]: inserer une catégorie de demande
 TODO: /selectdi (GET) [ID]: sélectionner une catégorie de demande
 TODO: /selectdis (GET) []: sélectioner les catégories de demande
-TODO: /modifdi (POST) [ID, nom]: modifier une catégorie de demande
-TODO: /supprdi (POST) [ID]: supprimer une catégorie de demande
+DONE: /modifdi (POST) [ID, nom]: modifier une catégorie de demande
+DONE: /supprdi (POST) [ID]: supprimer une catégorie de demande
 
 
 // Demandes d'information
-DONE: /inserercdi (GET) []: insérer une demande d'information *à modifier en POST*
-TODO: /selectcdi (GET) [ID]: sélectionner une demande d'information
-TODO: /selectcdis (GET) [*voir BDD*]: sélectioner des demandes d'information
-TODO: /modifcdi (POST) [*voir BDD*]: modifier une demande d'information
-TODO: /supprcdi (POST) [ID]: supprimer une demande d'information
+DONE: /insererdi (GET) []: insérer une demande d'information *à modifier en POST*
+TODO: /selectdi (GET) [ID]: sélectionner une demande d'information
+TODO: /selectdis (GET) [*voir BDD*]: sélectioner des demandes d'information
+TODO: /modifdi (POST) [*voir BDD*]: modifier une demande d'information
+TODO: /supprdi (POST) [ID]: supprimer une demande d'information
 
 {routes_admin.js}
 // Home

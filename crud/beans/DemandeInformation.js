@@ -3,11 +3,13 @@ CategorieDemande.initEnum(['Conge', 'Frais', 'General']);
   */
 
 class DemandeInformation {
-constructor(id, typeDemande, contenu, sujet ) {
+constructor(id, auteur, typeDemande, sujet, contenu) {
         this.id = id;
+        this.auteur = auteur;
         this.typeDemande = typeDemande;
-        this.contenu=contenu;
         this.sujet=sujet;
+        this.contenu=contenu;
+
     }
 }
 module.exports = DemandeInformation;
