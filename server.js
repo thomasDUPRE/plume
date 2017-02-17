@@ -1,15 +1,25 @@
 var express		=	require('express');
 var session		=	require('express-session');
-var bodyParser  	= 	require('body-parser');
-var app			=	express();
+var bodyParser  = 	require('body-parser');
+var twig = require("twig"),
+    express = require('express'),
+    app = express();
 
-app.set('views', __dirname + '/views');
-app.engine('html', require('ejs').renderFile);
 
 app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true}));
 app.use(bodyParser.json());      
 app.use(bodyParser.urlencoded({extended: true}));
 
+
+app.use(express.static(__dirname + '/public'));
+app.set('views', __dirname + '/views');
+
+ // app.set('view engine', 'twig');
+ // app.set("view options", { layout: false });
+ app.set("twig options", {  strict_variables: false});
+//app.engine('html', require('ejs').renderFile);
+
+//Store all JS and CSS in Scripts folder.
 
 app.get('/',function(req,res){
 	sess=req.session;
@@ -19,7 +29,7 @@ app.get('/',function(req,res){
 		res.redirect('/admin');
 	}
 	else{
-		res.render('login.html');
+		res.render('conges.twig');
 	}
 });
 
