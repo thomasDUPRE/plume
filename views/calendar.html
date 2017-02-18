@@ -11,10 +11,31 @@
 	$(document).ready(function() {
 		
 		$('#calendar').fullCalendar({
+
+       customButtons: {
+        myCustomButton: {
+            text: 'custom!',
+            click: function() {
+                alert('clicked the custom Test!');
+            }
+        }
+    },
+    
+     eventClick: function(calEvent, jsEvent, view) {
+
+        alert('Event: ' + calEvent.title);
+        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+        alert('View: ' + view.name);
+
+        // change the border color just for fun
+        $(this).css('border-color', 'red');
+
+    },
+
 			header: {
 				left: 'prev,next today',
-				center: 'title',
-				right: 'month,agendaWeek,agendaDay'
+				center: 'Congé',
+				right: 'month,agendaWeek,agendaDay,boutonTest'
 			},
 			defaultDate: '2014-06-12',
 			defaultView: 'month',
@@ -32,6 +53,7 @@
 				{
 					id: 999,
 					title: 'Repeating Event',
+          color :'green',
 					start: '2014-06-09T16:00:00'
 				},
 				{
