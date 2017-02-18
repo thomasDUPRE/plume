@@ -17,39 +17,25 @@ class CategorieDemandeCRUD{
             else
                 result = new Erreur("insererCategorieDemandeErreur", err);
             callback(result);
+            helper.close();
         });
     }
-    static selectUneCategoriesDemande(selector, callback) {
+
+    static selectCategoriesDemande(selector, callback) {
         var helper = new CRUDHelper();
         helper.getTable('categorie_demande').load(selector, function (err, vals) {
-            //mysql callback
-            var result;
-            if (!err){
-                console.log(vals);
-                result = new CategorieDemandeCRUD(vals.id, vals.nom);
-
-            }
-
-            else
-                result = new Erreur("insererCategorieDemandeErreur", err);
-            callback(result);
-        });
-    }
-
-    static selectLesCategoriesDemande(data, callback) {
-        var helper = new CRUDHelper();
-        helper.getTable('categorie_demande').load(data, function (err) {
             //mysql callback
 
             if (!err) {
                 var result = [];
                 for (var i = 0, len = vals.length; i < len; i++) {
-                    result.push(new CategorieDemandeCRUD(vals.id, vals.nom));
+                    result.push(new CategorieDemande(vals[i].id, vals[i].nom));
                 }
                 callback(result);
             }
             else
                 callback(new Erreur("insererCategorieDemandeErreur", err));
+            helper.close();
         });
     }
     static modifCategorieDemande(selector, data, callback) {
@@ -62,6 +48,7 @@ class CategorieDemandeCRUD{
             else
                 result = new Erreur("modifCategorieDemandeErreur", err);
             callback(result);
+            helper.close();
         });
     }
 
@@ -75,10 +62,9 @@ class CategorieDemandeCRUD{
             else
                 result = new Erreur("creerCategorieDemandeErreur", err);
             callback(result);
+            helper.close();
         });
     }
-
-
 }
 
 module.exports = CategorieDemandeCRUD;

@@ -13,27 +13,31 @@ DONE: / (GET) []: page d'accueil
 
 {routes_autres.js}
 // Catégorie de demande d'information
-DONE: /inserercdi (POST) [nom]: inserer une catégorie de demande
-TODO: /selectdi (GET) [ID]: sélectionner une catégorie de demande
-TODO: /selectdis (GET) []: sélectioner les catégories de demande
-DONE: /modifdi (POST) [ID, nom]: modifier une catégorie de demande
-DONE: /supprdi (POST) [ID]: supprimer une catégorie de demande
+DONE: /inserercdi (GET) [nom]: inserer une catégorie de demande  *à modifier en POST*
+DONE: /selectcdis (GET) [id]: sélectioner les catégories de demande
+DONE: /modifcdi (GET) [id, nom]: modifier une catégorie de demande  *à modifier en POST*
+DONE: /supprcdi (GET) [id]: supprimer une catégorie de demande  *à modifier en POST*
 
 
 // Demandes d'information
 DONE: /insererdi (GET) []: insérer une demande d'information *à modifier en POST*
-TODO: /selectdi (GET) [ID]: sélectionner une demande d'information
-TODO: /selectdis (GET) [*voir BDD*]: sélectioner des demandes d'information
-TODO: /modifdi (POST) [*voir BDD*]: modifier une demande d'information
-TODO: /supprdi (POST) [ID]: supprimer une demande d'information
+DONE: /selectdis (GET) [*voir BDD*]: sélectioner des demandes d'information
+TODO: /selectmesdis (GET) [*voir BDD*]: sélectioner des demandes d'information
+DONE: /modifdi (POST) [*voir BDD*]: modifier une demande d'information
+DONE: /supprdi (POST) [id]: supprimer une demande d'information
 
 {routes_admin.js}
 // Home
 TODO: /admin (POST) [*voir BDD*] : connexion à l'interface d'administration
 
 // Services
-TODO: /insererservice (POST) [*voir BDD*]: insérer un service
-TODO: /selectservice (GET) [*voir BDD*]: sélectionner un service
-TODO: /selectservices (GET) [*voir BDD*]: sélectionner des services
-TODO: /modifservice (POST) [*voir BDD*]: modifier un service
-TODO: /supprservice (POST) [ID]: supprimer un service
+DONE: /insererservice (GET) [*voir BDD*]: insérer un service *à modifier en POST*
+DONE: /selectservices (GET) [*voir BDD*]: sélectionner des services
+DONE: /modifservice (GET) [*voir BDD*]: modifier un service *à modifier en POST*
+DONE: /supprservice (GET) [ID]: supprimer un service *à modifier en POST*
+
+// Collaborateurs
+DONE: /inserercollaborateur (GET) [*voir BDD, au moins mail et mot_de_passe* ]: insérer un collaborateur *à modifier en POST*
+DONE: /selectcollaborateurs (GET) [id ou id_service ou rien]: sélectionner des collaborateurs
+DONE: /modifcollaborateur (GET) [*voir BDD, id et autres champs*]: modifier un collaborateur *à modifier en POST*
+DONE: /supprcollaborateur (GET) [id]: supprimer un collaborateur *à modifier en POST*

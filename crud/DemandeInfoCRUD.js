@@ -17,12 +17,15 @@ class DemandeInfoCRUD {
             else
                 result = new Erreur("CreerDemandeErreur", err);
             callback(result);
+            helper.close();
         });
+
     }
-    static selectMesDemandes(data, callback){
+
+    static selectDemandes(selector, callback){
         var helper = new CRUDHelper();
-        // session get my id
-        helper.getTable('demande_information').select(data, function (err, vals) {
+
+        helper.getTable('demande_information').load(selector, function (err, vals) {
             //mysql callback
 
             if (!err){
@@ -33,39 +36,8 @@ class DemandeInfoCRUD {
                 callback(result);
             }
             else
-                callback(new Erreur("RecupMesDemandesErreur", err));
-
-        });
-    }
-    static selectMesDemandesATraiter(data, callback){
-        var helper = new CRUDHelper();
-        // session get my id
-        helper.getTable('demande_information').select(data, function (err, vals) {
-            //mysql callback
-
-            if (!err){
-                var result = [];
-                for(var i = 0, len = vals.length; i < len; i++){
-                    result.push(new DemandeInformation(vals[i].id, vals[i].id_collaborateur, vals[i].id_categorie_demande, vals[i].sujet, vals[i].contenu));
-                }
-                callback(result);
-            }
-            else
-                callback(new Erreur("recupererMesDemandesATraiterErreur", err));
-
-        });
-    }
-    static selectUneDemande(data, callback){
-        var helper = new CRUDHelper();
-        helper.getTable('demande_information').select(data, function (err, vals) {
-            //mysql callback
-
-            if (!err){
-                var result = new DemandeInformation(vals[i].id, vals[i].id_collaborateur, vals[i].id_categorie_demande, vals[i].sujet, vals[i].contenu);
-                callback(result);
-            }
-            else
-                callback(new Erreur("recupererUneDemandeErreur", err));
+                callback(new Erreur("selectDemandeErreur", err))
+            helper.close();
 
         });
     }
@@ -80,12 +52,13 @@ class DemandeInfoCRUD {
             else
                 result = new Erreur("modifierDemandeErreur", err);
             callback(result);
+            helper.close();
         });
     }
 
     static supprimerDemande(data, callback) {
         var helper = new CRUDHelper();
-        helper.getTable('demande_information').delete(data, function (err) {
+        helper.getTable('demande_information').destroy(data, function (err) {
             //mysql callback
             var result;
             if (!err)
@@ -93,6 +66,7 @@ class DemandeInfoCRUD {
             else
                 result = new Erreur("supprimerDemandeErreur", err);
             callback(result);
+            helper.close();
         });
     }
 

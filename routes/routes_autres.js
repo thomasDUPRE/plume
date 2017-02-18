@@ -36,29 +36,28 @@ module.exports = function(app) {
                 };
                 // Operation
 
-                DemandeInfoCRUD.creerDemande(data, function callback(result) {
+                DemandeInfoCRUD.insererDemande(data, function callback(result) {
                     console.log("Result :" + JSON.stringify(result));
                     // Send result to the browser
                     res.send(JSON.stringify(result));
                 });
             }
             // Display error
-            else res.send(JSON.stringify(new Erreur("ParamErreur", "Les paramètres ne sont pas corrects")));
+            else res.send(JSON.stringify(new Erreur("ParamErreur", Erreur.WRONG_PARAM)));
         }
         // Display Error
-        else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
     });
-
-    /*app.get('/mesdi', function (req, res) {
+    app.get('/selectdis', function (req, res) {
         // if the request exists
         if (typeof req.query !== 'undefined' && req.query) {
-            // Session : recup l'id du collaboration
-            var data = {
-                id_collaborateur: 1
-            };
+            var selector = {};
+            if(doesParamExist(req.query.id)) selector.id = parseInt(req.query.id);
+            else if(doesParamExist(req.query.id_collaborateur)) selector.id_collaborateur = parseInt(req.query.id_collaborateur);
+
             var DemandeInfoCRUD = require('../crud/DemandeInfoCRUD');
 
-            DemandeInfoCRUD.recupererMesDemandes(data, function callback(result) {
+            DemandeInfoCRUD.selectDemandes(selector, function callback(result) {
                 console.log("Result :" + JSON.stringify(result));
                 // Send result to the browser
                 res.send(JSON.stringify(result));
@@ -66,11 +65,54 @@ module.exports = function(app) {
 
         }
         // Display Error
-        else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
+
+    });
+
+    /*app.get('/selectmesdis', function (req, res) {
+        // if the request exists
+        if (typeof req.query !== 'undefined' && req.query) {
+            // Session : recup l'id du collaboration
+            //selector.id_collaborateur = parseInt(session.id);
+            var selector = {};
+            if(doesParamExist(req.query.id)) selector.id = parseInt(req.query.id);
+
+
+            var DemandeInfoCRUD = require('../crud/DemandeInfoCRUD');
+
+            DemandeInfoCRUD.selectDemandes(selector, function callback(result) {
+                console.log("Result :" + JSON.stringify(result));
+                // Send result to the browser
+                res.send(JSON.stringify(result));
+            })
+
+        }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
 
     });*/
 
 
+    app.get('/supprdi', function (req, res) {
+        if (typeof req.query !== 'undefined' && req.query) {
+            // if the parameters are ok
+            if (doesParamExist(req.query.id)){
+                var selector = {
+                    id: req.query.id
+                };
+                DemandeInfoCRUD.supprimerDemande(selector, function callback(result){
+                    console.log("Result :" + JSON.stringify(result));
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
+
+            }
+            // Display error
+            else res.send(JSON.stringify(new Erreur("ParamErreur", Erreur.WRONG_PARAM)));
+        }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
+    });
 
 
     /// -- Catégorie de demandes d'informations
@@ -89,15 +131,20 @@ module.exports = function(app) {
                 });
 
             }
+            // Display error
+            else res.send(JSON.stringify(new Erreur("ParamErreur", Erreur.WRONG_PARAM)));
         }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
     });
+    
     // Modifier catégorie de demande d'informations
     app.get('/modifcdi', function (req, res) {
         if (typeof req.query !== 'undefined' && req.query) {
             // if the parameters are ok
-            if (doesParamExist(req.query.nom)){
+            if (doesParamExist(req.query.nom) && doesParamExist(req.query.id)){
                 var selector = {
-                    id: 4
+                    id: parseInt(req.query.id)
                 };
                 var data = {
                     nom: req.query.nom
@@ -109,8 +156,30 @@ module.exports = function(app) {
                 });
 
             }
+            // Display error
+            else res.send(JSON.stringify(new Erreur("ParamErreur", Erreur.WRONG_PARAM)));
         }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
     });
+    app.get('/selectcdis', function (req, res) {
+        if (typeof req.query !== 'undefined' && req.query) {
+
+            var selector = {};
+            if (doesParamExist(req.query.id)) selector.id = parseInt(req.query.id);
+
+                CategorieDemande.selectCategoriesDemande(selector, function callback(result){
+                    console.log("Result :" + JSON.stringify(result));
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
+
+
+        }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
+    });
+    
     app.get('/supprcdi', function (req, res) {
         if (typeof req.query !== 'undefined' && req.query) {
             // if the parameters are ok
@@ -125,39 +194,12 @@ module.exports = function(app) {
                 });
 
             }
+            // Display error
+            else res.send(JSON.stringify(new Erreur("ParamErreur", Erreur.WRONG_PARAM)));
         }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
     });
-/*
 
-    app.get('/selectcdi', function (req, res) {
-        if (typeof req.query !== 'undefined' && req.query) {
-            // if the parameters are ok
-            if (doesParamExist(req.query.id)){
-                var selector = {
-                    id: req.query.id
-                };
-                CategorieDemande.selectUneCategoriesDemande(selector, function callback(result){
-                    console.log("Result :" + JSON.stringify(result));
-                    // Send result to the browser
-                    res.send(JSON.stringify(result));
-                });
-
-            }
-        }
-    });
-    app.get('/selectcdis', function (req, res) {
-        if (typeof req.query !== 'undefined' && req.query) {
-            // if the parameters are ok
-            if (doesParamExist(req.query.id)){
-                var selector = {};
-                CategorieDemande.selectLesCategoriesDemande(selector, function callback(result){
-                    console.log("Result :" + JSON.stringify(result));
-                    // Send result to the browser
-                    res.send(JSON.stringify(result));
-                });
-
-            }
-        }
-    });
-    */
+    
 }
