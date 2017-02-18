@@ -26,13 +26,13 @@ module.exports = function(app) {
             if (doesParamExist(req.query.sujet) &&
                 doesParamExist(req.query.contenu) &&
                 doesParamExist(req.query.id_coll) &&
-                doesParamExist(req.query.id_cdemande)) {
+                doesParamExist(req.query.id_demande)) {
                 // fetch the parameters of the get request
                 var data = {
                     sujet: req.query.sujet,
                     contenu: req.query.contenu,
                     //id_collaborateur: parseInt(req.query.id_coll),
-                    //id_categorie_demande: parseInt(req.query.id_cdemande)
+                    //id_categorie_demande: parseInt(req.query.id_demande)
                 };
                 // Operation
 

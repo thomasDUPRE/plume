@@ -1,9 +1,15 @@
 var express = require("express");
+var bodyParser = require('body-parser');
+
 var app     = express();
 app.use(express.static(__dirname + '/views'));
 //Store all HTML files in view folder.
 app.use(express.static(__dirname + '/public'));
 //Store all JS and CSS in Scripts folder.
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+//Post parameters parser
 
 // -- Routing
 require('./routes/routes_main')(app);
@@ -12,6 +18,10 @@ require('./routes/routes_conge')(app);
 require('./routes/routes_ndf')(app);
 require('./routes/routes_autres')(app);
 
-app.listen(3000);
+app.listen(3000, function (err) {
+  if (err) {
+    throw err
+  }
+});
 
 console.log("Running at Port 3000");

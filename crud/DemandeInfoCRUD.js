@@ -70,6 +70,5 @@ class DemandeInfoCRUD {
         });
     }
 
-
 }
 module.exports = DemandeInfoCRUD;
