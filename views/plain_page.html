@@ -9,6 +9,10 @@
 
     <title>Plume </title>
 
+
+
+
+
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -39,6 +43,19 @@
 
         function loadCongesDetail() {
             $('#pageInterne').load('conges.html');
+        }
+
+
+        function loadDemandeAvance() {
+            $('#pageInterne').load('demandeAvance.html');
+        }
+
+        function loadAjoutCollab() {
+            $('#pageInterne').load('adminAjoutCollab.html');
+        }
+
+        function loadAjoutService() {
+            $('#pageInterne').load('adminAjoutService.html');
         }
 
 
@@ -77,27 +94,58 @@
             <br />
 
             <!-- sidebar menu -->
-            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                <h2><i class="fa fa-suitcase"></i> Congés</h2>
-
+                <h3><i class="fa fa-user"></i>Menu principal</h3>
                 <ul class="nav side-menu">
-                  <li><a href="#" onclick="loadCalendar()"><i class=""></i> Calendrier congés <span class="fa fa-chevron-right"></span></a></li>
-                  <li><a href="#" onclick="loadCongesDetail()"><i class=""></i> En detail <span class="fa fa-chevron-right"></span></a>  </li>
-                  <li><a href="#" onclick="loadDemandeConge()"><i class=""></i> Nouvelle demande <span class="fa fa-chevron-right"></span></a>  </li>
-                  </ul>
+                  <li><a><i class="fa fa-suitcase"></i> Congé <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="#" onclick="loadCalendar()">Calendrier congé</a></li>
+                      <li><a href="#" onclick="loadCongesDetail()">En detail</a></li>
+                      <li><a href="#" onclick="loadDemandeConge()"> Nouvelle demande</a></li>
+                    </ul>
+                  </li>
 
-                  </br>
+                   <li><a><i class="fa fa-money"></i> Note de Frais <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="#">Mes notes de Frais</a></li>
+                      <li><a href="#" onclick="loadNFraisDetail()">En detail</a></li>
+                      <li><a href="#" onclick="loadDemandeNFrais()"> Nouvelle demande</a></li>
+                    </ul>
+                  </li>
 
-              <h2><i class="fa fa-money"></i> Note de Frais</h2>
+                   <li><a><i class="fa fa-paper-plane-o"></i> Autres demandes <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="#">Mes demandes</a></li>
+                      <li><a href="#">Nouvelle demande</a></li>
+                    </ul>
+                  </li>
 
-                <ul class="nav side-menu">
-                  <li><a href="#" onclick="#"><i class=""></i> Mes notes de Frais <span class="fa fa-chevron-right"></span></a></li>
-                  <li><a href="#" onclick="loadNFraisDetail()"><i class=""></i> En detail <span class="fa fa-chevron-right"></span></a>  </li>
-                  <li><a href="#" onclick="loadDemandeNFrais()"><i class=""></i> Nouvelle demande <span class="fa fa-chevron-right"></span></a>  </li>
-                  </ul>
-              </div>
-             
+
+             </ul>
+
+<!-- Hide si ce n'est pas admin ou CS ou… -->
+<br/><br/>
+            <h3><i class="fa fa-gears"></i>Menu Admin </h3>
+                <u'l class="nav side-menu">
+
+
+                  <li><a><i class="fa fa-users"></i> Personnels <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="#" onclick = "loadAjoutCollab()">ajouter un personnel</a></li>
+                    </ul>
+                  </li>
+
+                   <li><a><i class="fa fa-sitemap"></i> Service <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="#" onclick = "loadAjoutService()" >ajouter un service</a></li>
+                    </ul>
+                  </li>
+
+           
+             </ul>
+
+             </div>
 
             </div>
             <!-- /sidebar menu -->
@@ -290,9 +338,11 @@
     <!-- FastClick -->
     <script src="../vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
-    <!-- <script src="../vendors/nprogress/nprogress.js"></script> -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
     
     <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
+
+    <script src="../build/js/custom.js"></script>
+
   </body>
 </html>

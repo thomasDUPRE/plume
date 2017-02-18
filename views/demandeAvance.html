@@ -28,7 +28,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Demande de congé</h3>
+                <h3>Demande de Note de Frais </h3>
               </div>
 
 
@@ -60,53 +60,45 @@
                       
 
                       <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Motif du congé <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Typologie de Frais<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                         
+
+                          <select class="form-control">
+                            <option>Transport</option>
+                            <option>Restaurant</option>
+                            <option>Hotel</option>
+                          </select>
+
+
+                        </div>
+                      </div>
+
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Descriptif  <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="name" placeholder="" required="required" type="text">
                         </div>
                       </div>
 
-
-
-
                       <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Durée du congé   <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Somme  <span class="required">*</span>
                         </label>
-                         <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="input-prepend input-group">
-                                  <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                  <input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="01/01/2016 - 01/25/2016" />
-                                </div>
-                                </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="name" placeholder="En euros" required="required" type="text"> 
+                        </div>
                       </div>
 
 
-                      <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Justificatif   
-                        </label>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12 checkbox">
-                            <label>
-                              <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage">
-                            </label>
-                          </div>
+                         <div class="item form-group" id ="invalidePage">
+                        
+                      </div>
 
-                        </div>
-
-
-                      <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Congé sans solde  :   
-                        </label>
-
-
-                        <div class="col-md-6 col-sm-6 col-xs-12 checkbox">
-                            <label>
-                              <input type="checkbox" class="js-switch" checked /> 
-                            </label>
-                          </div>
-
-                        </div>
+                    
 
 
 
@@ -150,9 +142,12 @@
 
        
 
-
-
-
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
     <!-- validator -->
     <script src="../vendors/validator/validator.js"></script>
     <!-- bootstrap-daterangepicker -->
@@ -165,7 +160,8 @@
     <script src="../vendors/switchery/dist/switchery.min.js"></script>
 
 
-
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
 
 	
   </body>

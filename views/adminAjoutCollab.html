@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+ 
+
+    <link href="../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+
+    <link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+    
+    
+    
+  </head>
+
+
+
+        <!-- page content -->
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Ajouter un nouveau collaborateur </h3>
+              </div>
+
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                              <button class="btn btn-default" type="button">Go!</button>
+                          </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    
+                   
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <form class="form-horizontal form-label-left" novalidate>
+
+                      
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nom  <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="name" placeholder="" required="required" type="text">
+                        </div>
+                      </div>
+
+                      
+
+                   
+
+
+
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Prenom  <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="name" placeholder="" required="required" type="text">
+                        </div>
+                      </div>
+
+
+
+                        <div class="item form-group bad">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="email" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      <div class="alert">adresse email invalide</div></div>
+
+                      <div class="item form-group bad">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Confirmation d'email <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="email" id="email2" name="confirm_email" data-validate-linked="email" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      <div class="alert">confirmation incorrecte</div></div>
+
+
+                   <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">Telephone <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="tel" id="telephone" name="phone" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+
+
+
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Fonction<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                         
+
+                          <select class="form-control">
+                            <option>Ingenieur Dev</option>
+                            <option>Option 2</option>
+                            <option>Option 3</option>
+                          </select>
+
+
+                        </div>
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Service<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                         
+
+                          <select class="form-control">
+                            <option>Service RH</option>
+                            <option>Option 2</option>
+                            <option>Option 3</option>
+                          </select>
+
+
+                        </div>
+                      </div>                      
+
+
+
+
+
+
+
+
+           
+
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Chef de service :   
+                        </label>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 checkbox">
+                            <label>
+                              <input type="checkbox" class="js-switch" checked /> 
+                            </label>
+                          </div>
+
+
+
+                        </div>
+
+                         <div class="item form-group" id ="invalidePage">
+                        
+                      </div>
+
+                    
+
+
+
+
+
+
+          
+
+
+
+
+
+
+                    
+                
+                      
+
+
+                 
+               
+
+
+
+
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                          <button type="submit" class="btn btn-primary">Cancel</button>
+                          <button id="send" type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        <!-- /page content -->
+
+       
+
+   
+   
+    <script src="../vendors/validator/validator.js"></script>
+    <script src="../vendors/moment/min/moment.min.js"></script>
+
+    <script src="../vendors/switchery/dist/switchery.min.js"></script>
+
+
+    
+
+	
+  </body>
+</html>
