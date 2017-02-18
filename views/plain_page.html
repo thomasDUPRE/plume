@@ -30,7 +30,15 @@
         }
 
         function loadDemandeNFrais() {
-            $('#pageInterne').load('demandeNFrais.html');
+            $('#pageInterne').load('conges.html');
+        }
+
+        function loadNFraisDetail() {
+            $('#pageInterne').load('notes_de_frais.html');
+        }
+
+        function loadCongesDetail() {
+            $('#pageInterne').load('conges.html');
         }
 
 
@@ -56,7 +64,7 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="../images/user.png" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Bonjour,</span>
@@ -75,7 +83,7 @@
 
                 <ul class="nav side-menu">
                   <li><a href="#" onclick="loadCalendar()"><i class=""></i> Calendrier congés <span class="fa fa-chevron-right"></span></a></li>
-                  <li><a href="#" onclick="load_menu1()"><i class=""></i> En detail <span class="fa fa-chevron-right"></span></a>  </li>
+                  <li><a href="#" onclick="loadCongesDetail()"><i class=""></i> En detail <span class="fa fa-chevron-right"></span></a>  </li>
                   <li><a href="#" onclick="loadDemandeConge()"><i class=""></i> Nouvelle demande <span class="fa fa-chevron-right"></span></a>  </li>
                   </ul>
 
@@ -84,8 +92,8 @@
               <h2><i class="fa fa-money"></i> Note de Frais</h2>
 
                 <ul class="nav side-menu">
-                  <li><a href="#" onclick="loadCalendar()"><i class=""></i> Mes notes de Frais <span class="fa fa-chevron-right"></span></a></li>
-                  <li><a href="#" onclick="load_menu1()"><i class=""></i> En detail <span class="fa fa-chevron-right"></span></a>  </li>
+                  <li><a href="#" onclick="#"><i class=""></i> Mes notes de Frais <span class="fa fa-chevron-right"></span></a></li>
+                  <li><a href="#" onclick="loadNFraisDetail()"><i class=""></i> En detail <span class="fa fa-chevron-right"></span></a>  </li>
                   <li><a href="#" onclick="loadDemandeNFrais()"><i class=""></i> Nouvelle demande <span class="fa fa-chevron-right"></span></a>  </li>
                   </ul>
               </div>
@@ -124,7 +132,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">Thomas Duprez
+                    <img src="../images/user.png" alt="">Thomas Duprez
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -148,7 +156,7 @@
                   <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                     <li>
                       <a>
-                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
                         <span>
                           <span>John Smith</span>
                           <span class="time">3 mins ago</span>
@@ -160,7 +168,7 @@
                     </li>
                     <li>
                       <a>
-                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
                         <span>
                           <span>John Smith</span>
                           <span class="time">3 mins ago</span>
@@ -172,7 +180,7 @@
                     </li>
                     <li>
                       <a>
-                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
                         <span>
                           <span>John Smith</span>
                           <span class="time">3 mins ago</span>
@@ -184,7 +192,7 @@
                     </li>
                     <li>
                       <a>
-                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
                         <span>
                           <span>John Smith</span>
                           <span class="time">3 mins ago</span>
