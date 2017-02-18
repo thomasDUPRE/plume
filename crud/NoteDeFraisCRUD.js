@@ -11,14 +11,16 @@ class NoteDeFraisCRUD {
 /*** Partie Missions ***/
 
     // Récuperation des id des missions d'un collaborateur
-    static recupererIDMission(data, callback){
+    static recupererIDMissions(data, callback){
         var helper = new CRUDHelper();
         helper.getTable('missions_collaborateurs').load(data, function (err, vals) {
             //mysql callback
-            var result;
+            var result = [];
 
             if (!err) {
-                result = vals;
+                for (var i = 0, len = vals.length; i < len; i++) {
+                    result.push(vals[i].id_mission);
+                }
             }
             else
                 result = new Erreur("RecupMissionsIDErreur", err);
@@ -26,7 +28,25 @@ class NoteDeFraisCRUD {
         });
     }
 
-    // Recuperation informations d'une mission
+    // Récuperation des id des collaborateurs d'une mission
+    static recupererIDCollaborateurs(data, callback){
+        var helper = new CRUDHelper();
+        helper.getTable('missions_collaborateurs').load(data, function (err, vals) {
+            //mysql callback
+            var result = [];
+
+            if (!err) {
+                for (var i = 0, len = vals.length; i < len; i++) {
+                    result.push(vals[i].id_collaborateur);
+                }
+            }
+            else
+                result = new Erreur("RecupCollaboIDErreur", err);
+            callback(result);
+        });
+    }
+
+    // Recuperation informations d'une mission à partir de l'ID
     static recupererMesMissions(data, callback){
         var helper = new CRUDHelper();
         helper.getTable('mission').load(data, function (err, vals) {
@@ -41,6 +61,19 @@ class NoteDeFraisCRUD {
         });
     }
    
+    // Recuperation informations d'un collaborateur
+    static recupererInfosCollaborateurs(data, callback){
+        var helper = new CRUDHelper();
+        helper.getTable('collaborateur').load(data, function (err, vals) {
+            //mysql callback
+            var result;
+            if (!err)
+                result = vals;
+            else
+                result = new Erreur("RecupCollaborateurErreur", err);
+            callback(result);
+        });
+    }
 
 
     static creerMission(data, callback) {
@@ -88,8 +121,8 @@ class NoteDeFraisCRUD {
 
 /*** Partie Lignes de frais ***/
 
-    // Recuperation informations d'une ligne de frais
-    static recupererLigneDeFrais(data, callback){
+    // Recuperation informations des lignes de frais d'une note de frais
+    static recupererLignesDeFrais(data, callback){
         var helper = new CRUDHelper();
         helper.getTable('ligne_frais').load(data, function (err, vals) {
             //mysql callback
@@ -101,6 +134,35 @@ class NoteDeFraisCRUD {
             callback(result);
         });
     }
+
+    // Recuperation du nom de l'état d'une ligne de frais à partir de son ID
+    static recupererEtatLignesDeFrais(data, callback){
+        var helper = new CRUDHelper();
+        helper.getTable('etat_ligne_frais').load(data, function (err, vals) {
+            //mysql callback
+            var result;
+            if (!err)
+                result = vals;
+            else
+                result = new Erreur("RecupEtatLigneDeFrais", err);
+            callback(result);
+        });
+    }
+
+    // Recuperation du nom de la catégorie de la ligne de frais à partir de son ID
+    static recupererCatLignesDeFrais(data, callback){
+        var helper = new CRUDHelper();
+        helper.getTable('categorie_frais').load(data, function (err, vals) {
+            //mysql callback
+            var result;
+            if (!err)
+                result = vals;
+            else
+                result = new Erreur("RecupCatLigneDeFrais", err);
+            callback(result);
+        });
+    }
+
 
     static creerLDF(data, callback) {
         var helper = new CRUDHelper();
@@ -148,7 +210,7 @@ class NoteDeFraisCRUD {
 /*** Partie Note de frais ***/
 
 
-    // Recuperation informations d'une note de frais
+    // Recuperation informations des notes de frais d'un collaborateur
     static recupererNoteDeFrais(data, callback){
         var helper = new CRUDHelper();
         helper.getTable('note_frais').load(data, function (err, vals) {
