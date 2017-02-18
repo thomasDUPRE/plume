@@ -15,8 +15,7 @@
     "express": "~4.14.0",
     "express-session": "^1.7.6",
     "mysql": "2.1.0",
-    "mysql-crud": "0.1.4",
-    "twig":"0.10.3"
+    "mysql-crud": "0.1.4"
     
   },
   "repository": {},
