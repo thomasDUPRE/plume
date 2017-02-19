@@ -11,7 +11,6 @@ ALTER TABLE conge ADD column revient_matin boolean not null;
 ALTER TABLE ligne_frais modify id_etat_ligne_frais int;
 ALTER TABLE ligne_frais ADD constraint fk_ligne_frais4 foreign key (id_etat_ligne_frais) references etat_ligne_frais(id) on delete set null;
 ALTER TABLE conge ADD constraint fk_conge foreign key (id_etat_conge) references etat_conge(id) on delete set null;
-ALTER TABLE missions_collaborateurs ADD column date_date_mission date NOT NULL;
 ALTER TABLE missions_collaborateurs ADD column date_fin_mission date NOT NULL;
 
 --18/02/2017
@@ -33,3 +32,12 @@ Create table notification(
 		 constraint pk_notification primary key(id),
 		 constraint fk_notification foreign key(id ) references collaborateur(id) on delete cascade
 )ENGINE=INNODB;
+
+ALTER table conge Add column motif varchar(50) NOT NULL;
+ALTER table conge Add column id_demandeur int NOT NULL;
+ALTER table conge Add constraint fk_conge2 foreign key(id_demandeur ) references collaborateur(id) on delete cascade ;
+ALTER TABLE missions_collaborateurs ADD column date_debut_mission date NOT NULL;
+ALTER TABLE missions_collaborateurs ADD constraint ck_missions_collaborateurs check (date_fin_mission>=date_debut_mission);
+ALTER TABLE missions_collaborateurs DROP column date_date_mission ;
+ALTER TABLE conge ADD constraint ck_conge check (date_fin>=date_debut);
+
