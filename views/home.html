@@ -11,8 +11,6 @@
 
 
 
-
-
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -34,7 +32,7 @@
         }
 
         function loadDemandeNFrais() {
-            $('#pageInterne').load('conges.html');
+            $('#pageInterne').load('demandeNFrais.html');
         }
 
         function loadNFraisDetail() {
@@ -73,7 +71,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="#" class="site_title"><i class="fa fa-leaf"></i> <span>Plume</span></a>
+              <a class="site_title"><i class="fa fa-leaf"></i> <span>Plume</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -100,24 +98,24 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-suitcase"></i> Congé <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#" onclick="loadCalendar()">Calendrier congé</a></li>
-                      <li><a href="#" onclick="loadCongesDetail()">En detail</a></li>
-                      <li><a href="#" onclick="loadDemandeConge()"> Nouvelle demande</a></li>
+                      <li><a  onclick="loadCalendar()">Calendrier congé</a></li>
+                      <li><a onclick="loadCongesDetail()">En detail</a></li>
+                      <li><a onclick="loadDemandeConge()"> Nouvelle demande</a></li>
                     </ul>
                   </li>
 
                    <li><a><i class="fa fa-money"></i> Note de Frais <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">Mes notes de Frais</a></li>
-                      <li><a href="#" onclick="loadNFraisDetail()">En detail</a></li>
-                      <li><a href="#" onclick="loadDemandeNFrais()"> Nouvelle demande</a></li>
+                      <li><a>Mes notes de Frais</a></li>
+                      <li><a onclick="loadNFraisDetail()">En detail</a></li>
+                      <li><a onclick="loadDemandeNFrais()"> Nouvelle demande</a></li>
                     </ul>
                   </li>
 
                    <li><a><i class="fa fa-paper-plane-o"></i> Autres demandes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">Mes demandes</a></li>
-                      <li><a href="#">Nouvelle demande</a></li>
+                      <li><a>Mes demandes</a></li>
+                      <li><a>Nouvelle demande</a></li>
                     </ul>
                   </li>
 
@@ -127,18 +125,18 @@
 <!-- Hide si ce n'est pas admin ou CS ou… -->
 <br/><br/>
             <h3><i class="fa fa-gears"></i>Menu Admin </h3>
-                <u'l class="nav side-menu">
+                <ul class="nav side-menu">
 
 
                   <li><a><i class="fa fa-users"></i> Personnels <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#" onclick = "loadAjoutCollab()">ajouter un personnel</a></li>
+                      <li><a onclick = "loadAjoutCollab()">ajouter un personnel</a></li>
                     </ul>
                   </li>
 
                    <li><a><i class="fa fa-sitemap"></i> Service <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#" onclick = "loadAjoutService()" >ajouter un service</a></li>
+                      <li><a onclick = "loadAjoutService()" >ajouter un service</a></li>
                     </ul>
                   </li>
 
@@ -297,11 +295,11 @@
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
                       <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
+                          <li><a>Settings 1</a>
                           </li>
-                          <li><a href="#">Settings 2</a>
+                          <li><a>Settings 2</a>
                           </li>
                         </ul>
                       </li>

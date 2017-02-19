@@ -1,100 +1,162 @@
 
-<meta charset="utf-8">
-<link href="../vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
-<link href="../vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
-
-<script src="../vendors/moment/min/moment.min.js"></script>
-<script src="../vendors/fullcalendar/dist/fullcalendar.min.js"></script>
-<script src="../vendors/switchery/dist/switchery.min.js"></script>
-<script>
-
-	$(document).ready(function() {
-		
-		$('#calendar').fullCalendar({
-
-       customButtons: {
-        myCustomButton: {
-            text: 'custom!',
-            click: function() {
-                alert('clicked the custom Test!');
-            }
-        }
-    },
+	<meta charset="utf-8">
+	<link href="../vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+	<link href="../vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+	    <!-- iCheck -->
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="../vendors/iCheck/skins/flat/blue.css" rel="stylesheet">
     
-     eventClick: function(calEvent, jsEvent, view) {
+	<script src="../vendors/moment/min/moment.min.js"></script>
+	<script src="../vendors/fullcalendar/dist/fullcalendar.min.js"></script>
+	<script src="../vendors/fullcalendar/dist/lang/fr.js"></script> 
+	<script src="../vendors/switchery/dist/switchery.min.js"></script>
+	  <!-- iCheck -->
+    <script src="../vendors/iCheck/icheck.min.js"></script>
 
-        alert('Event: ' + calEvent.title);
-        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-        alert('View: ' + view.name);
+	<script>
 
-        // change the border color just for fun
-        $(this).css('border-color', 'red');
+		 $(document).ready(function() {
+ 		 
+    		//calendar
+	    	var date = new Date(),
+	          d = date.getDate(),
+	          m = date.getMonth(),
+	          y = date.getFullYear(),
+	          started,
+	          categoryClass;
 
-    },
+	         var calendar = $('#calendar').fullCalendar({
+	          locale: 'fr',
+	          header: {
+	          left: 'prev,next today',
+	          center: 'title',
+	          right: 'month,agendaWeek,agendaDay,listMonth'
+	          },
+	          buttonText :{
+             
+              month: 'mois',
+              agendaDay :'jour',
+              agendaWeek :'semaine',
+              listMonth: "liste congés",
+              today:"Aujourd'hui"
+              
+        	  },
+        	  slotLabelFormat:"HH:mm" ,
+	          //selectable: true,
+	          selectHelper: true,
+	          select: function(start, end, allDay) {
+	          $('#fc_create').click();
 
-			header: {
-				left: 'prev,next today',
-				center: 'Congé',
-				right: 'month,agendaWeek,agendaDay,boutonTest'
-			},
-			defaultDate: '2014-06-12',
-			defaultView: 'month',
-			editable: true,
-			events: [
-				{
-					title: 'All ddd Event',
-					start: '2014-06-01'
-				},
-				{
-					title: 'Long Event',
-					start: '2014-06-07',
-					end: '2014-06-10'
-				},
-				{
-					id: 999,
-					title: 'Repeating Event',
-          color :'green',
-					start: '2014-06-09T16:00:00'
-				},
-				{
-					id: 999,
-					title: 'Repeating Event',
-					start: '2014-06-16T16:00:00'
-				},
-				{
-					title: 'Meeting',
-					start: '2014-06-12T10:30:00',
-					end: '2014-06-12T12:30:00'
-				},
-				{
-					title: 'lolo',
-					start: '2014-06-12T12:00:00'
-				},
-				{
-					title: 'Birthday Party',
-					start: '2014-06-13T07:00:00'
-				},
-				{
-					title: 'Click for Google',
-					url: 'http://google.com/',
-					start: '2014-06-28'
-				}
-			]
-		});
-		
-	});
+	          started = start;
+	          ended = end;
 
-</script>
-<style type="text/css">
+	          $(".antosubmit").on("click", function() {
+	            var title = $("#title").val();
+	            if (end) {
+	            ended = end;
+	            }
 
-</style>
+	            categoryClass = $("#event_type").val();
+
+	            if (title) {
+	            calendar.fullCalendar('renderEvent', {
+	              title: title,
+	              start: started,
+	              end: end,
+	              allDay: allDay
+	              },
+	              true // make the event "stick"
+	            );
+	            }
+
+	            $('#title').val('');
+
+	            calendar.fullCalendar('unselect');
+
+	            $('.antoclose').click();
+
+	            return false;
+	          });
+	          },
+	          eventClick: function(calEvent, jsEvent, view) {
+	          $('#fc_edit').click();
+	          $('#title2').val(calEvent.title);
+
+	          categoryClass = $("#event_type").val();
+
+	          $(".antosubmit2").on("click", function() {
+	            calEvent.title = $("#title2").val();
+
+	            calendar.fullCalendar('updateEvent', calEvent);
+	            $('.antoclose2').click();
+	          });
+
+	          calendar.fullCalendar('unselect');
+	          },
+	          editable: true,
+	          events: [{
+		          title: 'All Day Event',
+		          start: new Date(y, m, 1)
+		          }, {
+		          title: 'Long Event',
+		          start: new Date(y, m, d - 5),
+		          end: new Date(y, m, d - 2)
+		          }, {
+		          title: 'Meeting',
+		          start: new Date(y, m, d, 10, 30),
+		          allDay: false
+		          }, {
+		          title: 'Lunch',
+		          start: new Date(y, m, d + 14, 12, 0),
+		          end: new Date(y, m, d, 14, 0),
+		          allDay: false
+		          }, {
+		          title: 'Birthday Party',
+		          start: new Date(y, m, d + 1, 19, 0),
+		          end: new Date(y, m, d + 1, 22, 30),
+		          allDay: false
+		          }, {
+		          title: 'Click for Google',
+		          start: new Date(y, m, 28),
+		          end: new Date(y, m, 29),
+		          url: 'http://google.com/'
+		          }],
+		       timeFormat: 'H:mm'
+	         }); 
 
 
-<div class="col-md-10">
-<div id="calendar"></div>
-</div>
+	         //icheck
 
-   <div class="col-md-2">
+	         if ($("input.flat.mine")[0]) 
+	 		 {
+		        $(document).ready(function () {
+		            $('input.flat.mine').iCheck({
+		                checkboxClass: 'icheckbox_flat-blue',
+		                radioClass: 'iradio_flat-blue'
+		            });
+		        });
+			}
+
+			if ($("input.flat.other")[0]) 
+	 		 {
+		        $(document).ready(function () {
+		            $('input.flat.other').iCheck({
+		                checkboxClass: 'icheckbox_flat-green',
+		                radioClass: 'iradio_flat-green'
+		            });
+		        });
+			}     
+
+    	});        
+	
+	</script>
+
+
+	<div class="col-md-10">
+	<div id="calendar"></div>
+	</div>
+
+    <div class="col-md-2">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Filtre <small></small></h2>                    
@@ -105,21 +167,13 @@
                       <!-- Collect the nav links, forms, and other content for toggling -->
                       <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <ul class="nav navbar-nav navbar-center">
-                        <div id="menu_filtre">
-                                  <div class="checkbox">
-                                    <input id="checkbox1" class="styled" type="checkbox" checked="checked">
-                                    <label for="checkbox1">
-                                        Mes congés
-                                    </label>
-                                 </div>
+                        <div id="menu_filtre" align="center">
+	                         <input type="checkbox"  id="hobby2"  class="flat mine" checked="checked" /> Mes congés
+	                         <br> <br>
 
-                                  <div class="checkbox">
-                                    <input id="checkbox8" class="styled" type="checkbox" checked="checked">
-                                    <label for="checkbox8">
-                                      Collaborateurs
-                                    </label>
-                                 </div>                            
-                                <button id="btnreset_filtre" class="btn btn-default btn-block" value="Reset" type="reset" style="margin-bottom:25px">Réinitialiser</button>
+	                         <input type="checkbox" id="hobby2"  class="flat other" /> Collaborateur                      <br> <br>
+	                                                   
+	                            <button id="btnreset_filtre" class="btn btn-default btn-block" value="Reset" type="reset" style="margin-bottom:25px">Réinitialiser</button>
                         </div><!-- /.navbar-collapse --> 
                         </ul>
                       </div>
