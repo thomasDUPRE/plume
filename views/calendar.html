@@ -94,34 +94,90 @@
 	          calendar.fullCalendar('unselect');
 	          },
 	          editable: true,
-	          events: [{
-		          title: 'All Day Event',
-		          start: new Date(y, m, 1)
-		          }, {
-		          title: 'Long Event',
-		          start: new Date(y, m, d - 5),
-		          end: new Date(y, m, d - 2)
-		          }, {
-		          title: 'Meeting',
-		          start: new Date(y, m, d, 10, 30),
-		          allDay: false
-		          }, {
-		          title: 'Lunch',
-		          start: new Date(y, m, d + 14, 12, 0),
-		          end: new Date(y, m, d, 14, 0),
-		          allDay: false
-		          }, {
-		          title: 'Birthday Party',
-		          start: new Date(y, m, d + 1, 19, 0),
-		          end: new Date(y, m, d + 1, 22, 30),
-		          allDay: false
-		          }, {
-		          title: 'Click for Google',
-		          start: new Date(y, m, 28),
-		          end: new Date(y, m, 29),
-		          url: 'http://google.com/'
-		          }],
-		       timeFormat: 'H:mm'
+	          events: function(start, end, timezone, callback) {
+
+					        $.ajax({
+					            url: '/selectConge',
+					            type: 'GET',
+					            dataType: 'json',
+					            data: {},
+					            success: function(doc) {
+
+					                var events = [];
+
+					                $(doc).each(function() {
+							             switch($(this)[0]["id_etat_conge"]){
+							             	//Brouillon
+		                                     case 1:
+		                                          $couleur = "#999999";
+		                                          $etat = "Brouillon";
+		                                          break;
+		                                     //Envoye
+		                                     case 2:
+		                                          $couleur = "#5bc0de";
+		                                          $etat = "Envoye";
+		                                          break;
+		                                     //valide_CS
+		                                     case 5:
+		                                          $couleur = "#5bc0de";
+		                                          $etat = "Valide_CS";
+		                                          break;
+		                                     //Invalide_CS
+		                                     case 3:
+		                                          $couleur = "#d9534f";
+		                                          $etat = "Invalide_CS";
+		                                          break;
+		                                     //Invalide_RH
+		                                     case 4:
+		                                          $couleur = "#d9534f";
+		                                          $etat = "Invalide_RH";
+		                                          break;
+		                                     //Valide_RH
+		                                     case 6:
+		                                          $couleur =  "#5cb85c";
+		                                          $etat = "Valide_RH";
+		                                          break;
+		                                     default:
+		                                         $couleur = "#33cc33";
+		                                         $etat = "?";
+		                                 }
+		                                 if($(this)[0]["id"]==0){
+		                                 	$conge_paye="Congé payé";
+		                                 }
+		                                 else{
+		                                 	$conge_paye="Congé sans solde";
+		                                 }
+
+					                    events.push({
+					                       id: $(this)[0]["id"],
+                                           title: $(this)[0]["motif"],
+                                           start: $(this)[0]["dateDebut"],
+                                           end: $(this)[0]["dateFin"],
+                                           dateDemande: $(this)[0]["date_demande"],
+                                           type: $conge_paye,
+                                           color: $couleur,
+                                           etat: $etat,
+                                           collaborateur: $(this)[0]["id_demandeur"],
+					                    });
+					                });
+					                callback(events);
+
+					            }
+					        });
+
+					    },
+		      timeFormat: 'H:mm',
+		      eventRender: function (event, element) {
+
+                         element.popover({
+	                        trigger : 'hover',
+	                        title: event.title,
+	                        placement:'top',
+	                        html:true,
+	                        content: "Etat: "+event.etat+", id: "+event.id+", Debut: "+event.start.toISOString()+", Fin: "+event.end.toISOString()+", Demandé le: "+event.dateDemande,
+                    	});   
+               }
+
 	         }); 
 
 
