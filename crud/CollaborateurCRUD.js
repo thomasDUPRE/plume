@@ -5,6 +5,7 @@ var CRUDHelper = require('./CRUDHelper');
 var Validation = require('./beans/Validation');
 var Erreur = require('./beans/Erreur');
 var Collaborateur = require('./beans/Collaborateur');
+var CollaborateurLogin = require('./beans/CollaborateurLogin');
 
 class CollaborateurCRUD{
     static insererCollaborateur(data, callback) {
@@ -50,6 +51,29 @@ class CollaborateurCRUD{
             }
             else
                 callback(new Erreur("selectCollaborateursErreur", err));
+            helper.close();
+
+        });
+    }
+    static selectMDPCollaborateur(selector, callback){
+        var helper = new CRUDHelper();
+
+        helper.getTable('collaborateur').load(selector, function (err, vals) {
+            //mysql callback
+            var result;
+            if (!err){
+                if(vals.length == 0){
+                    result = new Erreur("MauvaisUtilisateur", "Cet utilisateur n'existe pas !");
+                }
+                else{
+                    result =  new CollaborateurLogin(vals[0].id, vals[0].nom, vals[0].prenom, vals[0].service, null, null, vals[0].telephone, vals[0].mail, vals[0].nb_jours_restants, vals[0].mot_de_passe);
+                }
+            }
+
+            else
+                result = new Erreur("selectMDPCollaborateurErreur", err);
+
+            callback(result);
             helper.close();
 
         });

@@ -20,9 +20,10 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
      <script>
-
-
         function loadCalendar() {
             $('#pageInterne').load('calendar.html');
         }
@@ -83,7 +84,7 @@
               </div>
               <div class="profile_info">
                 <span>Bonjour,</span>
-                <h2>Thomas Duprez</h2>
+                <h2 class="profile-name"></h2>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -178,7 +179,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="../images/user.png" alt="">Thomas Duprez
+                    <img src="../images/user.png" alt=""><label class="profile-name"></label>
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -342,5 +343,23 @@
 
     <script src="../build/js/custom.js"></script>
 
+
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+      function firstToUpperCase( str ) {
+        return str.substr(0, 1).toUpperCase() + str.substr(1);
+      }
+
+      $.get("/name", function(data, status){
+        var profile = JSON.parse(data);
+        $('.profile-name').each(function() {
+          $( this ).html(firstToUpperCase(profile.prenom.toLowerCase()) +" "+firstToUpperCase(profile.nom.toLowerCase()));
+        });
+
+      });
+        //alert("Data: " + data + "\nStatus: " + status);
+    });
+  </script>
   </body>
 </html>

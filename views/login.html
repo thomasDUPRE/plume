@@ -20,6 +20,9 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
   </head>
 
   <body class="login">
@@ -30,16 +33,17 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form>
+            <form id="form-login" action="/">
               <h1>Page de connexion</h1>
+              <label id="form-warning"></label>
               <div>
-                <input type="text" class="form-control" placeholder="email" required="" />
+                <input type="text" id="input-mail" class="form-control" name="mail" placeholder="email" required="" />
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="mot de passe " required="" />
+                <input type="password" id="input-password" class="form-control" name="mot_de_passe" placeholder="mot de passe " required="" />
               </div>
               <div>
-                <a class="btn btn-default submit" href="home.html">Connexion</a>
+                <button class="btn btn-default submit">Connexion</button>
               </div>
 
               <div class="clearfix"></div>
@@ -63,5 +67,39 @@
        
       </div>
     </div>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#form-login').submit(function() {
+          $.post("/login",
+                  {
+                    mail: $("#input-mail").val(),
+                    mot_de_passe:$("#input-password").val()
+                  },
+                  function(data, status){
+                    $('#form-warning').html("");
+                    var json = JSON.parse(data);
+                    if(json.type == "MauvaisUtilisateur"){
+                      $('#form-warning').html("L'utilisateur rentré n'existe pas !");
+                    }
+                    else if(json.type == "MauvaisMotDePasse"){
+                      $('#form-warning').html("Le mot de passe rentré n'est pas le bon !");
+                    }
+                    else if(json.type == "BonMotDePasse"){
+                      window.location.href = "/";
+
+                    }
+                    else {
+                      console.log("Data: " + data + "\nStatus: " + status);
+                    }
+                  });
+          return false;
+          // return true; // return false to cancel form action
+        });
+
+      });
+    </script>
+
+
   </body>
 </html>
