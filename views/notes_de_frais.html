@@ -1,7 +1,5 @@
  <!DOCTYPE html>
 <html lang="en">
-
- 
     
 <!-- Datatables -->
     <link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
@@ -18,16 +16,7 @@
                 <h3>Notes de frais</h3>
               </div>
 
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>
+             
             </div>
 
             <div class="clearfix"></div>
@@ -101,6 +90,77 @@
     <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
 
+
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+
+          var handleDataTableButtons = function() {
+            if ($("#datatable-buttons").length) {
+            $("#datatable-buttons").DataTable({
+              dom: "Bfrtip",
+              buttons: [
+              {
+                  text : "<span class='fa fa-plus'></span> Ajouter une ligne",
+                    action : function () {
+                            
+                    }
+                
+              },
+              
+              ],
+              responsive: true
+            });
+            }
+          };
+
+          TableManageButtons = function() {
+            "use strict";
+            return {
+            init: function() {
+              handleDataTableButtons();
+            }
+            };
+          }();
+
+          $('#datatable').dataTable();
+
+          $('#datatable-keytable').DataTable({
+            keys: true
+          });
+
+          $('#datatable-responsive').DataTable();
+
+          $('#datatable-scroller').DataTable({
+            ajax: "js/datatables/json/scroller-demo.json",
+            deferRender: true,
+            scrollY: 380,
+            scrollCollapse: true,
+            scroller: true
+          });
+
+          $('#datatable-fixed-header').DataTable({
+            fixedHeader: true
+          });
+
+          var $datatable = $('#datatable-checkbox');
+
+          $datatable.dataTable({
+            'order': [[ 1, 'asc' ]],
+            'columnDefs': [
+            { orderable: false, targets: [0] }
+            ]
+          });
+          $datatable.on('draw.dt', function() {
+            $('checkbox input').iCheck({
+            checkboxClass: 'icheckbox_flat-green'
+            });
+          });
+
+          TableManageButtons.init();
+      });
+
+    </script>
 
   </body>
 </html>
