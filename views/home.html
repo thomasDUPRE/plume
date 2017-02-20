@@ -27,6 +27,14 @@
             $('#pageInterne').load('calendar.html');
         }
 
+         function loadCreateMission() {
+            $('#pageInterne').load('creer_mission.html');
+        }
+
+         function loadAdminMainView() {
+            $('#pageInterne').load('adminMainView.html');
+        }
+
         function loadDemandeConge() {
             $('#pageInterne').load('demandeConge.html ');
         }
@@ -112,6 +120,13 @@
                     </ul>
                   </li>
 
+                  <li><a><i class="fa fa-university"></i> Mission <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li  onclick="loadCreateMission()"><a>Nouvelle mission </a></li>
+                      <!-- <li><a>Nouvelle demande</a></li> -->
+                    </ul>
+                  </li>
+
                    <li><a><i class="fa fa-paper-plane-o"></i> Autres demandes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a>Mes demandes</a></li>
@@ -126,10 +141,11 @@
 <br/><br/>
             <h3><i class="fa fa-gears"></i>Menu Admin </h3>
                 <ul class="nav side-menu">
-
+                   <li><a onclick = "loadAdminMainView()">Vue principale</a></li>
 
                   <li><a><i class="fa fa-users"></i> Personnels <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+
                       <li><a onclick = "loadAjoutCollab()">ajouter un personnel</a></li>
                     </ul>
                   </li>
