@@ -38,6 +38,6 @@ ALTER table conge Add column id_demandeur int NOT NULL;
 ALTER table conge Add constraint fk_conge2 foreign key(id_demandeur ) references collaborateur(id) on delete cascade ;
 ALTER TABLE missions_collaborateurs ADD column date_debut_mission date NOT NULL;
 ALTER TABLE missions_collaborateurs ADD constraint ck_missions_collaborateurs check (date_fin_mission>=date_debut_mission);
-ALTER TABLE missions_collaborateurs DROP column date_date_mission ;
+ALTER TABLE missions_collaborateurs DROP column date_mission ;
 ALTER TABLE conge ADD constraint ck_conge check (date_fin>=date_debut);
 

@@ -5,42 +5,41 @@
 // Routes Note de Frais
 module.exports = function(app) {
     var Erreur = require('../crud/beans/Erreur');
-    var NoteDeFraisCRUD = require('../crud/NoteDeFraisCRUD');
+    var AvanceNoteDeFraisCRUD = require('../crud/AvanceNoteDeFraisCRUD');
 
     function doesParamExist(param) {
         if (typeof param !== 'undefined' && param) return true;
         return false;
     }
+    
+
+/*** Partie Avance Notes de frais ***/
 
 
-/*** Partie Note de frais ***/
-
-
-    app.post('/insererNDF', function(req, res) {
+    app.post('/insererANDF', function(req, res) {
         if (req.body && req.body.length !== 0) {
             
-            if (req.body.date_saisie && req.body.id_collaborateur) {
+            if (req.body.description && req.body.somme) {
                 
                 var data = {
-                    date_saisie: req.body.date_saisie,
-                    id_collaborateur: req.body.id_collaborateur
+                    description: req.body.description,
+                    somme: req.body.somme
                 };
                // Operation
-                NoteDeFraisCRUD.creerNoteDeFrais(data, function callback(result) {
+                AvanceNoteDeFraisCRUD.creerAvanceNoteDeFrais(data, function callback(result) {
                     // Send result to the browser
                     res.send(JSON.stringify(result));
                 });
             }
             // Display error
-            else res.send(JSON.stringify(new Erreur("NDFErreur", "Les paramètres ne sont pas corrects")));
+            else res.send(JSON.stringify(new Erreur("ParamErreur", "Les paramètres ne sont pas corrects")));
         }
         // Display Error
-        else res.send(JSON.stringify(new Erreur("NDFErreur", "La requête est vide")));
+        else res.send(JSON.stringify(new Erreur("ANDFErreur", "La requête est vide")));
      
     });
-
-
-    app.get('/getNDF', function(req, res) {
+        
+    app.get('/getANDF', function(req, res) {
 
         if (typeof req.query !== 'undefined' && req.query) {
             
@@ -50,7 +49,7 @@ module.exports = function(app) {
                     id : req.query.id
                 };
                 
-                NoteDeFraisCRUD.recupererNoteDeFrais(data, function callback(result) {
+                AvanceNoteDeFraisCRUD.recupererAvanceNoteDeFrais(data, function callback(result) {
                     // Send result to the browser
                     res.send(JSON.stringify(result));
                 });
@@ -63,32 +62,34 @@ module.exports = function(app) {
         else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
 
     });
-
     
-    app.post('/modifierNDF', function(req, res) {
+
+    app.post('/modifierANDF', function(req, res) {
         if (req.body && req.body.length !== 0) {
-            if (req.body.id && req.body.date_saisie && req.body.id_collaborateur) {
+            
+            if (req.body.id && req.body.description && req.body.somme) {
                 
                 var selector = { id : req.body.id };
                 var data = {
-                    date_saisie: req.body.date_saisie,
-                    id_collaborateur: req.body.id_collaborateur
+                    description: req.body.description,
+                    somme: req.body.somme
                 };
                // Operation
-                NoteDeFraisCRUD.modifierNoteDeFrais(selector, data, function callback(result) {
+                AvanceNoteDeFraisCRUD.modifierAvanceNoteDeFrais(selector, data, function callback(result) {
                     // Send result to the browser
                     res.send(JSON.stringify(result));
                 });
             }
             // Display error
-            else res.send(JSON.stringify(new Erreur("NDFErreur", "Les paramètres ne sont pas corrects")));
+            else res.send(JSON.stringify(new Erreur("ParamErreur", "Les paramètres ne sont pas corrects")));
         }
         // Display Error
-        else res.send(JSON.stringify(new Erreur("NDFErreur", "La requête est vide"))); 
+        else res.send(JSON.stringify(new Erreur("ANDFErreur", "La requête est vide")));
+     
     });
 
-    
-    app.post('/supprimerNDF', function(req, res) {
+
+    app.post('/supprimerANDF', function(req, res) {
         if (typeof req.query !== 'undefined' && req.query) {
             
             if (doesParamExist(req.query.id)) {
@@ -97,7 +98,7 @@ module.exports = function(app) {
                     id : req.query.id
                 };
 
-                NoteDeFraisCRUD.supprimerNDF(data, function callback(result) {
+                AvanceNoteDeFraisCRUD.supprimerANDF(data, function callback(result) {
                     res.send(JSON.stringify(result));
                 });
             
@@ -112,6 +113,7 @@ module.exports = function(app) {
 
 
 /*** FIN ***/
+    
     
 
 }

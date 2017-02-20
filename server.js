@@ -15,7 +15,10 @@ app.use(bodyParser.json());
 require('./routes/routes_main')(app);
 require('./routes/routes_admin')(app);
 require('./routes/routes_conge')(app);
+require('./routes/routes_mission')(app);
+require('./routes/routes_ldf')(app);
 require('./routes/routes_ndf')(app);
+require('./routes/routes_andf')(app);
 require('./routes/routes_autres')(app);
 
 
