@@ -19,6 +19,7 @@ module.exports = function(app) {
 
         // If user is connected
         if (typeof  req.session.profile !== 'undefined' && req.session.profile){
+            console.log("Profile: "+JSON.stringify(req.session.profile));
             res.sendFile(path.join(__dirname, '..', 'views/home.html'));
         }
         else {
@@ -29,6 +30,13 @@ module.exports = function(app) {
    app.get('/login',function (req, res) {
        res.redirect('/');
     });
+
+    app.get('/logout',function (req, res) {
+        delete req.session.profile;
+        res.redirect('/');
+    });
+
+
 
     app.post('/login', function (req, res) {
             // Homepage

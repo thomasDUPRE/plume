@@ -12,7 +12,12 @@ module.exports = function(app) {
         return false;
     }
 
-
+    function setResponse(res, callback){
+        if(typeof  req.session.profile !== 'undefined' && req.session.profile){
+            callback();
+        }
+        else res.redirect('/');
+    }
 /*** Partie Note de frais ***/
 
 

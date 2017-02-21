@@ -54,7 +54,6 @@ class ServiceCRUD {
 
         });
     }
-
     static supprimerService(selector, callback) {
         var helper = new CRUDHelper();
         helper.getTable('service').destroy(selector, function (err) {

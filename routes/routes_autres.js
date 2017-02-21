@@ -6,14 +6,35 @@ module.exports = function(app) {
     var Erreur = require('../crud/beans/Erreur');
     var DemandeInfoCRUD = require('../crud/DemandeInfoCRUD');
     var CategorieDemande = require('../crud/CategorieDemandeCRUD');
+    var RoleCRUD = require('../crud/RoleCRUD');
+    var ServiceCRUD = require('../crud/ServiceCRUD');
+    var CollaborateurCRUD = require('../crud/CollaborateurCRUD');
 
     function doesParamExist(param) {
         if (typeof param !== 'undefined' && param) return true;
         return false;
     }
 
+    function setResponse(req, res, callback){
+        if(typeof req.session.profile !== 'undefined' && req.session.profile){
+            callback();
+        }
+        else res.redirect('/');
+    }
+
+
     // Collaborateurs
-    app.get('/collaborateurs', function(req, res) {});
+    app.get("/collaborateurs", function (req, res) {
+        var selector = {};
+        if(req.query.role) selector.id_role = parseInt(req.query.role);
+        setResponse(req, res, function(){
+            CollaborateurCRUD.selectCollaborateurs(selector, function(result){
+                res.send(JSON.stringify({data: result}));
+            });
+        });
+    });
+
+
     app.post('/inserercollaborateur', function(req, res) {});
     app.post('/modifercollaborateur', function(req, res) {});
     app.post('/supcollaborateur', function(req, res) {});
@@ -37,7 +58,7 @@ module.exports = function(app) {
                 // Operation
 
                 DemandeInfoCRUD.insererDemande(data, function callback(result) {
-                    console.log("Result :" + JSON.stringify(result));
+                    //console.log("Result :" + JSON.stringify(result));
                     // Send result to the browser
                     res.send(JSON.stringify(result));
                 });
@@ -201,5 +222,18 @@ module.exports = function(app) {
         else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
     });
 
-    
+    app.get("/selectroles", function (req, res) {
+        setResponse(req, res, function(){
+            RoleCRUD.selectRoles({}, function(result){
+                res.send(JSON.stringify({data: result}));
+            });
+        });
+    });
+    app.get("/selectservices", function (req, res) {
+        setResponse(req, res, function(){
+            ServiceCRUD.selectServices({}, function(result){
+                res.send(JSON.stringify({data: result}));
+            });
+        });
+    });
 }

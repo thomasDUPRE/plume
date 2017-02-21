@@ -6,6 +6,8 @@ var Validation = require('./beans/Validation');
 var Erreur = require('./beans/Erreur');
 var Collaborateur = require('./beans/Collaborateur');
 var CollaborateurLogin = require('./beans/CollaborateurLogin');
+var ServiceCRUD = require('./ServiceCRUD');
+var RoleCRUD = require('./RoleCRUD');
 
 class CollaborateurCRUD{
     static insererCollaborateur(data, callback) {
@@ -43,11 +45,24 @@ class CollaborateurCRUD{
             //mysql callback
 
             if (!err){
-                var result = [];
-                for(var i = 0, len = vals.length; i < len; i++){
-                    result.push(new Collaborateur(vals[i].id, vals[i].nom, vals[i].prenom, vals[i].service, null, null, vals[i].telephone, vals[i].mail, vals[i].nb_jours_restants));
-                }
-                callback(result);
+                ServiceCRUD.selectServices({}, function(services){
+                    RoleCRUD.selectRoles({}, function(roles) {
+
+                        var result = [];
+                        for (var i = 0, len = vals.length; i < len; i++) {
+                            var service = services.filter(function (el){
+                                return (el.id == vals[0].id_service);
+                            });
+                            var role = roles.filter(function (el){
+                                return (el.id == vals[0].id_role);
+                            });
+
+                            result.push(new Collaborateur(vals[i].id, vals[i].nom, vals[i].prenom, service[0], role[0], undefined, vals[i].telephone, vals[i].mail, vals[i].nb_jours_restants));
+                        }
+                        callback(result);
+                    });
+
+                });
             }
             else
                 callback(new Erreur("selectCollaborateursErreur", err));
@@ -64,17 +79,30 @@ class CollaborateurCRUD{
             if (!err){
                 if(vals.length == 0){
                     result = new Erreur("MauvaisUtilisateur", "Cet utilisateur n'existe pas !");
+                    callback(result);
+                    helper.close();
                 }
                 else{
-                    result =  new CollaborateurLogin(vals[0].id, vals[0].nom, vals[0].prenom, vals[0].service, null, null, vals[0].telephone, vals[0].mail, vals[0].nb_jours_restants, vals[0].mot_de_passe);
-                }
+                    ServiceCRUD.selectServices({id:vals[0].id_service}, function(service){
+                        RoleCRUD.selectRoles({id:vals[0].id_role}, function(role){
+                            CollaborateurCRUD.adminCollaborateur({id:vals[0].id}, function(admin){
+                                console.log("admin:"+admin)
+                                result = new CollaborateurLogin(vals[0].id, vals[0].nom, vals[0].prenom, service[0], role[0], admin, vals[0].telephone, vals[0].mail, vals[0].nb_jours_restants, vals[0].mot_de_passe);
+                                callback(result);
+                                helper.close();
+                            });
+                        });
+                    });
+
+               }
             }
 
-            else
+            else {
                 result = new Erreur("selectMDPCollaborateurErreur", err);
+                callback(result);
+                helper.close();
+            }
 
-            callback(result);
-            helper.close();
 
         });
     }
@@ -92,6 +120,21 @@ class CollaborateurCRUD{
             helper.close();
         });
     }
+
+    static adminCollaborateur(selector, callback) {
+        var helper = new CRUDHelper();
+        helper.getTable('admin').load(selector, function (err, vals) {
+            //mysql callback
+            var result;
+            if (!err && vals && vals.length != 0)
+                result = true;
+            else
+                result = false;
+            callback(result);
+            helper.close();
+        });
+    }
+
 }
 
 module.exports = CollaborateurCRUD;

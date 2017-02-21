@@ -11,6 +11,12 @@ module.exports = function(app) {
         if (typeof param !== 'undefined' && param) return true;
         return false;
     }
+    function setResponse(res, callback){
+        if(typeof  req.session.profile !== 'undefined' && req.session.profile){
+            callback();
+        }
+        else res.redirect('/');
+    }
 
 
 /*** Partie Lignes de frais ***/
