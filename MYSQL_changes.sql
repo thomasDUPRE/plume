@@ -42,17 +42,9 @@ ALTER TABLE missions_collaborateurs DROP column date_mission ;
 ALTER TABLE conge ADD constraint ck_conge check (date_fin>=date_debut);
 
 -- 20/02 Thomas
-Create table notification_box(
-
-		 id int AUTO_INCREMENT,
-		 id_collaborateur int not null,
-		 constraint fk_notification primary key(id),
-		 constraint fk_id_collaborateur foreign key(id_collaborateur) references collaborateur(id)
-)ENGINE=INNODB;
-
 alter table notification drop constraint fk_notification;
-alter table notification add column id_box int not null;
-alter table notification add constraint fk_id_box foreign key(id_box) references notification_box(id);
+alter table notification add column id_collaborateur int not null;
+alter table notification add constraint fk_id_collaborateur_n foreign key(id_collaborateur) references collaborateur(id);
 alter table notification add column sujet varchar(255);
 
 insert into service (nom) values ("COMPTABILITE"), ("INFO"), ("RH");
@@ -61,7 +53,7 @@ insert into role (nom) values ("Collaborateur"), ("Chef de service"), ("Dirigean
 insert into collaborateur (nom, prenom, mail, telephone, id_service, nb_jours_restants, mot_de_passe, id_role)
 values ("dupré", "thomas", "thomas.dupre@u-psud.fr", "-654", 1, 3, "thomas", 2),
         ("es-souabni", "karim", "karim.es-souabni@u-psud.fr", "-789", 3, 14, "karim", 2);
-insert into notification_box (id_collaborateur) values (1), (2);
-insert into notification(sujet, contenu, vu, date_notification, id_box) values
-("Bienvenue sur Plume", "Nous vous souhaitons la bienvenue sur l'intranet Plume", false, NOW(), 1),
-("Bienvenue sur Plume", "Nous vous souhaitons la bienvenue sur l'intranet Plume", false, NOW(), 2);
+
+insert into notification(sujet, contenu, vu, date_notification, id_collaborateur) values
+("Bienvenue sur Plume", "Nous vous souhaitons la bienvenue sur l'intranet Plume", false, NOW(), 11),
+("Bienvenue sur Plume", "Nous vous souhaitons la bienvenue sur l'intranet Plume", false, NOW(), 12);
