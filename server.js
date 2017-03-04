@@ -1,5 +1,6 @@
 var express = require("express");
 var bodyParser = require('body-parser');
+var expressSession = require('express-session');
 
 var app     = express();
 
@@ -11,11 +12,16 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(expressSession({secret:'plumeisthebest'}));
+
 // -- Routing
 require('./routes/routes_main')(app);
 require('./routes/routes_admin')(app);
 require('./routes/routes_conge')(app);
+require('./routes/routes_mission')(app);
+require('./routes/routes_ldf')(app);
 require('./routes/routes_ndf')(app);
+require('./routes/routes_andf')(app);
 require('./routes/routes_autres')(app);
 
 

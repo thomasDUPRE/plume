@@ -44,7 +44,7 @@
                   </div>
                   <div class="x_content">
 
-                    <form class="form-horizontal form-label-left" novalidate>
+                    <form id="ajouter-collaborateur" class="form-horizontal form-label-left" novalidate>
 
                       
 
@@ -52,7 +52,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nom  <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="name" placeholder="" required="required" type="text">
+                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="nom" placeholder="" required="required" type="text">
                         </div>
                       </div>
 
@@ -67,25 +67,25 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Prenom  <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="name" placeholder="" required="required" type="text">
+                          <input id="firstname" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="prenom" placeholder="" required="required" type="text">
                         </div>
                       </div>
 
 
 
                         <div class="item form-group bad">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mail">Email <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="email" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="email" id="mail" name="mail" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                       <div class="alert">adresse email invalide</div></div>
 
                       <div class="item form-group bad">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Confirmation d'email <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mail">Confirmation d'email <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="email" id="email2" name="confirm_email" data-validate-linked="email" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="email" id="email2" name="confirm_email" data-validate-linked="mail" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                       <div class="alert">confirmation incorrecte</div></div>
 
@@ -94,23 +94,27 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">Telephone <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="tel" id="telephone" name="phone" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
+                          <input type="tel" id="telephone" name="telephone" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
 
-
+                        <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">Mot de passe <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" id="mot_de_passe" name="mot_de_passe" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
 
 
                       <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Fonction<span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Role<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                          
 
-                          <select class="form-control">
-                            <option>Ingenieur Dev</option>
-                            <option>Option 2</option>
-                            <option>Option 3</option>
+                          <select name="role" id="collaborateur-liste-role" class="form-control">
+
                           </select>
 
 
@@ -123,33 +127,20 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                          
 
-                          <select class="form-control">
-                            <option>Service RH</option>
-                            <option>Option 2</option>
-                            <option>Option 3</option>
+                          <select name="service" id="collaborateur-liste-service" class="form-control">
+
                           </select>
 
 
                         </div>
-                      </div>                      
-
-
-
-
-
-
-
-
-           
-
-
+                      </div>                     
                       <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Chef de service :   
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Admin :
                         </label>
 
                         <div class="col-md-4 col-sm-6 col-xs-12 checkbox">
                             <label>
-                              <input type="checkbox" class="js-switch" checked /> 
+                              <input type="checkbox" class="js-switch" name="isadmin" />
                             </label>
                           </div>
 
@@ -205,7 +196,33 @@
 
        
 
-   
+   <script type="text/javascript">
+   $.('#ajouter-collaborateur').submit(function(){
+       /*$.post("/login",
+               {
+                   mail: $("#input-mail").val(),
+                   mot_de_passe:$("#input-password").val()
+               },
+               function(data, status){
+                   $('#form-warning').html("");
+                   var json = JSON.parse(data);
+                   if(json.type == "MauvaisUtilisateur"){
+                       $('#form-warning').html("L'utilisateur rentré n'existe pas !");
+                   }
+                   else if(json.type == "MauvaisMotDePasse"){
+                       $('#form-warning').html("Le mot de passe rentré n'est pas le bon !");
+                   }
+                   else if(json.type == "BonMotDePasse"){
+                       window.location.href = "/";
+
+                   }
+                   else {
+                       console.log("Data: " + data + "\nStatus: " + status);
+                   }
+               });*/
+       return false;
+   });
+   </script>
    
     <script src="../vendors/validator/validator.js"></script>
     <script src="../vendors/moment/min/moment.min.js"></script>

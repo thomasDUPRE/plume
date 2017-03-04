@@ -1,0 +1,121 @@
+  <head>
+    <link href="../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+  </head>
+
+
+        <!-- page content -->
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Nouvelle mission </h3>
+              </div>
+
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    
+                   
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <form class="form-horizontal form-label-left" novalidate>
+
+                      
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nom de la mission <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="name" placeholder="" required="required" type="text">
+                        </div>
+                      </div>
+
+
+
+                      <div class="item form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Description de la mission  <span class="required">*</span>
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea id="message" required="required" class="form-control" name="message" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="200" data-parsley-minlength-message="Come on! You need to enter at least a 20 caracters long comment.." data-parsley-validation-threshold="10"></textarea>
+                          </div>
+                      </div>
+
+
+                       <div class="item form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="date_debut">Date de début 
+                          <span class="required">*</span>
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12 xdisplay_inputx form-group has-feedback">
+                              <input type="text" class="datepicker form-control has-feedback-left" id="single_cal1" placeholder="date de début" aria-describedby="inputSuccess2Status4">
+                              <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                              <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                           
+                          </div>    
+                      </div>
+
+                      <div class="item form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="date_fin">Date de fin
+                          <span class="required">*</span>
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12 xdisplay_inputx form-group has-feedback">
+                             <input type="text" class="datepicker form-control has-feedback-left" id="single_cal4" placeholder="date de fin" aria-describedby="inputSuccess2Status4">
+                             <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                              <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                           
+                          </div>    
+                      </div>
+
+                      
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                          <button type="submit" class="btn btn-primary">Cancel</button>
+                          <button id="send" type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        <!-- /page content -->
+
+       
+
+   
+   
+    <script src="../vendors/validator/validator.js"></script>
+      <!-- bootstrap-daterangepicker -->
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="../vendors/switchery/dist/switchery.min.js"></script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+
+          $('.datepicker').daterangepicker({
+          singleDatePicker: true,
+          singleClasses: "picker_4"
+        }, function(start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+      });
+
+
+        });
+    </script>
+
+	
+  </body>
+</html>
