@@ -83,7 +83,8 @@
               </div>
               <div class="profile_info">
                 <span>Bonjour,</span>
-                <h2>Thomas Duprez</h2>
+                <h2 class="profile-name"></h2>
+                <span class="profile-service"></span>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -125,8 +126,8 @@
 
 <!-- Hide si ce n'est pas admin ou CS ou… -->
 <br/><br/>
-            <h3><i class="fa fa-gears"></i>Menu Admin </h3>
-                <ul class="nav side-menu">
+            <h3 class=" admin-view"><i class="fa fa-gears"></i>Menu Admin </h3>
+                <ul class="nav side-menu admin-view">
 
 
                   <li><a><i class="fa fa-users"></i> Personnels <span class="fa fa-chevron-down"></span></a>
@@ -179,19 +180,13 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="../images/user.png" alt="">Thomas Duprez
+                    <img src="../images/user.png" alt=""><label class="profile-name"></label>
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profile</a></li>
-                    <li>
-                      <a href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a>
-                    </li>
-                    <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a href="javascript:;"> Profil</a></li>
+                                     
+                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Deconnexion</a></li>
                   </ul>
                 </li>
 
@@ -322,7 +317,7 @@
         <!-- footer content -->
         <footer>
           <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+            Plume - Intranet d'entreprise
           </div>
           <div class="clearfix"></div>
         </footer>
@@ -343,5 +338,43 @@
 
     <script src="../build/js/custom.js"></script>
 
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $('.admin-view').each(function(){
+        $( this ).hide();
+      });
+
+      function firstToUpperCase( str ) {
+        return str.substr(0, 1).toUpperCase() + str.substr(1);
+      }
+
+      $.get("/name", function(data, status){
+          var profile = JSON.parse(data);
+          $('.profile-name').each(function() {
+            $(this).html(firstToUpperCase(profile.prenom.toLowerCase()) + " " + firstToUpperCase(profile.nom.toLowerCase()));
+            //console.log(JSON.stringify(profile));
+          });
+          $('.profile-service').each(function() {
+            if(profile.role["nom"] == "Dirigeant"){
+              $(this).html("("+firstToUpperCase(profile.role["nom"].toLowerCase())+")");
+            }
+            else{
+              $(this).html("("+firstToUpperCase(profile.role["nom"].toLowerCase()) + " - " + profile.service["nom"].toUpperCase()+")");
+            }
+          });
+          if(profile.admin == true) 
+          {
+            console.log(profile.admin);
+            $('.admin-view').each(function() {
+              $(this).show();
+            });
+          }
+      });
+        //alert("Data: " + data + "\nStatus: " + status);
+    });
+  </script>
+ 
   </body>
 </html>

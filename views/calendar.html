@@ -14,8 +14,37 @@
     <script src="../vendors/iCheck/icheck.min.js"></script>
 
 	<script>
+		 var id_collabo;
+		 var id_service;
+		 var role_collabo;
+		 var nom_service;
+
+		 function render_type(type) {
+	          var tab = [];
+	         
+	          tab1 = $("#calendar").fullCalendar( 'clientEvents');
+	          
+	          for(var i=0; i<tab1.length; i++){
+	            if(tab1[i].type == type) {
+	                tab.push(tab1[i]); 
+	            }
+	          }
+	          return tab;
+	      }
+
+	      function alreadyExist(my_tab, id) {
+	          
+	        var i=0;
+	        while(my_tab[i] != null){
+	            if (my_tab[i].id == id) return true;
+	            i++;
+	        }
+	        return false;       
+	      }
 
 		 $(document).ready(function() {
+
+		  	
  		 
     		//calendar
 	    	var date = new Date(),
@@ -24,6 +53,8 @@
 	          y = date.getFullYear(),
 	          started,
 	          categoryClass;
+
+	        //hide filter section
 
 	         var calendar = $('#calendar').fullCalendar({
 	          locale: 'fr',
@@ -96,6 +127,28 @@
 	          editable: true,
 	          events: function(start, end, timezone, callback) {
 
+	          			    $.ajax({
+		                      url :"/name",
+		                      type:'GET',
+		                      dataType: 'json',
+		                      data: {},
+
+		                      success: function(doc){
+		                      	$(doc).each(function() {
+		                        	id_collabo = $(this)[0]["id"];
+		                        	role_collabo = $(this)[0]["role"]["nom"];
+		                        	id_service = $(this)[0]["service"]["id"];
+		                        	nom_service = $(this)[0]["service"]["nom"];
+		                    	})
+
+	                    		if(nom_service != "RH" && role_collabo != "Dirigeant"){
+        							$('#filtre_services').hide();
+        						}
+		                      }
+		                      
+				            })
+ 
+
 					        $.ajax({
 					            url: '/selectConge',
 					            type: 'GET',
@@ -104,7 +157,7 @@
 					            success: function(doc) {
 
 					                var events = [];
-
+					                
 					                $(doc).each(function() {
 							             switch($(this)[0]["id_etat_conge"]){
 							             	//Brouillon
@@ -148,17 +201,20 @@
 		                                 	$conge_paye="Congé sans solde";
 		                                 }
 
-					                    events.push({
-					                       id: $(this)[0]["id"],
-                                           title: $(this)[0]["motif"],
-                                           start: $(this)[0]["dateDebut"],
-                                           end: $(this)[0]["dateFin"],
-                                           dateDemande: $(this)[0]["date_demande"],
-                                           type: $conge_paye,
-                                           color: $couleur,
-                                           etat: $etat,
-                                           collaborateur: $(this)[0]["id_demandeur"],
-					                    });
+		                                 //On affiche tous nos congés + congés validés seulement des autres collabos
+		                                if(($(this)[0]["id_demandeur"] == id_collabo) || $etat==6 || role_collabo=="Chef de service" || nom_service=="RH"){
+						                    events.push({
+						                       id: $(this)[0]["id"],
+	                                           title: $(this)[0]["motif"],
+	                                           start: $(this)[0]["dateDebut"],
+	                                           end: $(this)[0]["dateFin"],
+	                                           dateDemande: $(this)[0]["date_demande"],
+	                                           type: $conge_paye,
+	                                           color: $couleur,
+	                                           etat: $etat,
+	                                           collaborateur: $(this)[0]["id_demandeur"],
+						                    });
+					                	}
 					                });
 					                callback(events);
 
@@ -168,26 +224,53 @@
 					    },
 		      timeFormat: 'H:mm',
 		      eventRender: function (event, element) {
-
+		      			 var demande = event.dateDemande.split("T")[0];
                          element.popover({
 	                        trigger : 'hover',
 	                        title: event.title,
 	                        placement:'top',
 	                        html:true,
-	                        content: "Etat: "+event.etat+", id: "+event.id+", Debut: "+event.start.toISOString()+", Fin: "+event.end.toISOString()+", Demandé le: "+event.dateDemande,
+	                        content: "Etat: "+event.etat+", id: "+event.id+", Debut: "+event.start.toISOString()+", Fin: "+event.end.toISOString()+", Demandé le: "+demande+", Demandeur: "+event.collaborateur,
                     	});   
                }
 
 	         }); 
+			
+			//Affichage du volet de filtre personnalise
+	         if(role_collabo=="RH" || role_collabo=="Dirigeant"){
+		         $.ajax({
+		                  url :"/selectservices",
+		                  type:'GET',
+		                  dataType: 'json',
+		                  data: {},
 
+		                  success: function(doc){
+		                  	console.log("Entre")
+		                  	$(doc["data"]).each(function() {
+		                    	var nomService = $(this)[0]["nom"];
+		                    	if(nomService != nom_service){
+			                    	//console.log(nom_service)
+		                    		var id_checkbox="checkbox"+nomService;
+		                    		console.log(id_checkbox);
+		                    		$('.filtre_services').append('<input type="checkbox" id='+id_checkbox+' class="flat" checked="checked"/> ' + nomService + '<br> <br>');
+			                    }
+		                	})
+
+		                	if(role_collabo != "Dirigeant"){
+			                    	console.log("checkboxDirigeant");
+			                    	$('.filtre_services').append('<input type="checkbox" id="checkboxDirigeant" class="flat" checked="checked"/> ' + "Dirigeant" + '<br> <br>');
+			                }
+
+		                  }                      
+				});
+	 		}
 
 	         //icheck
-
 	         if ($("input.flat.mine")[0]) 
 	 		 {
 		        $(document).ready(function () {
 		            $('input.flat.mine').iCheck({
-		                checkboxClass: 'icheckbox_flat-blue',
+		                checkboxClass: 'icheckbox_flat',
 		                radioClass: 'iradio_flat-blue'
 		            });
 		        });
@@ -223,12 +306,19 @@
                       <!-- Collect the nav links, forms, and other content for toggling -->
                       <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <ul class="nav navbar-nav navbar-center">
-                        <div id="menu_filtre" align="center">
-	                         <input type="checkbox"  id="hobby2"  class="flat mine" checked="checked" /> Mes congés
+                        <div class="menu_filtre">
+	                         <input type="checkbox"  id="checkboxMesConges"  class="flat" checked="checked" /> Mes congés
 	                         <br> <br>
 
-	                         <input type="checkbox" id="hobby2"  class="flat other" /> Collaborateur                      <br> <br>
-	                                                   
+	                         <input type="checkbox" id="checkboxMonService"  class="flat" checked="checked" /> Mon service  
+	                         <br> <br>
+
+	                          <div class="filtre_services">
+								<!--<input type="checkbox" id="checkbox3"  class="flat" /> RH                <br> <br>
+								<input type="checkbox" id="checkbox4"  class="flat" /> Informatique               <br> <br>
+								-->	                          	
+	                          </div>
+
 	                            <button id="btnreset_filtre" class="btn btn-default btn-block" value="Reset" type="reset" style="margin-bottom:25px">Réinitialiser</button>
                         </div><!-- /.navbar-collapse --> 
                         </ul>
