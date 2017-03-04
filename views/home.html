@@ -291,57 +291,9 @@
                 <li role="presentation" class="dropdown">
                   <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                     <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">6</span>
+                    <span class="badge bg-green" id="number-notifications">0</span>
                   </a>
                   <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                    <li>
-                      <a>
-                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
                     <li>
                       <div class="text-center">
                         <a>
@@ -440,27 +392,69 @@
   <script type="text/javascript">
 
     $(document).ready(function () {
-      $('.admin-view').each(function(){
-        $( this ).hide();
+      $('.admin-view').each(function () {
+        $(this).hide();
       })
-      function firstToUpperCase( str ) {
+      function firstToUpperCase(str) {
         return str.substr(0, 1).toUpperCase() + str.substr(1);
       }
 
-      $.get("/name", function(data, status){
-          var profile = JSON.parse(data);
-          $('.profile-name').each(function() {
-            $(this).html(firstToUpperCase(profile.prenom.toLowerCase()) + " " + firstToUpperCase(profile.nom.toLowerCase()));
-            //console.log(JSON.stringify(profile));
+      $.get("/name", function (data, status) {
+        var profile = JSON.parse(data);
+        $('.profile-name').each(function () {
+          $(this).html(firstToUpperCase(profile.prenom.toLowerCase()) + " " + firstToUpperCase(profile.nom.toLowerCase()));
+          //console.log(JSON.stringify(profile));
+        });
+        if (profile.admin == true) {
+          $('.admin-view').each(function () {
+            $(this).show();
           });
-          if(profile.admin == true) {
-            $('.admin-view').each(function() {
-              $(this).show();
-            });
-          }
+        }
       });
-        //alert("Data: " + data + "\nStatus: " + status);
+      //alert("Data: " + data + "\nStatus: " + status);
+      // Notification
+      refreshNotifications();
+      window.setInterval(function () {
+        refreshNotifications();
+      }, 30000);
+      var notificationsID = [];
+
+      function seeNotification(id) {
+        // modifie notifacation en vu !
+      }
+
+      function goNotification(id) {
+        // page notification
+      }
+
+      function refreshNotifications() {
+        $.get("/selectnotifications?vu=0", function (data) {
+          var jsonNotifications = JSON.parse(data).data;
+          console.log(data);
+          var nbNouvelleNotif = jsonNotifications.length;
+          if (nbNouvelleNotif == 0)  $('#number-notifications').removeClass('bg-green');
+          else $('#number-notifications').addClass('bg-green');
+          $('#number-notifications').html(nbNouvelleNotif);
+          jsonNotifications.forEach(function (notification) {
+            if (notificationsID.indexOf(notification.id) == -1) {
+              notificationsID.push(notification.id);
+              $('#menu1').prepend(' <li>' +
+                      '<a onclick="goNotification(' + notification.id + ')" onhover="seeNotification(' + notification.id + ')">' +
+                      '<span class="image"><img src="../images/user.png" alt="Profile Image" /></span>' +
+                      '<span>' +
+                      '<span>Plume</span>' +
+                      '<span class="time">3 mins ago</span>' +
+                      ' </span>' +
+                      '<span class="message">' + notification.sujet + '</span>' +
+                      '</a>' +
+                      '</li>');
+            }
+          });
+        });
+      }
+
     });
+
   </script>
   </body>
 </html>

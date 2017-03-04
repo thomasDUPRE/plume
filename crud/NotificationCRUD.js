@@ -13,7 +13,7 @@ class NotificationCRUD{
             //mysql callback
             var result;
             if (!err)
-                result = new Validation("insererNotificationValidation", "Le role a bien été créé");
+                result = new Validation("insererNotificationValidation", "La/Les notification(s) a/ont bien été créé");
             else
                 result = new Erreur("insererNotificationErreur", err);
             callback(result);
@@ -26,7 +26,7 @@ class NotificationCRUD{
             //mysql callback
             var result;
             if (!err)
-                result = new Validation("modifNotificationValidation", "Le role a bien été modifié");
+                result = new Validation("modifNotificationValidation", "La notification a bien été modifié");
             else
                 result = new Erreur("modifNotificationErreur", JSON.stringify(err));
             callback(result);
@@ -59,7 +59,7 @@ class NotificationCRUD{
             //mysql callback
             var result;
             if (!err)
-                result = new Validation("supprimerNotificationValidation", "Le role a bien été supprimé");
+                result = new Validation("supprimerNotificationValidation", "La notification a bien été supprimé");
             else
                 result = new Erreur("supprimerNotificationErreur", err);
             callback(result);
