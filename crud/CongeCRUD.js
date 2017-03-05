@@ -29,7 +29,6 @@ class CongeCRUD {
                 	  }
                 test=JSON.parse(JSON.stringify(result));
                 callback(test);
-
             }
             else
                 callback(new Erreur("RecupMesCongeErreur", err));
@@ -37,8 +36,11 @@ class CongeCRUD {
 
         });
     }
+
+    
         static selectCongeService(data, callback){
-        var helper = new CRUDHelper();
+        var conge = new CongeCRUD();
+        
         // session get my id
                     var selector = {};
   var resultTmp = [];
@@ -51,11 +53,12 @@ class CongeCRUD {
                     result.push(new Conge(vals[i].id, vals[i].date_demande, vals[i].date_debut, vals[i].date_fin, vals[i].est_paye, vals[i].id_etat_conge, vals[i].part_matin, vals[i].revient_matin, vals[i].motif,vals[i].id_demandeur));
                       }
                     // la j'ai les conges , je veux les recuperer sans faire de callback dans le load pour faire la meme chose pour les collaborateurs pour faire apres le tri avec l'id de service que walid me passe 
-  callback (result);
 
             }
             else
                 callback(new Erreur("RecupMesCongeErreur", err));
+
+  callback (result);
 
         });
 

@@ -87,6 +87,82 @@ app.get('/deleteConge', function (req, res) {
        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
 
     });
+
+
+
+
+app.get('/selectCongeServ', function (req, res) {
+        // if the request exists
+        	var Conge = require('../crud/beans/Conge');
+
+          var tmpCollaborateurs =[];
+			var tmpConges =[];
+        var CongeCRUD = require('../crud/CongeCRUD');
+        var CollaborateurCRUD = require('../crud/CollaborateurCRUD');
+        if (typeof req.query !== 'undefined' && req.query) {
+            var selector = {};
+            if(doesParamExist(req.query.id_service)) selector.id_service = parseInt(req.query.id_service);
+            CollaborateurCRUD.selectCollaborateurs(selector,function (result){
+            	var compteur=result.length;
+            	for(var i = 0, len = result.length; i < len; i++){
+            		if (doesParamExist(req.query.bool) && req.query.bool==1) 
+{
+            	CongeCRUD.selectConge({id_demandeur:result[i].id },function (result2){
+            	for(var j = 0, len2 = result2.length; j < len2; j++){
+				tmpConges.push(new Conge(result2[j].id, result2[j].date_demande, result2[j].date_debut, result2[j].date_fin, result2[j].est_paye, result2[j].id_etat_conge, result2[j].part_matin, result2[j].revient_matin, result2[j].motif,result2[j].id_demandeur));          
+  				
+  				}
+            	compteur--;
+            	if(compteur<=0){
+            		res.send(JSON.stringify(tmpConges));
+            	}
+            });
+}
+
+
+else if (doesParamExist(req.query.bool) && req.query.bool==0) 
+  				{
+  					compteur=0;
+  					for (var t = 0, len = result.length; t < len; t++){
+  						if(parseInt(result[t].role.id)==4)
+  							compteur++;
+  					}
+  					         		console.log(parseInt(result[i].role.id)==4);
+  				  					if(parseInt(result[i].role.id)==4)
+{
+		CongeCRUD.selectConge({id_demandeur:result[i].id },function (result2){
+            	for(var j = 0, len2 = result2.length; j < len2; j++){
+				tmpConges.push(new Conge(result2[j].id, result2[j].date_demande, result2[j].date_debut, result2[j].date_fin, result2[j].est_paye, result2[j].id_etat_conge, result2[j].part_matin, result2[j].revient_matin, result2[j].motif,result2[j].id_demandeur));          
+  				
+  				}
+            	compteur--;
+            	if(compteur<=0){
+            		res.send(JSON.stringify(tmpConges));
+            	}
+            });
+
+  				}
+  				
+  			}
+            }
+          	});
+        }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
+
+    });
+        
+
+
+
+
+
+
+
+
+
+
+
 app.get('/selectCongeService', function (req, res) {
 	var Conge = require('../crud/beans/Conge');
         // if the request exists
@@ -94,6 +170,7 @@ app.get('/selectCongeService', function (req, res) {
             var selector = {};
             var tmpCollaborateurs =[];
 			var tmpConges =[];
+			var table=[];
             if(doesParamExist(req.query.id)) selector.id_demandeur = parseInt(req.query.id);
             var CongeCRUD = require('../crud/CongeCRUD');
             var CollaborateurCRUD = require('../crud/CollaborateurCRUD');
@@ -102,16 +179,17 @@ app.get('/selectCongeService', function (req, res) {
             	for(var i = 0, len = result.length; i < len; i++){
                     tmpConges.push(new Conge(result[i].id, result[i].date_demande, result[i].date_debut, result[i].date_fin, result[i].est_paye, result[i].id_etat_conge, result[i].part_matin, result[i].revient_matin, result[i].motif,result[i].id_demandeur));
                 }
+                              table=(JSON.stringify(tmpConges)).slice(0);
+
+res.send(table);
 
             })
-
                 CollaborateurCRUD.selectCollaborateurs({}, function callback(result) {
                 // Send result to the browser
               tmpCollaborateurs=result.slice(0);
             })
                 console.log("Result :" + JSON.stringify(tmpConges));
 
-              res.send(JSON.stringify(tmpConges));
         }
         // Display Error
         else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
