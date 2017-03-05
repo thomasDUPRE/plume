@@ -18,6 +18,7 @@ class CongeCRUD {
     }
         static selectConge(data, callback){
         var helper = new CRUDHelper();
+        var test=[];
         // session get my id
         helper.getTable('conge').load(data, function (err, vals) {
             //mysql callback
@@ -26,31 +27,46 @@ class CongeCRUD {
                 for(var i = 0, len = vals.length; i < len; i++){
                     result.push(new Conge(vals[i].id, vals[i].date_demande, vals[i].date_debut, vals[i].date_fin, vals[i].est_paye, vals[i].id_etat_conge, vals[i].part_matin, vals[i].revient_matin, vals[i].motif,vals[i].id_demandeur));
                 	  }
-                callback(result);
+                test=JSON.parse(JSON.stringify(result));
+                callback(test);
             }
             else
                 callback(new Erreur("RecupMesCongeErreur", err));
+
 
         });
     }
+
+    
         static selectCongeService(data, callback){
-        var helper = new CRUDHelper();
+        var conge = new CongeCRUD();
+        
         // session get my id
-        helper.getTable('conge').load(data, function (err, vals) {
+                    var selector = {};
+  var resultTmp = [];
+    var result = [];
+        helper.getTable('conge').load({}, function (err, vals) {
             //mysql callback
             if (!err){
-                var result = [];
+             
                 for(var i = 0, len = vals.length; i < len; i++){
                     result.push(new Conge(vals[i].id, vals[i].date_demande, vals[i].date_debut, vals[i].date_fin, vals[i].est_paye, vals[i].id_etat_conge, vals[i].part_matin, vals[i].revient_matin, vals[i].motif,vals[i].id_demandeur));
                       }
-              
+                    // la j'ai les conges , je veux les recuperer sans faire de callback dans le load pour faire la meme chose pour les collaborateurs pour faire apres le tri avec l'id de service que walid me passe 
+
             }
             else
                 callback(new Erreur("RecupMesCongeErreur", err));
 
+  callback (result);
+
         });
 
- /*helper.getTable('collaborateur').load({}}, function (err, vals) {
+
+
+       // callback(resultTmp);
+/*
+ helper.getTable('collaborateur').load({}, function (err, vals) {
             //mysql callback
             if (!err){
                 var resultBis = [];
@@ -65,11 +81,11 @@ class CongeCRUD {
                 var resultFinal = [];
 
 for(var i = 0, len = result.length; i < len; i++){
+    for(var j = 0, len = resultBis.length; j < len; j++){
     if(result[i].id_demandeur)
                     resultFinal.push(result[i]);
-                      }*/
-
-          callback(result);
+                      }
+                  }*/
     }
 
     static selectMesCongeATraiter(data, callback){
@@ -92,17 +108,19 @@ for(var i = 0, len = result.length; i < len; i++){
     }
     static selectUnConge(data, callback){
         var helper = new CRUDHelper();
+        var test;
         helper.getTable('conge').select(data, function (err, vals) {
             //mysql callback
 
             if (!err){
                 var result = new Conge(vals[i].id, vals[i].date_demande, vals[i].date_debut, vals[i].date_fin, vals[i].est_paye, vals[i].id_etat_conge, vals[i].part_matin, vals[i].revient_matin, vals[i].motif,vals[i].id_demandeur);
-                callback(result);
+                test=clone(result);
             }
             else
                 callback(new Erreur("recupererUnCongeErreur", err));
 
         });
+        callback(test);
     }
 
     static modifierConge(selector, data, callback) {
@@ -118,9 +136,9 @@ for(var i = 0, len = result.length; i < len; i++){
         });
     }
 
-    static supprimerConge(data, callback) {
+    static deleteConge(data, callback) {
         var helper = new CRUDHelper();
-        helper.getTable('conge').delete(data, function (err) {
+        helper.getTable('conge').destroy(data, function (err) {
             //mysql callback
             var result;
             if (!err)

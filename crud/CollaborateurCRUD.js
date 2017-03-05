@@ -51,10 +51,10 @@ class CollaborateurCRUD{
                         var result = [];
                         for (var i = 0, len = vals.length; i < len; i++) {
                             var service = services.filter(function (el){
-                                return (el.id == vals[0].id_service);
+                                return (el.id == vals[i].id_service);
                             });
                             var role = roles.filter(function (el){
-                                return (el.id == vals[0].id_role);
+                                return (el.id == vals[i].id_role);
                             });
 
                             result.push(new Collaborateur(vals[i].id, vals[i].nom, vals[i].prenom, service[0], role[0], undefined, vals[i].telephone, vals[i].mail, vals[i].nb_jours_restants));
