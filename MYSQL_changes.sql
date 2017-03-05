@@ -29,8 +29,7 @@ Create table notification(
 		 contenu text not null,
 		 date_notification datetime not NULL ,
 		 vu boolean NOT NULL,
-		 constraint pk_notification primary key(id),
-		 constraint fk_notification foreign key(id) references collaborateur(id) on delete cascade
+		 constraint pk_notification primary key(id)
 )ENGINE=INNODB;
 
 ALTER table conge Add column motif varchar(50) NOT NULL;
@@ -42,7 +41,7 @@ ALTER TABLE missions_collaborateurs DROP column date_mission ;
 ALTER TABLE conge ADD constraint ck_conge check (date_fin>=date_debut);
 
 -- 20/02 Thomas
-alter table notification drop constraint fk_notification;
+alter table notification drop foreign key fk_notification;
 alter table notification add column id_collaborateur int not null;
 alter table notification add constraint fk_id_collaborateur_n foreign key(id_collaborateur) references collaborateur(id);
 alter table notification add column sujet varchar(255);

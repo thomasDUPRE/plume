@@ -22,8 +22,6 @@
     <link href="../build/css/custom.min.css" rel="stylesheet">
   </head>
 
-
-
         <!-- page content -->
           <div class="">
             <div class="page-title">
@@ -35,10 +33,10 @@
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                              <button class="btn btn-default" type="button">Go!</button>
-                          </span>
+                     <h4 style="display:inline"> nombre de jours restants : </h4>
+                      <span class="freeDays">
+                              *
+                      </span>
                   </div>
                 </div>
               </div>
@@ -56,10 +54,8 @@
                   <div class="x_content">
 
                     <form class="form-horizontal form-label-left" novalidate>
-
-                      
-
-                      <div class="item form-group">
+               
+                      <div class="item form-group ">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Motif du congé <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -67,76 +63,71 @@
                         </div>
                       </div>
 
-
-
-
-                      <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Durée du congé   <span class="required">*</span>
-                        </label>
-                         <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="input-prepend input-group">
-                                  <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                  <input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="01/01/2016 - 01/25/2016" />
-                                </div>
-                                </div>
+                         <div class="item form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="date_debut">Date de début 
+                          <span class="required">*</span>
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3 xdisplay_inputx form-group has-feedback">
+                              <input type="text" class="datepicker form-control has-feedback-left" id="single_cal1" placeholder="date de début" aria-describedby="inputSuccess2Status4">
+                              <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                              <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                           
+                          </div>  
+                           <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3 xdisplay_inputx form-group has-feedback">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12 col-lg-7
+                              " for="name">    Depart au matin  :   
+                               </label>
+ 
+                              <div class="col-md-6 col-sm-6 col-xs-12   col-lg-1 checkbox">
+                                <label>
+                                  <input type="checkbox" name ="departMatin"class="js-switch" checked /> 
+                                </label>
+                              </div>
+                           
+                          </div>   
                       </div>
 
-
                       <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Justificatif   
-                        </label>
-
-                        <div class="col-md-6 col-sm-6 col-xs-12 checkbox">
-                            <label>
-                              <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage">
-                            </label>
-                          </div>
-
-                        </div>
-
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="date_fin">Date de fin
+                          <span class="required">*</span>
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3 xdisplay_inputx form-group has-feedback">
+                             <input type="text" class="datepicker form-control has-feedback-left" id="single_cal4" placeholder="date de fin" aria-describedby="inputSuccess2Status4">
+                             <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                              <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                           
+                          </div>  
+                          <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3 xdisplay_inputx form-group has-feedback">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12 col-lg-7
+                              " for="name">    Retour au soir :   
+                               </label>
+ 
+                              <div class="col-md-6 col-sm-6 col-xs-12   col-lg-1 checkbox">
+                                <label>
+                                  <input type="checkbox" name ="departMatin"class="js-switch" checked /> 
+                                </label>
+                              </div>
+                           
+                          </div>   
+                      </div>
 
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Congé sans solde  :   
                         </label>
 
-
                         <div class="col-md-6 col-sm-6 col-xs-12 checkbox">
                             <label>
-                              <input type="checkbox" class="js-switch" checked /> 
+                              <input type="checkbox" name ="sansSolde"class="js-switch" checked /> 
                             </label>
                           </div>
 
-                        </div>
-
-
-
-
-
-
-          
-
-
-
-
-
-
-                    
-                
-                      
-
-
-                 
-               
-
-
-
-
+                      </div>
 
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
-                          <button type="submit" class="btn btn-primary">Cancel</button>
-                          <button id="send" type="submit" class="btn btn-success">Submit</button>
+                          <button type="submit" class="btn btn-primary">Annuler</button>
+                          <button id="send" type="submit" class="btn btn-success">Soumettre</button>
                         </div>
                       </div>
                     </form>
@@ -150,23 +141,36 @@
 
        
 
-
-
-
     <!-- validator -->
     <script src="../vendors/validator/validator.js"></script>
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
-
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-
     <script src="../vendors/dropzone/dist/min/dropzone.min.js"></script>
-
     <script src="../vendors/switchery/dist/switchery.min.js"></script>
 
 
+    <script type="text/javascript">
 
+        $(document).ready(function(){
 
-	
+          $('.datepicker').daterangepicker({
+          singleDatePicker: true,
+          singleClasses: "picker_4"
+        }, function(start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+
+      });
+      if ($(".js-switch")[0]) {
+        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+        elems.forEach(function (html) {
+            var switchery = new Switchery(html, {
+                color: '#26B99A'
+            });
+        });
+      }
+
+        });
+    </script>
   </body>
 </html>
