@@ -20,6 +20,66 @@
 		 var nom_service;
 		 var tab_events = [];
 
+		 //Recupere le service d'un collaborateur au format string
+		 function getService(id_collab){
+		 	var return_value;
+
+		 	$.ajax({
+	              url :"/selectCollaborateurs",
+	              type:'GET',
+	              dataType: 'json',
+	              data: {id: id_collab},
+	              async: false,
+
+	              success: function(doc){
+	              	return_value = doc["data"][0]["service"]["nom"];
+	              }
+		 	});
+		 	return return_value;
+		 }
+
+		 //Recupere le nom d'un colaborateur
+		 function getName(id_collab){
+		 	var return_value;
+
+		 	$.ajax({
+	              url :"/selectCollaborateurs",
+	              type:'GET',
+	              dataType: 'json',
+	              data: {id: id_collab},
+	              async: false,
+
+	              success: function(doc){
+	              	return_value = doc["data"][0]["prenom"];
+	              	return_value = return_value + " " + doc["data"][0]["nom"];
+	              }
+		 	});
+		 	return return_value;
+		 }
+
+		 function isChefDeService(id_collab){
+		 	var return_value;
+
+		 	$.ajax({
+	              url :"/selectCollaborateurs",
+	              type:'GET',
+	              dataType: 'json',
+	              data: {id: id_collab},
+	              async: false,
+
+	              success: function(doc){
+	              	return_value = doc["data"][0]["role"]["nom"];
+	              	if(return_value=="Chef de service"){
+	              		return_value=true;
+	              	}
+	              	else{
+	              		return_value = false;
+	              	}
+	              }
+		 	});
+		 	return return_value;
+		 }
+
 		 function render_type(type) {
 	          var tab = [];
 	          console.log("render_type");
@@ -27,21 +87,11 @@
 	          tab1 = $("#calendar").fullCalendar( 'clientEvents');
 	          console.log(tab1);
 	          for(var i=0; i<tab1.length; i++){
-	            if(tab1[i].type == type) {
+	            if( ((tab1[i].service == type) && type!="MesConges" && type!="MonService") || (type=="MesConges" && tab1[i].collaborateur==id_collabo) || (type=="MonService" && tab1[i].collaborateur!=id_collabo) ) {
 	                tab.push(tab1[i]); 
 	            }
 	          }
 	          return tab;
-	      }
-
-	      function alreadyExist(my_tab, id) {
-	          
-	        var i=0;
-	        while(my_tab[i] != null){
-	            if (my_tab[i].id == id) return true;
-	            i++;
-	        }
-	        return false;       
 	      }
 
 		 $(document).ready(function() {
@@ -67,8 +117,10 @@
 	              	$(doc).each(function() {
 	                	id_collabo = $(this)[0]["id"];
 	                	role_collabo = $(this)[0]["role"]["nom"];
-	                	id_service = $(this)[0]["service"]["id"];
-	                	nom_service = $(this)[0]["service"]["nom"];
+	                	if($(this)[0]["service"] != null){
+	                		id_service = $(this)[0]["service"]["id"];
+	                		nom_service = $(this)[0]["service"]["nom"];
+	                	}
 	            	})
 
 	        		if(nom_service != "RH" && role_collabo != "Dirigeant"){
@@ -174,12 +226,12 @@
 	          },
 	          editable: true,
 	          events: function(start, end, timezone, callback) {
-	          				//Reinitialisation
-		          			tab_checkbox= $("#filtre input[type='checkbox']");
+	          				tab_checkbox= $("#filtre input[type='checkbox']");
 				            tab_checkbox.each(function(index,element) {
 				                element.checked = true ;
 				            });
 				            tab_events.splice(0);
+				            $('#calendar').fullCalendar('removeEvents');
 
 					        $.ajax({
 					            url: '/selectConge',
@@ -232,9 +284,10 @@
 		                                 else{
 		                                 	$conge_paye="Congé sans solde";
 		                                 }
-
+		                                 service_collabo=getService($(this)[0]["id_demandeur"]);
 		                                 //On affiche tous nos congés + congés validés seulement des autres collabos
-		                                if(($(this)[0]["id_demandeur"] == id_collabo) || $etat==6 || role_collabo=="Chef de service" || nom_service=="RH"){
+		                                if(role_collabo=="Dirigeant" || nom_service=="RH" || ($(this)[0]["id_demandeur"] == id_collabo) || ((service_collabo==nom_service) && $etat=="Valide_RH" && isChefDeService($(this)[0]["id_demandeur"]) == false) || (isChefDeService(id_collabo)==true &&  (service_collabo==nom_service))){
+
 						                    events.push({
 						                       id: $(this)[0]["id"],
 	                                           title: $(this)[0]["motif"],
@@ -245,6 +298,8 @@
 	                                           color: $couleur,
 	                                           etat: $etat,
 	                                           collaborateur: $(this)[0]["id_demandeur"],
+	                                           service: service_collabo,
+	                                           collaborateurName: getName($(this)[0]["id_demandeur"]),
 	                                         
 						                    });
 					                	}
@@ -261,9 +316,9 @@
                          element.popover({
 	                        trigger : 'hover',
 	                        title: event.title,
-	                        placement:'top',
+	                        placement:'bottom',
 	                        html:true,
-	                        content: "Etat: "+event.etat+", id: "+event.id+", Debut: "+event.start.toISOString()+", Fin: "+event.end.toISOString()+", Demandé le: "+demande+", Demandeur: "+event.collaborateur,
+	                        content: "Etat: "+event.etat+", id: "+event.id+", Debut: "+event.start.toISOString()+", Fin: "+event.end.toISOString()+", Demandé le: "+demande+", Demandeur: "+event.collaborateurName,
                     	});   
                }
 
@@ -281,13 +336,12 @@
 		         		mon_type="MesConges";
 		         		break;
 		         	case "checkboxMonService" :
-		         		mon_type=nom_service;
+		         		mon_type="MonService";
 		         		break;
 		         	default:
 		         		mon_type=attr.substring(8);
 		         		break;
 		         }
-		         console.log(mon_type);
 			}
 	         	        
 	         tab_checkbox.each(function(index,element) {
@@ -306,9 +360,12 @@
 	                    
 	                    for(var i=0;i<tab_events.length; i++){
 	                       
-	                        if(tab_events[i].type == mon_type){
+	                        //if(tab_events[i].service == mon_type){
 	                        $('#calendar').fullCalendar('removeEvents' , tab_events[i].id);
-	                        }
+	                        /*}
+	                        else{
+	                        	console.log("non");
+	                        }*/
 	                    }
 	                    return;
 	                }
@@ -319,16 +376,19 @@
 	                    
 	                    for(var i=0;tab_events[i]!=null;i++){
 	                        
-	                        if (tab_events[i].type == mon_type){
+	                        if (((tab_events[i].service == mon_type) && mon_type!="MesConges" && mon_type!="MonService") || (mon_type=="MesConges" && tab_events[i].collaborateur==id_collabo) || (mon_type=="MonService" && tab_events[i].collaborateur!=id_collabo)){
 	                          var tmp = {
 	                               id: tab_events[i].id,
 	                               title: tab_events[i].title,
 	                               start: tab_events[i].start,
 	                               end: tab_events[i].end,
+	                               dateDemande: tab_events[i].dateDemande,
 	                               type: tab_events[i].type,
 	                               color: tab_events[i].color,
-	                               responsable: tab_events[i].responsable,
-	                               description: tab_events[i].description,
+	                               etat: tab_events[i].etat,
+	                               collaborateur: tab_events[i].collaborateur,
+	                               service: tab_events[i].service,
+	                               collaborateurName: tab_events[i].collaborateurName,
 	                           }
 	                           
 	                           $('#calendar').fullCalendar( 'renderEvent', tmp, true);
@@ -347,6 +407,46 @@
 	
 	</script>
 
+	<style type='text/css'>
+	  .my-legend .legend-title {
+	    text-align: left;
+	    margin-bottom: 5px;
+	    font-weight: bold;
+	    font-size: 90%;
+	    }
+	  .my-legend .legend-scale ul {
+	    margin: 0;
+	    margin-bottom: 5px;
+	    padding: 0;
+	    float: left;
+	    list-style: none;
+	    }
+	  .my-legend .legend-scale ul li {
+	    font-size: 80%;
+	    list-style: none;
+	    margin-left: 0;
+	    line-height: 18px;
+	    margin-bottom: 2px;
+	    }
+	  .my-legend ul.legend-labels li span {
+	    display: block;
+	    float: left;
+	    height: 16px;
+	    width: 30px;
+	    margin-right: 5px;
+	    margin-left: 0;
+	    border: 1px solid #999;
+	    }
+	  .my-legend .legend-source {
+	    font-size: 70%;
+	    color: #999;
+	    clear: both;
+	    }
+	  .my-legend a {
+	    color: #777;
+	    }
+	</style>
+
 
 	<div class="col-md-10">
 	<div id="calendar"></div>
@@ -362,18 +462,30 @@
                     <div id="filterCalendar"> 
                       <!-- Collect the nav links, forms, and other content for toggling -->
                       <div class="collapse navbar-collapse navbar-ex1-collapse">
-                        <ul class="nav navbar-nav navbar-center">
-                        <div class="menu_filtre" id="filtre">
-	                         <input type="checkbox"  id="checkboxMesConges"  class="flat" checked="checked" /> Mes congés
+                        <ul class="nav navbar-nav navbar-center" >
+                        <div class="menu_filtre " id="filtre" style="width: 100px"; >
+	                         <input type="checkbox"  id="checkboxMesConges"  class="flat" checked="checked"/> Mes congés
 	                         <br> <br>
 
-	                         <input type="checkbox" id="checkboxMonService"  class="flat" checked="checked" /> Mon service  
+	                         <input type="checkbox" id="checkboxMonService"  class="flat" checked="checked"/> Mon service  
 	                         <br> <br>
 
 	                          <div class="filtre_services">                          	
 	                          </div>
+	                            <div class='my-legend'>
 
-	                            <button id="btnreset_filtre" class="btn btn-default btn-block" value="Reset" type="reset" style="margin-bottom:25px">Réinitialiser</button>
+									<div class='legend-title'>Légende</div> <br>
+									<div class='legend-scale'>
+									  <ul class='legend-labels'>
+									    <li><span style='background:#999999;'></span>Brouillon</li>
+									    <li><span style='background:#5bc0de;'></span>En cours</li>
+									    <li><span style='background:#d9534f;'></span>Refusé</li>
+									    <li><span style='background:#5cb85c;'></span>Validé</li>
+									  </ul>
+									</div>
+
+								</div>
+
                         </div><!-- /.navbar-collapse --> 
                         </ul>
                       </div>
