@@ -18,12 +18,14 @@
 		 var id_service;
 		 var role_collabo;
 		 var nom_service;
+		 var tab_events = [];
 
 		 function render_type(type) {
 	          var tab = [];
+	          console.log("render_type");
 	         
 	          tab1 = $("#calendar").fullCalendar( 'clientEvents');
-	          
+	          console.log(tab1);
 	          for(var i=0; i<tab1.length; i++){
 	            if(tab1[i].type == type) {
 	                tab.push(tab1[i]); 
@@ -45,8 +47,8 @@
 		 $(document).ready(function() {
 
 		  	
- 		 
-    		//calendar
+			 
+			//calendar
 	    	var date = new Date(),
 	          d = date.getDate(),
 	          m = date.getMonth(),
@@ -54,7 +56,53 @@
 	          started,
 	          categoryClass;
 
-	        //hide filter section
+	          $.ajax({
+	              url :"/name",
+	              type:'GET',
+	              dataType: 'json',
+	              data: {},
+
+	              success: function(doc){
+
+	              	$(doc).each(function() {
+	                	id_collabo = $(this)[0]["id"];
+	                	role_collabo = $(this)[0]["role"]["nom"];
+	                	id_service = $(this)[0]["service"]["id"];
+	                	nom_service = $(this)[0]["service"]["nom"];
+	            	})
+
+	        		if(nom_service != "RH" && role_collabo != "Dirigeant"){
+						$('#filtre_services').hide();
+					}
+
+					//Appel Ajax pour afficher volet de filtre personnalise
+			         if(nom_service=="RH" || role_collabo=="Dirigeant"){
+				         $.ajax({
+				                  url :"/selectservices",
+				                  type:'GET',
+				                  dataType: 'json',
+				                  data: {},
+
+				                  success: function(doc){
+				                  	
+				                  	$(doc["data"]).each(function() {
+				                    	var nomService = $(this)[0]["nom"];
+				                    	if(nomService != nom_service){
+				                    		var id_checkbox="checkbox"+nomService;
+				                    		$('.filtre_services').append('<input type="checkbox" id='+id_checkbox+' class="flat" checked="checked"/> ' + nomService + '<br> <br>');
+					                    }
+				                	})
+
+				                	if(role_collabo != "Dirigeant"){
+					                    	$('.filtre_services').append('<input type="checkbox" id="checkboxDirigeant" class="flat" checked="checked"/> ' + "Dirigeant" + '<br> <br>');
+					                }
+
+				                  }                      
+						});
+			 		}
+	              }
+	              
+	            })
 
 	         var calendar = $('#calendar').fullCalendar({
 	          locale: 'fr',
@@ -126,28 +174,12 @@
 	          },
 	          editable: true,
 	          events: function(start, end, timezone, callback) {
-
-	          			    $.ajax({
-		                      url :"/name",
-		                      type:'GET',
-		                      dataType: 'json',
-		                      data: {},
-
-		                      success: function(doc){
-		                      	$(doc).each(function() {
-		                        	id_collabo = $(this)[0]["id"];
-		                        	role_collabo = $(this)[0]["role"]["nom"];
-		                        	id_service = $(this)[0]["service"]["id"];
-		                        	nom_service = $(this)[0]["service"]["nom"];
-		                    	})
-
-	                    		if(nom_service != "RH" && role_collabo != "Dirigeant"){
-        							$('#filtre_services').hide();
-        						}
-		                      }
-		                      
-				            })
- 
+	          				//Reinitialisation
+		          			tab_checkbox= $("#filtre input[type='checkbox']");
+				            tab_checkbox.each(function(index,element) {
+				                element.checked = true ;
+				            });
+				            tab_events.splice(0);
 
 					        $.ajax({
 					            url: '/selectConge',
@@ -213,6 +245,7 @@
 	                                           color: $couleur,
 	                                           etat: $etat,
 	                                           collaborateur: $(this)[0]["id_demandeur"],
+	                                         
 						                    });
 					                	}
 					                });
@@ -235,56 +268,80 @@
                }
 
 	         }); 
-			
-			//Affichage du volet de filtre personnalise
-	         if(role_collabo=="RH" || role_collabo=="Dirigeant"){
-		         $.ajax({
-		                  url :"/selectservices",
-		                  type:'GET',
-		                  dataType: 'json',
-		                  data: {},
 
-		                  success: function(doc){
-		                  	console.log("Entre")
-		                  	$(doc["data"]).each(function() {
-		                    	var nomService = $(this)[0]["nom"];
-		                    	if(nomService != nom_service){
-			                    	//console.log(nom_service)
-		                    		var id_checkbox="checkbox"+nomService;
-		                    		console.log(id_checkbox);
-		                    		$('.filtre_services').append('<input type="checkbox" id='+id_checkbox+' class="flat" checked="checked"/> ' + nomService + '<br> <br>');
-			                    }
-		                	})
 
-		                	if(role_collabo != "Dirigeant"){
-			                    	console.log("checkboxDirigeant");
-			                    	$('.filtre_services').append('<input type="checkbox" id="checkboxDirigeant" class="flat" checked="checked"/> ' + "Dirigeant" + '<br> <br>');
-			                }
+	     $("#filtre").on('click', '*', function() {
+	         tab_checkbox= $("#filtre input[type='checkbox']");
+	         var attr = $(this).attr('id');
+	         var mon_type = null;
 
-		                  }                      
-				});
-	 		}
-
-	         //icheck
-	         if ($("input.flat.mine")[0]) 
-	 		 {
-		        $(document).ready(function () {
-		            $('input.flat.mine').iCheck({
-		                checkboxClass: 'icheckbox_flat',
-		                radioClass: 'iradio_flat-blue'
-		            });
-		        });
+	         if(attr != null){
+		         switch(attr) {
+		         	case "checkboxMesConges" :
+		         		mon_type="MesConges";
+		         		break;
+		         	case "checkboxMonService" :
+		         		mon_type=nom_service;
+		         		break;
+		         	default:
+		         		mon_type=attr.substring(8);
+		         		break;
+		         }
+		         console.log(mon_type);
 			}
-
-			if ($("input.flat.other")[0]) 
-	 		 {
-		        $(document).ready(function () {
-		            $('input.flat.other').iCheck({
-		                checkboxClass: 'icheckbox_flat-green',
-		                radioClass: 'iradio_flat-green'
-		            });
-		        });
-			}     
+	         	        
+	         tab_checkbox.each(function(index,element) {
+	                var tmp = null;
+	              
+	                if (element.checked==false && $(this).attr('id') == attr) {
+	                     
+	                   
+	                    if (tab_events.length == 0) {
+	                        tab_events = render_type(mon_type);
+	                    }
+	                    else {
+	                        tab_events = tab_events.concat(render_type(mon_type));
+	                    }
+	                    
+	                    
+	                    for(var i=0;i<tab_events.length; i++){
+	                       
+	                        if(tab_events[i].type == mon_type){
+	                        $('#calendar').fullCalendar('removeEvents' , tab_events[i].id);
+	                        }
+	                    }
+	                    return;
+	                }
+	             
+	                else if(element.checked==true && $(this).attr('id') == attr) {
+	                   
+	                    var taille_init = tab_events.length; 
+	                    
+	                    for(var i=0;tab_events[i]!=null;i++){
+	                        
+	                        if (tab_events[i].type == mon_type){
+	                          var tmp = {
+	                               id: tab_events[i].id,
+	                               title: tab_events[i].title,
+	                               start: tab_events[i].start,
+	                               end: tab_events[i].end,
+	                               type: tab_events[i].type,
+	                               color: tab_events[i].color,
+	                               responsable: tab_events[i].responsable,
+	                               description: tab_events[i].description,
+	                           }
+	                           
+	                           $('#calendar').fullCalendar( 'renderEvent', tmp, true);
+	                           tab_events.splice(i,1);
+	                           i=i-1;
+	                        }
+	                    }
+	                    
+	                }
+	                return;
+	                                                     
+	             });
+      		});   
 
     	});        
 	
@@ -306,17 +363,14 @@
                       <!-- Collect the nav links, forms, and other content for toggling -->
                       <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <ul class="nav navbar-nav navbar-center">
-                        <div class="menu_filtre">
+                        <div class="menu_filtre" id="filtre">
 	                         <input type="checkbox"  id="checkboxMesConges"  class="flat" checked="checked" /> Mes congés
 	                         <br> <br>
 
 	                         <input type="checkbox" id="checkboxMonService"  class="flat" checked="checked" /> Mon service  
 	                         <br> <br>
 
-	                          <div class="filtre_services">
-								<!--<input type="checkbox" id="checkbox3"  class="flat" /> RH                <br> <br>
-								<input type="checkbox" id="checkbox4"  class="flat" /> Informatique               <br> <br>
-								-->	                          	
+	                          <div class="filtre_services">                          	
 	                          </div>
 
 	                            <button id="btnreset_filtre" class="btn btn-default btn-block" value="Reset" type="reset" style="margin-bottom:25px">Réinitialiser</button>
