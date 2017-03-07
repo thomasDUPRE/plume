@@ -7,6 +7,7 @@ module.exports = function(app) {
         '');
     var NotificationCRUD = require('../crud/NotificationCRUD');
     var CollaborateurCRUD = require('../crud/CollaborateurCRUD');
+    var ServiceCRUD = require('../crud/ServiceCRUD');
 
     function doesParamExist(param) {
         if (typeof param !== 'undefined' && param) return true;
@@ -26,9 +27,12 @@ module.exports = function(app) {
             if (typeof req.query !== 'undefined' && req.query) {
                 // if the parameters are ok
                 if (doesParamExist(req.query.type) && doesParamExist(req.query.id) && doesParamExist(req.query.sujet) && doesParamExist(req.query.contenu)) {
+                    var date_notification =  new Date().toISOString().slice(0, 19).replace('T', ' ');
+                    console.log("date notification: "+date_notification);
                     var data = {
                         sujet: req.query.sujet,
                         contenu: req.query.contenu,
+                        date_notification : date_notification,
                         vu: 0
                     }
                     if(req.query.type == 'service'){
@@ -44,10 +48,25 @@ module.exports = function(app) {
                                     NotificationCRUD.insererNotification({sujet: req.query.sujet, contenu: req.query.contenu, vu: 0, id_collaborateur: collaborateur.id}
                                     , function(result2){
                                         callbacks--;
-                                        if(error && callbacks<=0){
+                                        if(!error && callbacks<=0){
                                             res.send(JSON.stringify(result2));
                                         }
                                     });
+                                });
+                            }
+                        });
+                    }
+                    if(req.query.type == 'chef_service') {
+                        // Envoyer notification à tous les collaborateurs du service
+                        var selectorService = {
+                            id: req.query.id
+                        };
+                        ServiceCRUD.selectServices(selectorService, function(result){
+                            if(result instanceof Erreur) { error = true; res.send(JSON.stringify(result));}
+                            else {
+                                data.id_collaborateur =  result[0].chef_service;
+                                NotificationCRUD.insererNotification(data, function(result2){
+                                    res.send(JSON.stringify(result2));
                                 });
                             }
                         });
@@ -59,6 +78,7 @@ module.exports = function(app) {
                             res.send(JSON.stringify(result2));
                         });
                     }
+
                     else res.send(JSON.stringify(new Erreur("ParamErreur","La valeur du paramètre type n'est pas correct")));
                 }
                 // Display error
@@ -82,6 +102,24 @@ module.exports = function(app) {
                else res.send(JSON.stringify({data : notifications}));
            });
         });
-    })
+    });
+
+
+    app.get('/vunotifications', function(req, res){
+        setResponse(req, res, function(){
+            var selector = {
+                vu: 0,
+                id_collaborateur: req.session.profile.id
+            };
+            var data = {
+                vu: 1
+            };
+            NotificationCRUD.modifNotification(selector, data, function(result){
+                if(result instanceof Erreur)  res.send(JSON.stringify(result));
+                else res.send(JSON.stringify(result));
+            });
+        });
+    });
+
 
 };
