@@ -26,7 +26,7 @@
                   </div>
                   <div class="x_content">
 
-                    <form class="form-horizontal form-label-left" novalidate>
+                    <form class="form-horizontal form-label-left" >
 
                       
 
@@ -44,7 +44,7 @@
                           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Description de la mission  <span class="required">*</span>
                           </label>
                           <div class="col-md-6 col-sm-6 col-xs-12">
-                            <textarea id="message" required="required" class="form-control" name="message" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="200" data-parsley-minlength-message="Come on! You need to enter at least a 20 caracters long comment.." data-parsley-validation-threshold="10"></textarea>
+                            <textarea id="description" required="required" class="form-control" name="message" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="200" data-parsley-minlength-message="Come on! You need to enter at least a 20 caracters long comment.." data-parsley-validation-threshold="10"></textarea>
                           </div>
                       </div>
 
@@ -54,7 +54,7 @@
                           <span class="required">*</span>
                           </label>
                           <div class="col-md-6 col-sm-6 col-xs-12 xdisplay_inputx form-group has-feedback">
-                              <input type="text" class="datepicker form-control has-feedback-left" id="single_cal1" placeholder="date de début" aria-describedby="inputSuccess2Status4">
+                              <input type="text" class="datepicker form-control has-feedback-left" id="date_debut" placeholder="date de début" aria-describedby="inputSuccess2Status4">
                               <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                               <span id="inputSuccess2Status4" class="sr-only">(success)</span>
                            
@@ -66,7 +66,7 @@
                           <span class="required">*</span>
                           </label>
                           <div class="col-md-6 col-sm-6 col-xs-12 xdisplay_inputx form-group has-feedback">
-                             <input type="text" class="datepicker form-control has-feedback-left" id="single_cal4" placeholder="date de fin" aria-describedby="inputSuccess2Status4">
+                             <input type="text" class="datepicker form-control has-feedback-left" id="date_fin" placeholder="date de fin" aria-describedby="inputSuccess2Status4">
                              <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                               <span id="inputSuccess2Status4" class="sr-only">(success)</span>
                            
@@ -97,15 +97,30 @@
     <script src="../vendors/validator/validator.js"></script>
       <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/moment/locale/fr.js"></script>
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="../vendors/switchery/dist/switchery.min.js"></script>
      <script type="text/javascript">
+
+      var dateFinChanged = false ;
+
+        function checkDate () {
+          
+          debut =  $("#date_debut").val() ;
+          fin   =  $("#date_fin").val();
+         
+          if(fin<debut)
+           {       
+             $("#date_fin").val( $("#date_debut").val() );  
+           } 
+        }
 
         $(document).ready(function(){
 
           $('.datepicker').daterangepicker({
           singleDatePicker: true,
-          singleClasses: "picker_4"
+          singleClasses: "picker_4",
+          minDate : moment().startOf('day'),
         }, function(start, end, label) {
         console.log(start.toISOString(), end.toISOString(), label);
 
@@ -118,6 +133,52 @@
             });
         });
       }
+
+       $("#date_debut").change(function () {
+        if (dateFinChanged == false ) 
+            {
+              $("#date_fin").val( $(this).val() );
+            }
+            else
+            {
+               checkDate();
+
+            }
+          
+      });
+
+      $("#date_fin").change(function () {
+        if (dateFinChanged == false ) 
+            {
+              dateFinChanged = true ;
+              checkDate();
+            }
+          else
+            {
+              checkDate();
+            }
+          
+      });
+
+      $("form").submit(function () {
+                
+             $.ajax({
+                      url: '/insererMission',
+                      type: 'POST',
+                      dataType: 'json',
+                      data: {
+                         date_debut : $("#date_debut").val(),
+                         nom:   $("#name").val(),
+                         description:$("#description").val(),
+                         date_fin :  $("#date_fin").text(),
+                      },
+                      success: function() {
+                      
+                      }
+                  });
+            return false ;  
+          
+         });
 
         });
     </script>
