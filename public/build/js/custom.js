@@ -1,3 +1,5 @@
+
+        
 /**
  * Resize function without multiple trigger
  * 
@@ -1602,19 +1604,20 @@ if (typeof NProgress != 'undefined') {
 	   
 	  	/* PNotify */
 			
-		function init_PNotify() {
+		function init_PNotify(titre,typeMessage,message) {
 			
 			if( typeof (PNotify) === 'undefined'){ return; }
 			console.log('init_PNotify');
 			
 			new PNotify({
-			  title: "PNotify",
-			  type: "info",
-			  text: "Welcome. Try hovering over me. You can click things behind me, because I'm non-blocking.",
+			  title:titre,
+			  type: typeMessage,
+			  text: message,
+			  delay: 2000,
 			  nonblock: {
 				  nonblock: true
 			  },
-			  addclass: 'dark',
+			  addclass: '',
 			  styling: 'bootstrap3',
 			  hide: false,
 			  before_close: function(PNotify) {
@@ -4738,3 +4741,15 @@ if (typeof NProgress != 'undefined') {
 	});	
 	
 
+  var dateFinChanged = false ;
+
+    function checkDate () {
+          
+      debut =  $("#date_debut").val() ;
+      fin   =  $("#date_fin").val();
+     
+      if(fin<debut)
+       {       
+         $("#date_fin").val( $("#date_debut").val() );  
+       } 
+    }

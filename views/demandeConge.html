@@ -14,8 +14,15 @@
     <link href="../vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
 
     <link href="../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../vendors/iCheck/skins/flat/green.css">
 
     <link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+
+     <!-- PNotify -->
+    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
     
     
     <!-- Custom Theme Style -->
@@ -32,12 +39,12 @@
 
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                     <h4 style="display:inline"> nombre de jours restants : </h4>
-                      <span class="freeDays">
-                              *
-                      </span>
-                  </div>
+                 <!--  <div class="input-group"> -->
+                     <h3 style="display:inline"> Jours restants : </h3>
+                      <h3 style="display:inline" id="daysLeft" class="red">
+                             
+                      </h3>
+                 <!--  </div> -->
                 </div>
               </div>
             </div>
@@ -53,34 +60,44 @@
                   </div>
                   <div class="x_content">
 
-                    <form class="form-horizontal form-label-left" novalidate>
+                    <form class="form-horizontal form-label-left" action="#" > 
                
                       <div class="item form-group ">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Motif du congé <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Motif du congé <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="name" placeholder="" required="required" type="text">
+                          <input id="motif" class="form-control col-md-7 col-xs-12"   placeholder="arrêt maladie, mariage .." required="required" type="text">
                         </div>
                       </div>
 
                          <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="date_debut">Date de début 
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="date_debut">Date de prise de congé 
                           <span class="required">*</span>
                           </label>
                           <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3 xdisplay_inputx form-group has-feedback">
-                              <input type="text" class="datepicker form-control has-feedback-left" id="single_cal1" placeholder="date de début" aria-describedby="inputSuccess2Status4">
+                              <input type="text" class="datepicker form-control has-feedback-left" id="date_debut" placeholder="date de début" aria-describedby="inputSuccess2Status4" required>
                               <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                               <span id="inputSuccess2Status4" class="sr-only">(success)</span>
                            
                           </div>  
                            <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3 xdisplay_inputx form-group has-feedback">
-                              <label class="control-label col-md-3 col-sm-3 col-xs-12 col-lg-7
-                              " for="name">    Depart au matin  :   
+                              <label class="control-label col-md-3 col-sm-3 col-xs-6 col-lg-3
+                              " >   Matin:     
                                </label>
  
-                              <div class="col-md-6 col-sm-6 col-xs-12   col-lg-1 checkbox">
+                              <div class="col-md-6 col-sm-6 col-xs-6   col-lg-1 ">
                                 <label>
-                                  <input type="checkbox" name ="departMatin"class="js-switch" checked /> 
+                                  <input type="radio" class="flat" name ="time-depart" value="true"  /> 
+                                </label>
+                              </div>
+
+                                <label class="control-label col-lg-offset-1 col-md-3 col-sm-3 col-xs-6 col-lg-5
+                              " >   Après-midi:   
+                               </label>
+ 
+                              <div class="col-md-6 col-sm-6 col-xs-6   col-lg-1 ">
+                                <label>
+                                  <input type="radio" name ="time-depart" value="false" class="flat"  /> 
                                 </label>
                               </div>
                            
@@ -88,23 +105,33 @@
                       </div>
 
                       <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="date_fin">Date de fin
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="date_fin">Date de reprise 
                           <span class="required">*</span>
                           </label>
                           <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3 xdisplay_inputx form-group has-feedback">
-                             <input type="text" class="datepicker form-control has-feedback-left" id="single_cal4" placeholder="date de fin" aria-describedby="inputSuccess2Status4">
+                             <input type="text" class="datepicker form-control has-feedback-left" id="date_fin" placeholder="date de fin" aria-describedby="inputSuccess2Status4" required>
                              <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                               <span id="inputSuccess2Status4" class="sr-only">(success)</span>
                            
                           </div>  
                           <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3 xdisplay_inputx form-group has-feedback">
-                              <label class="control-label col-md-3 col-sm-3 col-xs-12 col-lg-7
-                              " for="name">    Retour au soir :   
+                              <label class="control-label col-md-3 col-sm-3 col-xs-6 col-lg-3
+                              " >   Matin:     
                                </label>
  
-                              <div class="col-md-6 col-sm-6 col-xs-12   col-lg-1 checkbox">
+                              <div class="col-md-6 col-sm-6 col-xs-6   col-lg-1 ">
                                 <label>
-                                  <input type="checkbox" name ="departMatin"class="js-switch" checked /> 
+                                  <input type="radio" class="flat" name ="time-retour" value="true"  /> 
+                                </label>
+                              </div>
+
+                                <label class="control-label col-lg-offset-1 col-md-3 col-sm-3 col-xs-6 col-lg-5
+                              " >   Après-midi:   
+                               </label>
+ 
+                              <div class="col-md-6 col-sm-6 col-xs-6   col-lg-1 ">
+                                <label>
+                                  <input type="radio" name ="time-retour" value="false" class="flat"  /> 
                                 </label>
                               </div>
                            
@@ -112,12 +139,12 @@
                       </div>
 
                       <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Congé sans solde  :   
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Congé sans solde  :   
                         </label>
 
                         <div class="col-md-6 col-sm-6 col-xs-12 checkbox">
                             <label>
-                              <input type="checkbox" name ="sansSolde"class="js-switch" checked /> 
+                              <input type="checkbox" name="" id="sansSolde"class="js-switch" checked /> 
                             </label>
                           </div>
 
@@ -126,10 +153,12 @@
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
-                          <button type="submit" class="btn btn-primary">Annuler</button>
-                          <button id="send" type="submit" class="btn btn-success">Soumettre</button>
+                          <button type="submit" class="btn btn-warning">Annuler</button>
+                          <button id="save"   class="submit btn btn-primary">Enregistrer</button>
+                          <input type ="button" id="send" class="submit btn btn-success" value ="Envoyer" />
                         </div>
                       </div>
+
                     </form>
                   </div>
                 </div>
@@ -145,22 +174,113 @@
     <script src="../vendors/validator/validator.js"></script>
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/moment/locale/fr.js"></script>
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="../vendors/dropzone/dist/min/dropzone.min.js"></script>
     <script src="../vendors/switchery/dist/switchery.min.js"></script>
+    <script src="../vendors/iCheck/icheck.min.js"></script>
+      <!-- PNotify -->
+    <script src="../vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
 
     <script type="text/javascript">
 
+        function jourOuvrables (dateDebut,dateFin,departMatin,retourMatin) 
+        {
+           jour= 0.0;
+           momentFin = moment(dateFin,'DD/MM/YYYY');
+           momentDebut = moment(dateDebut,'DD/MM/YYYY');
+          
+         
+           
+           while (momentDebut < momentFin)
+           {
+              
+          
+              if (momentDebut.isoWeekday() != 6 &&  momentDebut.isoWeekday() != 7 )
+                 {
+                  jour +=1 ;
+                }
+               momentDebut = momentDebut.add(1,'days');
+              console.log("after ajout "+momentDebut.format("DD/MM/YYYY"));
+              
+           }
+
+           if(departMatin == true && retourMatin == false  )
+             {
+               jour += 0.5;
+             }
+
+            if(departMatin == false && retourMatin == true  )
+             {
+               jour -= 0.5;
+             }
+
+           return jour ;
+        }
+        
+        var dateFinChanged = false ;
+        
         $(document).ready(function(){
+        
+             
+          $.get("/name", function(data, status){
+            var profile = JSON.parse(data); 
+            $("#daysLeft").text(profile.nb_jours_restants);     
+          });
 
           $('.datepicker').daterangepicker({
-          singleDatePicker: true,
-          singleClasses: "picker_4"
-        }, function(start, end, label) {
-        console.log(start.toISOString(), end.toISOString(), label);
+          startDate : moment().startOf('day'),
+          endDate : moment().endOf('day'),
+          minDate : moment().startOf('day'),
+          isInvalidDate: function  (date) {
+             if (date.isoWeekday() == 6 ||  date.isoWeekday() == 7)
+               {
+                return true ;
+               }
 
+               return false;
+          },
+          singleDatePicker: true,
+
+          singleClasses: "picker_4",
+          locale: {
+            format: 'DD/MM/YYYY'
+        }
+        }, function(start, end, label) {
+          // console.log(start.toISOString(), end.toISOString(), label);
+   
+        });
+
+      $("#date_debut").change(function () {
+        if (dateFinChanged == false ) 
+            {
+              $("#date_fin").val( $(this).val() );
+            }
+            else
+            {
+               checkDate();
+
+            }
+          
       });
+
+      $("#date_fin").change(function () {
+        if (dateFinChanged == false ) 
+            {
+              dateFinChanged = true ;
+              checkDate();
+            }
+          else
+            {
+              checkDate();
+            }
+          
+      });
+
+    
       if ($(".js-switch")[0]) {
         var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
         elems.forEach(function (html) {
@@ -168,9 +288,62 @@
                 color: '#26B99A'
             });
         });
-      }
 
-        });
+     
+        }
+
+         $('input.flat').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+             radioClass: 'iradio_flat-green'
+          });
+
+         $('input[type="radio"]').change(function () {
+                 console.log( $(this).val() );
+          });
+
+        $(".submit").click(function () {      
+       
+          departMatin = $('input[name="time-depart"]:checked').val();
+          retourMatin = $('input[name="time-retour"]:checked').val();
+
+          if  (  departMatin == retourMatin &&
+                   $("#date_debut").val() == $("#date_fin").val() 
+               )   
+             
+           { 
+              console.log("boukki");
+             //   $.ajax({
+            //           url: '/insererConge',
+            //           type: 'POST',
+            //           dataType: 'json',
+            //           data: {
+            //              date_debut : $("#date_debut").val(),
+            //              part_matin : (req.query.part_matin),
+            //              est_paye : req.query.est_paye,
+            //              revient_matin : req.query.revient_matin,
+            //              motif : $("#motif").val(),
+            //              date_fin :  $("#date_fin").val(),
+            //           },
+            //           success: function() {
+                      
+            //           }
+            //       });
+             return false ;  
+                  
+            }
+         
+            else
+              {
+           
+             // init_PNotify("Erreur de validation","error","Le depart et la reprise ne doivent pas se faire en même temps");
+
+              return false ;
+          }
+           
+
+         });
+
+      });
     </script>
   </body>
 </html>
