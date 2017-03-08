@@ -87,6 +87,15 @@
          function loadDemandeConge() {
            $('#pageInterne').load('demandeConge.html');
          }
+         function loadDemandeNFrais() {
+           $('#pageInterne').load('demandeNFrais.html');
+         }
+         function loadNFraisDetail() {
+           $('#pageInterne').load('notes_de_frais.html');
+         }
+         function loadMesMissions() {
+           $('#pageInterne').load('mes_missions.html');
+         }
 
          function loadMesNFrais() {
             $('#pageInterne').load('notes_de_frais.html');
@@ -173,7 +182,8 @@
 
                   <li><a><i class="fa fa-university"></i> Mission <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li  onclick="loadCreateMission()"><a>Nouvelle mission </a></li>
+                      <li  class="validation-conges" onclick="loadCreateMission()"><a>Nouvelle mission </a></li>
+                      <li onclick="loadMesMissions()"><a>Mes missions en détail</a></li>
                       <!-- <li><a>Nouvelle demande</a></li> -->
                     </ul>
                   </li>
@@ -418,6 +428,7 @@
       });
 
         $('.validation-conges').hide();
+        $('.creation-mission').hide();
       
 
       function firstToUpperCase( str ) {
@@ -453,6 +464,9 @@
 
           if(profile.service.nom == "RH" || profile.role.nom =="Chef de service") 
             $('.validation-conges').show();
+
+          if(profile.role.nom =="Chef de service") 
+            $('.creation-mission').show();
             
       });
         //alert("Data: " + data + "\nStatus: " + status);
