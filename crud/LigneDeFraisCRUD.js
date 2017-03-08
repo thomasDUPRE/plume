@@ -16,11 +16,12 @@ class LigneDeFraisCRUD {
         var helper = new CRUDHelper();
         helper.getTable('ligne_frais').load(data, function (err, vals) {
             //mysql callback
-            var result;
-            if (!err)
+            var result = [];
+            if (!err) {
                 for (var i = 0, len = vals.length; i < len; i++) {
-                    result = new LigneDeFrais(vals[i].id, vals[i].id_categorie_frais , vals[i].id_etat_ligne_frais, vals[i].id_note_frais, vals[i].id_mission, vals[i].justificatif);
+                    result.push(new LigneDeFrais(vals[i].id, vals[i].id_categorie_frais , vals[i].id_etat_ligne_frais, vals[i].id_note_frais, vals[i].id_mission, vals[i].justificatif));
                 }
+            }
             else
                 result = new Erreur("RecupLigneDeFrais", err);
             callback(result);

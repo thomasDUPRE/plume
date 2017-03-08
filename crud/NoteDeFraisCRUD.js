@@ -16,11 +16,12 @@ class NoteDeFraisCRUD {
         var helper = new CRUDHelper();
         helper.getTable('note_frais').load(data, function (err, vals) {
             //mysql callback
-            var result;
-            if (!err)
+            var result = [];
+            if (!err) {
                 for (var i = 0, len = vals.length; i < len; i++) {
-                    result = new NoteDeFrais(vals[i].id, vals[i].date_saisie , vals[i].id_collaborateur);
+                    result.push(new NoteDeFrais(vals[i].id, vals[i].date_saisie , vals[i].id_collaborateur));
                 }
+            }
             else
                 result = new Erreur("RecupNoteDeFrais", err);
             callback(result);

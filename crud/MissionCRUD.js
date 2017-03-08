@@ -52,12 +52,13 @@ class MissionCRUD {
         var helper = new CRUDHelper();
         helper.getTable('mission').load(data, function (err, vals) {
             //mysql callback
-            var result;
-            if (!err)
+            var result = [];
+            if (!err) {
                 //result = vals;
                 for (var i = 0, len = vals.length; i < len; i++) {
-                    result = new Mission(vals[i].id, vals[i].nom, vals[i].description, vals[i].date_debut, vals[i].date_fin, vals[i].responsable);
+                    result.push(new Mission(vals[i].id, vals[i].nom, vals[i].description, vals[i].date_debut, vals[i].date_fin, vals[i].responsable));
                 }
+            }    
             else
                 result = new Erreur("RecupMissionsErreur", err);
             callback(result);
