@@ -204,7 +204,6 @@
                   jour +=1 ;
                 }
                momentDebut = momentDebut.add(1,'days');
-              console.log("after ajout "+momentDebut.format("DD/MM/YYYY"));
               
            }
 
@@ -302,13 +301,19 @@
           });
 
         $(".submit").click(function () {      
-       
+         
           departMatin = $('input[name="time-depart"]:checked').val();
           retourMatin = $('input[name="time-retour"]:checked').val();
 
-          if  (  departMatin == retourMatin &&
-                   $("#date_debut").val() == $("#date_fin").val() 
-               )   
+        if ( 
+              (
+                (
+                  ( departMatin == true &&  retourMatin == false) || ( departMatin =='undefined' &&     retourMatin == 'undefined' )  
+                ) 
+              )
+            ||  $("#date_debut").val() < $("#date_fin").val() 
+          )    
+                      
              
            { 
               console.log("boukki");
@@ -334,7 +339,7 @@
          
             else
               {
-           
+                console.log("golo");
              // init_PNotify("Erreur de validation","error","Le depart et la reprise ne doivent pas se faire en même temps");
 
               return false ;

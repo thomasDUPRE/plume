@@ -38,21 +38,20 @@ app.get('/selectConge', function (req, res) {
     });
 
 
-    app.get('/insererConge', function (req, res) {
+    app.post('/insererConge', function (req, res) {
         if (typeof req.query !== 'undefined' && req.query) {
             // if the parameters are ok
-            if (doesParamExist(req.query.id) && doesParamExist(req.query.date_demande) &&doesParamExist(req.query.date_debut) && doesParamExist(req.query.part_matin) && doesParamExist(req.query.id_etat_conge) && doesParamExist(req.query.est_paye) && doesParamExist(req.query.revient_matin) && doesParamExist(req.query.motif) &&doesParamExist(req.query.date_fin) &&  oesParamExist(req.query.id_demandeur) ){
+            if ( doesParamExist(req.query.date_debut) && doesParamExist(req.query.part_matin) && doesParamExist(req.query.id_etat_conge) && doesParamExist(req.query.est_paye) && doesParamExist(req.query.revient_matin) && doesParamExist(req.query.motif) &&doesParamExist(req.query.date_fin) &&  oesParamExist(req.query.id_demandeur) ){
                 var data = {
-                    id : req.query.id,
-                    date_demande : req.query.date_demande,
+                    date_demande: new Date() ,
                     date_debut : req.query.date_debut,
                     part_matin : req.query.part_matin,
-                    id_etat_conge : req.query.id_etat_conge,
-                    est_paye : req.query.est_paye,
-                    revient_matin : req.query.revient_matin,
+                    revient_matin : false,
+                    est_paye : false,
                     motif : req.query.motif,
                     date_fin : req.query.date_fin,
-                    id_demandeur : req.query.id_demandeur,
+                    id_etat_conge: 1,
+                    id_demandeur : req.session.profile.id ,
                 };
                 var CongeCRUD = require('../crud/CongeCRUD');
 

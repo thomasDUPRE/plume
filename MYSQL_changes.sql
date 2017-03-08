@@ -58,7 +58,9 @@ insert into notification(sujet, contenu, vu, date_notification, id_collaborateur
 ("Bienvenue sur Plume", "Nous vous souhaitons la bienvenue sur l'intranet Plume", false, NOW(), 12);
 
 
-07/03/2017 HK
-
 ALTER TABLE mission ADD column responsable int not null;
 ALTER TABLE mission ADD constraint fk_missionResponsable foreign key(responsable) references collaborateur(id) on delete cascade ;
+
+
+Alter table collaborateur modify nb_jours_restants real ;
+
