@@ -87,14 +87,9 @@
          function loadDemandeConge() {
            $('#pageInterne').load('demandeConge.html');
          }
-         function loadDemandeNFrais() {
-           $('#pageInterne').load('demandeNFrais.html');
-         }
-         function loadNFraisDetail() {
-           $('#pageInterne').load('notes_de_frais.html');
-         }
+
          function loadMesNFrais() {
-            $('#pageInterne').load('allNotes_de_frais.html');
+            $('#pageInterne').load('notes_de_frais.html');
         }
          function loadCongesDetail() {
            $('#pageInterne').load('conges.html');
@@ -172,11 +167,7 @@
                    <li><a><i class="fa fa-money"></i> Note de Frais <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a onclick="loadMesNFrais()">Mes notes de Frais</a></li>
-                      <li><a onclick="loadNFraisDetail()">En detail</a></li>
-                      <li><a onclick="loadDemandeNFrais()"> Nouvelle demande</a></li>
-                      <li><a onclick="loadDemandeAvance()"> Demande d'avances</a></li>
-
-
+                      <li><a onclick="loadDemandeAvance()"> Mes demande d'avances</a></li>
                     </ul>
                   </li>
 

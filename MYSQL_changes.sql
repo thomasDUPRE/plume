@@ -56,3 +56,9 @@ values ("dupré", "thomas", "thomas.dupre@u-psud.fr", "-654", 1, 3, "thomas", 2)
 insert into notification(sujet, contenu, vu, date_notification, id_collaborateur) values
 ("Bienvenue sur Plume", "Nous vous souhaitons la bienvenue sur l'intranet Plume", false, NOW(), 11),
 ("Bienvenue sur Plume", "Nous vous souhaitons la bienvenue sur l'intranet Plume", false, NOW(), 12);
+
+
+07/03/2017 HK
+
+ALTER TABLE mission ADD column responsable int not null;
+ALTER TABLE mission ADD constraint fk_missionResponsable foreign key(responsable) references collaborateur(id) on delete cascade ;

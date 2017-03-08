@@ -18,7 +18,9 @@ class AvanceNoteDeFraisCRUD {
             //mysql callback
             var result;
             if (!err)
-                result = new AvanceNoteFrais(vals[0].id, vals[0].description , vals[0].somme);
+                for (var i = 0, len = vals.length; i < len; i++) {
+                    result = new AvanceNoteFrais(vals[i].id, vals[i].description , vals[i].somme);
+                }
             else
                 result = new Erreur("RecupAvanceNoteDeFrais", err);
             callback(result);

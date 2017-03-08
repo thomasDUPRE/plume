@@ -18,7 +18,9 @@ class LigneDeFraisCRUD {
             //mysql callback
             var result;
             if (!err)
-                result = new LigneDeFrais(vals[0].id, vals[0].id_categorie_frais , vals[0].id_etat_ligne_frais, vals[0].id_note_frais, vals[0].id_mission, vals[0].justificatif);
+                for (var i = 0, len = vals.length; i < len; i++) {
+                    result = new LigneDeFrais(vals[i].id, vals[i].id_categorie_frais , vals[i].id_etat_ligne_frais, vals[i].id_note_frais, vals[i].id_mission, vals[i].justificatif);
+                }
             else
                 result = new Erreur("RecupLigneDeFrais", err);
             callback(result);
