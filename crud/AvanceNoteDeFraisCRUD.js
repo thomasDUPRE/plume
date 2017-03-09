@@ -16,9 +16,12 @@ class AvanceNoteDeFraisCRUD {
         var helper = new CRUDHelper();
         helper.getTable('avance_note_frais').load(data, function (err, vals) {
             //mysql callback
-            var result;
-            if (!err)
-                result = new AvanceNoteFrais(vals[0].id, vals[0].description , vals[0].somme);
+            var result = [];
+            if (!err) {
+                for (var i = 0, len = vals.length; i < len; i++) {
+                    result.push(new AvanceNoteFrais(vals[i].id, vals[i].description , vals[i].somme));
+                }
+            }
             else
                 result = new Erreur("RecupAvanceNoteDeFrais", err);
             callback(result);

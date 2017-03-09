@@ -87,14 +87,15 @@ module.exports = function(app) {
         else res.send(JSON.stringify(new Erreur("LDFErreur", "La requête est vide")));
     });
 
+    // Récupérer toutes les lignes de frais en rapport avec la note de frais ID
     app.get('/getLDF', function(req, res) {
 
         if (typeof req.query !== 'undefined' && req.query) {
             
-            if (req.query.id) {
+            if (doesParamExist(req.query.id)) {
                
                 var data = {
-                    id : req.query.id
+                    id_note_frais : req.query.id
                 };
                 
                 LigneDeFraisCRUD.recupererLignesDeFrais(data, function callback(result) {
@@ -112,11 +113,12 @@ module.exports = function(app) {
     });
 
 
-        app.get('/getEtatLDF', function(req, res) {
+    // Récupérer le nom de l'état de la LDF à partir de son id
+    app.get('/getEtatLDF', function(req, res) {
 
         if (typeof req.query !== 'undefined' && req.query) {
             
-            if (req.query.id) {
+            if (doesParamExist(req.query.id)) {
                
                 var data = {
                     id : req.query.id
@@ -137,11 +139,12 @@ module.exports = function(app) {
     });
 
 
+    // Récupérer le nom de la catégorie de la LDF à partir de son id
     app.get('/getCatLDF', function(req, res) {
 
         if (typeof req.query !== 'undefined' && req.query) {
             
-            if (req.query.id) {
+            if (doesParamExist(req.query.id)) {
                
                 var data = {
                     id : req.query.id

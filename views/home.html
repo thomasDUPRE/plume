@@ -19,7 +19,7 @@
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="../javascripts/jquery.js"></script>
 
      <script>
 
@@ -58,7 +58,6 @@
            });
            // Chefs de service
            $.get("/collaborateurs?role=2", function (data) {
-
              var chefsservice = JSON.parse(data).data;
              chefsservice.forEach(function (element) {
                $("#liste-chefs-service").append('<tr>' +
@@ -74,7 +73,6 @@
                        '</tr>');
                drawTables("#chef",false,loadAjoutCollab);
              });
-
            });
            $.get("/selectservices", function (data) {
              var services = JSON.parse(data).data;
@@ -91,30 +89,29 @@
              });
              drawTables("#service",true,loadAjoutService);
            });
-
          }
-
          function loadDemandeConge() {
-           $('#pageInterne').load('demandeConge.html ');
+           $('#pageInterne').load('demandeConge.html');
          }
-
          function loadDemandeNFrais() {
            $('#pageInterne').load('demandeNFrais.html');
          }
-
          function loadNFraisDetail() {
            $('#pageInterne').load('notes_de_frais.html');
          }
+         function loadMesMissions() {
+           $('#pageInterne').load('mes_missions.html');
+         }
 
+         function loadMesNFrais() {
+            $('#pageInterne').load('notes_de_frais.html');
+        }
          function loadCongesDetail() {
            $('#pageInterne').load('conges.html');
          }
-
-
          function loadDemandeAvance() {
            $('#pageInterne').load('demandeAvance.html');
          }
-
          function loadAjoutCollab() {
            $('#pageInterne').load('adminAjoutCollab.html');
            $.get("/selectroles", function (data) {
@@ -122,19 +119,14 @@
              roles.forEach(function (element) {
                $("#collaborateur-liste-role").append('<option value="' + element.id + '">' + element.nom + '</option>');
              });
-
            });
-
            $.get("/selectservices", function (data) {
              var services = JSON.parse(data).data;
              services.forEach(function (element) {
                $("#collaborateur-liste-service").append('<option value="' + element.id + '">' + element.nom + '</option>');
              });
-
            });
-
          }
-
          function loadAjoutService() {
            $('#pageInterne').load('adminAjoutService.html');
          }
@@ -195,11 +187,6 @@
 
     </script>
 
-    <style type="text/css">
-      .notification_vu{
-        background-color:white;
-      }
-    </style>
   </head>
 
   <body class="nav-md">
@@ -225,6 +212,7 @@
               <div class="profile_info">
                 <span>Bonjour,</span>
                 <h2 class="profile-name"></h2>
+                <span class="profile-service"></span>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -240,22 +228,23 @@
                   <li><a><i class="fa fa-suitcase"></i> Congé <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a  onclick="loadCalendar()">Calendrier congé</a></li>
-                      <li><a onclick="loadCongesDetail()">En detail</a></li>
+                      <li><a onclick="loadCongesDetail()">Mes conges</a></li>
                       <li><a onclick="loadDemandeConge()"> Nouvelle demande</a></li>
+                      <li class="validation-conges"><a onclick="loadValidationCongés()">Congés à valider</a></li>
                     </ul>
                   </li>
 
                    <li><a><i class="fa fa-money"></i> Note de Frais <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a>Mes notes de Frais</a></li>
-                      <li><a onclick="loadNFraisDetail()">En detail</a></li>
-                      <li><a onclick="loadDemandeNFrais()"> Nouvelle demande</a></li>
+                      <li><a onclick="loadMesNFrais()">Mes notes de Frais</a></li>
+                      <li><a onclick="loadDemandeAvance()"> Mes demande d'avances</a></li>
                     </ul>
                   </li>
 
                   <li><a><i class="fa fa-university"></i> Mission <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li  onclick="loadCreateMission()"><a>Nouvelle mission </a></li>
+                      <li  class="validation-conges" onclick="loadCreateMission()"><a>Nouvelle mission </a></li>
+                      <li onclick="loadMesMissions()"><a>Mes missions en détail</a></li>
                       <!-- <li><a>Nouvelle demande</a></li> -->
                     </ul>
                   </li>
@@ -331,15 +320,11 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profile</a></li>
-                    <li>
-                      <a href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a>
-                    </li>
-                    <li><a href="javascript:;">Help</a></li>
-                    <li><a href="/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a href="javascript:;"> Profil</a></li>
+
+                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Deconnexion</a></li>
+
+
                   </ul>
                 </li>
 
@@ -421,9 +406,11 @@
 
         <!-- footer content -->
         <footer>
+
           <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+            Plume - Intranet d'entreprise
           </div>
+
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
@@ -446,25 +433,54 @@
 
   <script type="text/javascript">
 
-    $(document).ready(function () {
-      $('.admin-view').each(function () {
-        $(this).hide();
-      })
-      function firstToUpperCase(str) {
+    $(document).ready(function ()
+    {
+
+      $('.admin-view').each(function(){
+        $( this ).hide();
+      });
+
+        $('.validation-conges').hide();
+        $('.creation-mission').hide();
+
+
+      function firstToUpperCase( str ) {
         return str.substr(0, 1).toUpperCase() + str.substr(1);
       }
 
-      $.get("/name", function (data, status) {
-        var profile = JSON.parse(data);
-        $('.profile-name').each(function () {
-          $(this).html(firstToUpperCase(profile.prenom.toLowerCase()) + " " + firstToUpperCase(profile.nom.toLowerCase()));
-          //console.log(JSON.stringify(profile));
-        });
-        if (profile.admin == true) {
-          $('.admin-view').each(function () {
-            $(this).show();
+
+      $.get("/name", function(data, status)
+      {
+          var profile = JSON.parse(data);
+          console.log()
+          $('.profile-name').each(function() {
+            $(this).html(firstToUpperCase(profile.prenom.toLowerCase()) + " " + firstToUpperCase(profile.nom.toLowerCase()));
+            //console.log(JSON.stringify(profile));
           });
-        }
+
+          $('.profile-service').each(function() {
+            if(profile.role["nom"] == "Dirigeant"){
+              $(this).html("("+firstToUpperCase(profile.role["nom"].toLowerCase())+")");
+            }
+            else{
+              $(this).html("("+firstToUpperCase(profile.role["nom"].toLowerCase()) + " - " + profile.service["nom"].toUpperCase()+")");
+            }
+          });
+
+          if(profile.admin == true)
+          {
+
+            $('.admin-view').each(function() {
+              $(this).show();
+            });
+          }
+
+          if(profile.service.nom == "RH" || profile.role.nom =="Chef de service")
+            $('.validation-conges').show();
+
+          if(profile.role.nom =="Chef de service")
+            $('.creation-mission').show();
+
       });
       //alert("Data: " + data + "\nStatus: " + status);
       // Notification
@@ -514,7 +530,6 @@
 
 
     });
-
   </script>
   </body>
 </html>

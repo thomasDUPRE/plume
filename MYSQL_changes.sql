@@ -29,8 +29,7 @@ Create table notification(
 		 contenu text not null,
 		 date_notification datetime not NULL ,
 		 vu boolean NOT NULL,
-		 constraint pk_notification primary key(id),
-		 constraint fk_notification foreign key(id) references collaborateur(id) on delete cascade
+		 constraint pk_notification primary key(id)
 )ENGINE=INNODB;
 
 ALTER table conge Add column motif varchar(50) NOT NULL;
@@ -42,7 +41,7 @@ ALTER TABLE missions_collaborateurs DROP column date_mission ;
 ALTER TABLE conge ADD constraint ck_conge check (date_fin>=date_debut);
 
 -- 20/02 Thomas
-alter table notification drop constraint fk_notification;
+alter table notification drop foreign key fk_notification;
 alter table notification add column id_collaborateur int not null;
 alter table notification add constraint fk_id_collaborateur_n foreign key(id_collaborateur) references collaborateur(id);
 alter table notification add column sujet varchar(255);
@@ -57,3 +56,12 @@ values ("dupré", "thomas", "thomas.dupre@u-psud.fr", "-654", 1, 3, "thomas", 2)
 insert into notification(sujet, contenu, vu, date_notification, id_collaborateur) values
 ("Bienvenue sur Plume", "Nous vous souhaitons la bienvenue sur l'intranet Plume", false, NOW(), 11),
 ("Bienvenue sur Plume", "Nous vous souhaitons la bienvenue sur l'intranet Plume", false, NOW(), 12);
+
+
+ALTER TABLE mission ADD column responsable int not null;
+ALTER TABLE mission ADD constraint fk_missionResponsable foreign key(responsable) references collaborateur(id) on delete cascade ;
+
+
+Alter table collaborateur modify nb_jours_restants real ;
+Alter table conge add column nb_jours_choisis real not null ;
+Alter table conge add constraint ck_conge CHECK (nb_jours_choisis>=0.5);

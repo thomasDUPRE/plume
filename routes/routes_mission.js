@@ -49,11 +49,13 @@ module.exports = function(app) {
     
     });
 
+    // Récupérer les détails d'une mission à partir de son identifiant
     app.get('/missions', function(req, res) {
 
         if (typeof req.query !== 'undefined' && req.query) {
             
-            if (req.query.id) {     
+            if (doesParamExist(req.query.id)) {     
+                
                 var data = {
                     id : req.query.id
                 };
@@ -69,37 +71,21 @@ module.exports = function(app) {
         else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
     });
 
+
+    // Récupérer les identifiants des missions d'un collaborateur à partir de l'ID du collaborateur
     app.get('/getMissions', function(req, res) {
 
         if (typeof req.query !== 'undefined' && req.query) {
             
-            if (req.query.idCollabo) {
+            if (doesParamExist(req.query.idCollabo)) {
                
                 var data = {
                     id_collaborateur : req.query.idCollabo
                 };
 
-                MissionCRUD.recupererIDMissions(data, function callback(result) {
+                MissionCRUD.recupererMissions(data, function callback(result) {
                     //console.log("Missions :" + JSON.stringify(result));
                     // Send result to the browser
-                   /* for (var i = 0, len = result.length; i < len; i++) {
-                        var data1 = {
-                            id : result[i]
-                        }; 
-                        var a;
-                        NoteDeFraisCRUD.recupererMesMissions(data1, function callback(vals) {
-                            //console.log(JSON.stringify(vals[0]));
-                            //allmissions.push(new Mission(vals[0].id, vals[0].nom, vals[0].description, vals[0].date_debut, vals[0].date_fin));
-                            allmissions.push(vals[0]);
-                            if(i == len) {
-                                console.log(JSON.stringify(vals[0]));
-                                console.log(allmissions.length);                                
-                            }
-                        });  
-                        //console.log(a);
-                        //allmissions.push(a);
-                    }      
-                    //console.log(allmissions.length);*/
                     res.send(JSON.stringify(result));
                 });
             
@@ -113,18 +99,18 @@ module.exports = function(app) {
     });
 
 
-    // Les collaborateurs qui font partie de la mission idMission
+    // Récupérer les collaborateurs qui font partie de la mission idMission
     app.get('/getCollabos', function(req, res) {
 
         if (typeof req.query !== 'undefined' && req.query) {
             
-            if (req.query.idMission) {
+            if (doesParamExist(req.query.idMission)) {
                
                 var data = {
                     id_mission : req.query.idMission
                 };
                 
-                MissionCRUD.recupererIDCollaborateurs(data, function callback(result) {
+                MissionCRUD.recupererCollaborateurs(data, function callback(result) {
                     // Send result to the browser
                     res.send(JSON.stringify(result));
                 });
@@ -139,19 +125,48 @@ module.exports = function(app) {
     });
 
 
+    // Assigner une mission à un collaborateur
+    app.post('/AssignerMission', function(req, res) {
+
+        if (req.body && req.body.length !== 0) {
+            
+            if (req.body.idMission && req.body.idCollabo &&
+                req.body.date_debut && req.body.date_fin) {
+               
+                var data = {
+                    id_collaborateur : req.body.idCollabo,
+                    id_mission : req.body.idMission,
+                    date_debut : req.body.date_debut,
+                    date_fin : req.body.date_fin
+                };
+                
+                MissionCRUD.assignerMissionCollaborateurs(data, function callback(result) {
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
+
+            }
+            // Display error
+            else res.send(JSON.stringify(new Erreur("ParamErreur", "Les paramètres ne sont pas corrects")));
+         }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
+
+    });
     
     app.post('/modifierMission', function(req, res) {
         if (req.body && req.body.length !== 0) {
             
             if (req.body.id && req.body.nom && req.body.description &&
-                req.body.date_debut && req.body.date_fin) {
+                req.body.date_debut && req.body.date_fin && req.body.responsable) {
                 
                 var selector = {id : req.body.id };
                 var data = {
                     nom : req.body.nom,
                     description : req.body.description,
                     date_debut : req.body.date_debut,
-                    date_fin : req.body.date_fin
+                    date_fin : req.body.date_fin,
+                    responsable : req.body.responsable
                 };
                 // Operation
                 MissionCRUD.modifierMission(selector, data, function callback(result) {

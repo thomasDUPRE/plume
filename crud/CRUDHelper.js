@@ -11,7 +11,7 @@ class CRUDHelper {
             connectionLimit : 10,
             host     : 'localhost',
             user     : 'root',
-            password : '',
+            password : 'root',
             database : 'plume',
             debug    :  false
         });

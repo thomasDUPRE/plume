@@ -44,7 +44,7 @@ module.exports = function(app) {
      
     });
 
-
+    // Récupérer les notes de frais d'un collaborateur avec son ID
     app.get('/getNDF', function(req, res) {
 
         if (typeof req.query !== 'undefined' && req.query) {
@@ -52,7 +52,7 @@ module.exports = function(app) {
             if (req.query.id) {
                
                 var data = {
-                    id : req.query.id
+                    id_collaborateur : req.query.id
                 };
                 
                 NoteDeFraisCRUD.recupererNoteDeFrais(data, function callback(result) {

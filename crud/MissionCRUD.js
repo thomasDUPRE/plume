@@ -5,13 +5,14 @@ var CRUDHelper = require('./CRUDHelper');
 var Validation = require('./beans/Validation');
 var Erreur = require('./beans/Erreur');
 var Mission = require('./beans/Mission');
+var MissionCollabo = require('./beans/MissionCollaborateur');
 
 class MissionCRUD {
 
 /*** Partie Missions ***/
 
     // Récuperation des id des missions d'un collaborateur
-    static recupererIDMissions(data, callback){
+    static recupererMissions(data, callback){
         var helper = new CRUDHelper();
         helper.getTable('missions_collaborateurs').load(data, function (err, vals) {
             //mysql callback
@@ -19,7 +20,7 @@ class MissionCRUD {
 
             if (!err) {
                 for (var i = 0, len = vals.length; i < len; i++) {
-                    result.push(vals[i].id_mission);
+                    result.push(new MissionCollabo(vals[i].id_collaborateur, vals[i].id_mission, vals[i].date_debut_mission, vals[i].date_fin_mission));
                 }
             }
             else
@@ -29,7 +30,7 @@ class MissionCRUD {
     }
 
     // Récuperation des id des collaborateurs d'une mission
-    static recupererIDCollaborateurs(data, callback){
+    static recupererCollaborateurs(data, callback){
         var helper = new CRUDHelper();
         helper.getTable('missions_collaborateurs').load(data, function (err, vals) {
             //mysql callback
@@ -37,7 +38,7 @@ class MissionCRUD {
 
             if (!err) {
                 for (var i = 0, len = vals.length; i < len; i++) {
-                    result.push(vals[i].id_collaborateur);
+                    result.push(new MissionCollabo(vals[i].id_collaborateur, vals[i].id_mission, vals[i].date_debut_mission, vals[i].date_fin_mission));
                 }
             }
             else
@@ -51,10 +52,13 @@ class MissionCRUD {
         var helper = new CRUDHelper();
         helper.getTable('mission').load(data, function (err, vals) {
             //mysql callback
-            var result;
-            if (!err)
+            var result = [];
+            if (!err) {
                 //result = vals;
-                result = new Mission(vals[0].id, vals[0].nom, vals[0].description, vals[0].date_debut, vals[0].date_fin);
+                for (var i = 0, len = vals.length; i < len; i++) {
+                    result.push(new Mission(vals[i].id, vals[i].nom, vals[i].description, vals[i].date_debut, vals[i].date_fin, vals[i].responsable));
+                }
+            }    
             else
                 result = new Erreur("RecupMissionsErreur", err);
             callback(result);
@@ -71,6 +75,19 @@ class MissionCRUD {
                 result = new Validation("CreerMissionValidation", "La mission a bien été créée");
             else
                 result = new Erreur("CreerMissionErreur", err);
+            callback(result);
+        });
+    }
+
+    static assignerMissionCollaborateurs(data, callback) {
+        var helper = new CRUDHelper();
+        helper.getTable('missions_collaborateurs').create(data, function (err) {
+            //mysql callback
+            var result;
+            if (!err)
+                result = new Validation("AssignerMissionValidation", "La mission a bien été assignée");
+            else
+                result = new Erreur("AssignerMissionErreur", err);
             callback(result);
         });
     }

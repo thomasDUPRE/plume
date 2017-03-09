@@ -8,13 +8,14 @@
     <link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+     <link href="../build/css/custom.min.css" rel="stylesheet">
 
         <!-- page content -->
         
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Congés</h3>
+                <h3>Validation de conges </h3>
               </div>
 
             </div>
@@ -41,14 +42,19 @@
                   </div>
                   <div class="x_content">
 
-                        <table id="datatable-buttons" class="table table-striped table-bordered">
+                        <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
                           <tr>
+                            <th>Collaborateur </th>
+                            <th>Service </th>
+                            <th>Date de la demande</th>
                             <th>Motif</th>
                             <th>Date de début</th>
                             <th>Date de fin</th>
+                            <th>Jours choisis</th>
+                            <th>Jours restants</th>
                             <th>Statut</th>
-                            <th></th>
+                            <th>Congé payé</th>
                             <th>operation</th>
                           </tr>
                         </thead>
@@ -58,8 +64,13 @@
                             <td>15/03/2016</td>
                             <td>19/05/2016</td>
                             <td>Invalidé Cs</td>
-                            <td></td>
-                            <td></td>
+                            <td>0</td>
+                             <td>0</td>
+                              <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
                           </tr>
                          
                         </tbody>
@@ -91,72 +102,32 @@
     <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
 
 
+
     <script type="text/javascript">
       $(document).ready(function(){
 
-          var handleDataTableButtons = function() {
-            if ($("#datatable-buttons").length) {
-            $("#datatable-buttons").DataTable({
-              dom: "Bfrtip",
-              buttons: [
-                 {
-                    text : "Demander un congé",
-                    action : function () {
-                       $("#pageInterne").load("demandeConge.html");     
-                    }
-                
-                 }
-            
-              ],
+           $("#datatable-responsive").DataTable({
+              
               responsive: true
             });
-            }
-          };
 
-          TableManageButtons = function() {
-            "use strict";
-            return {
-            init: function() {
-              handleDataTableButtons();
-            }
-            };
-          }();
+           $.get("/name", function(data, status)
+         {
+           profile = JSON.parse(data);
+            if (profile.service.nom == "RH") 
+                {
+                  //tous les demandes(sauf les siens) en Etat validé CS
 
-          $('#datatable').dataTable();
+                }
 
-          $('#datatable-keytable').DataTable({
-            keys: true
-          });
+            if (profile.role.nom =="Chef de service") 
+                {
+                    //tous les demandes de son service en Etat envoyé 
 
-          $('#datatable-responsive').DataTable();
-
-          $('#datatable-scroller').DataTable({
-            ajax: "js/datatables/json/scroller-demo.json",
-            deferRender: true,
-            scrollY: 380,
-            scrollCollapse: true,
-            scroller: true
-          });
-
-          $('#datatable-fixed-header').DataTable({
-            fixedHeader: true
-          });
-
-          var $datatable = $('#datatable-checkbox');
-
-          $datatable.dataTable({
-            'order': [[ 1, 'asc' ]],
-            'columnDefs': [
-            { orderable: false, targets: [0] }
-            ]
-          });
-          $datatable.on('draw.dt', function() {
-            $('checkbox input').iCheck({
-            checkboxClass: 'icheckbox_flat-green'
-            });
-          });
-
-          TableManageButtons.init();
+                }
+            
+         });
+        
       });
 
     </script>
