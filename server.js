@@ -22,6 +22,7 @@ require('./routes/routes_mission')(app);
 require('./routes/routes_ldf')(app);
 require('./routes/routes_ndf')(app);
 require('./routes/routes_andf')(app);
+require('./routes/routes_notification')(app);
 require('./routes/routes_autres')(app);
 
 

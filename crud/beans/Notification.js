@@ -8,7 +8,6 @@ class Notification{
         this.contenu = contenu;
         this.date_notification = date_notification;
         this.vu = vu;
-
     }
 }
 module.exports = Notification;

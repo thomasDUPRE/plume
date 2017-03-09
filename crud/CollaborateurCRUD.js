@@ -37,7 +37,25 @@ class CollaborateurCRUD{
             helper.close();
         });
     }
+    static selectNomsCollaborateurs(selector, callback) {
+        var helper = new CRUDHelper();
+        var noms = [];
 
+        helper.getTable('collaborateur').load(selector, function (err, vals) {
+            //mysql callback
+
+            if (!err) {
+                vals.forEach(function (collaborateur) {
+                    noms.push(collaborateur.prenom + " " + collaborateur.nom);
+                });
+                callback(vals);
+            }
+            else
+                callback(new Erreur("selectCollaborateursErreur", err));
+            helper.close();
+
+        });
+    }
     static selectCollaborateurs(selector, callback){
         var helper = new CRUDHelper();
 

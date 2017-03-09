@@ -9,6 +9,8 @@
 
     <title>Plume </title>
 
+
+
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -58,6 +60,7 @@
            });
            // Chefs de service
            $.get("/collaborateurs?role=2", function (data) {
+
              var chefsservice = JSON.parse(data).data;
              chefsservice.forEach(function (element) {
                $("#liste-chefs-service").append('<tr>' +
@@ -73,6 +76,7 @@
                        '</tr>');
                drawTables("#chef",false,loadAjoutCollab);
              });
+
            });
            $.get("/selectservices", function (data) {
              var services = JSON.parse(data).data;
@@ -89,13 +93,17 @@
              });
              drawTables("#service",true,loadAjoutService);
            });
+
          }
+
          function loadDemandeConge() {
            $('#pageInterne').load('demandeConge.html');
          }
+
          function loadDemandeNFrais() {
            $('#pageInterne').load('demandeNFrais.html');
          }
+
          function loadNFraisDetail() {
            $('#pageInterne').load('notes_de_frais.html');
          }
@@ -109,9 +117,12 @@
          function loadCongesDetail() {
            $('#pageInterne').load('conges.html');
          }
+
+
          function loadDemandeAvance() {
            $('#pageInterne').load('demandeAvance.html');
          }
+
          function loadAjoutCollab() {
            $('#pageInterne').load('adminAjoutCollab.html');
            $.get("/selectroles", function (data) {
@@ -119,14 +130,19 @@
              roles.forEach(function (element) {
                $("#collaborateur-liste-role").append('<option value="' + element.id + '">' + element.nom + '</option>');
              });
+
            });
+
            $.get("/selectservices", function (data) {
              var services = JSON.parse(data).data;
              services.forEach(function (element) {
                $("#collaborateur-liste-service").append('<option value="' + element.id + '">' + element.nom + '</option>');
              });
+
            });
+
          }
+
          function loadAjoutService() {
            $('#pageInterne').load('adminAjoutService.html');
          }
@@ -187,6 +203,11 @@
 
     </script>
 
+    <style type="text/css">
+      .notification_vu{
+        background-color:white;
+      }
+    </style>
   </head>
 
   <body class="nav-md">
@@ -320,11 +341,15 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profil</a></li>
-
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Deconnexion</a></li>
-
-
+                    <li><a href="javascript:;"> Profile</a></li>
+                    <li>
+                      <a href="javascript:;">
+                        <span class="badge bg-red pull-right">50%</span>
+                        <span>Settings</span>
+                      </a>
+                    </li>
+                    <li><a href="javascript:;">Help</a></li>
+                    <li><a href="/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
 
@@ -334,6 +359,54 @@
                     <span class="badge bg-green" id="number-notifications">0</span>
                   </a>
                   <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                    <li>
+                      <a>
+                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
                     <li>
                       <div class="text-center">
                         <a onclick="loadTableauBord();" id="see-all-alerts">

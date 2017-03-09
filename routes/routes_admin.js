@@ -19,10 +19,6 @@ module.exports = function(app) {
     }
 // --- Admin
 // Login
-// TODO : Yassine
-    app.get('/admin', function(req, res) {});
-
-
     // Collaborateur
     app.get('/inserercollaborateur', function(req, res) {
 
