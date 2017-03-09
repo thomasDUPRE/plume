@@ -24,8 +24,9 @@ module.exports = function(app) {
     app.post('/insererLDF', function(req, res) {
         if (req.body && req.body.length !== 0) {
             
-            if (req.body.id_categorie_frais && req.body.id_etat_ligne_frais &&
-                req.body.id_note_frais && req.body.id_mission && req.body.justificatif) {
+            if (doesParamExist(req.body.id_categorie_frais) && doesParamExist(req.body.id_etat_ligne_frais) 
+            && doesParamExist(req.body.id_note_frais) && doesParamExist(req.body.id_mission) 
+            && doesParamExist(req.body.justificatif)) {
                 
                 var data = {
                     id_categorie_frais : req.body.id_categorie_frais,
@@ -50,7 +51,7 @@ module.exports = function(app) {
 
     app.post('/insererCatLDF', function(req, res) {
         if (req.body && req.body.length !== 0) {
-            if (req.body.nom) {
+            if (doesParamExist(req.body.nom)) {
                 var data = {
                     nom : req.body.nom
                 };
@@ -70,7 +71,7 @@ module.exports = function(app) {
 
     app.post('/insererEtatLDF', function(req, res) {
         if (req.body && req.body.length !== 0) {
-            if (req.body.nom) {
+            if (doesParamExist(req.body.nom)) {
                 var data = {
                     nom : req.body.nom
                 };
@@ -169,8 +170,9 @@ module.exports = function(app) {
     app.post('/modifierLDF', function(req, res) {
         if (req.body && req.body.length !== 0) {
             
-            if (req.body.id && req.body.id_categorie_frais && req.body.id_etat_ligne_frais &&
-                req.body.id_note_frais && req.body.id_mission && req.body.justificatif) {
+            if (doesParamExist(req.body.id) && doesParamExist(req.body.id_categorie_frais) && doesParamExist(req.body.id_etat_ligne_frais)
+             && doesParamExist(req.body.id_note_frais) && doesParamExist(req.body.id_mission) 
+             && doesParamExist(req.body.justificatif)) {
                 
                 var selector = { id : req.body.id };
                 var data = {
@@ -197,9 +199,10 @@ module.exports = function(app) {
 
     app.post('/ModifierEtatLDF', function(req, res) {
         if (req.body && req.body.length !== 0) {
-            if (req.body.id && req.body.nom) {
+            if (doesParamExist(req.body.id) && doesParamExist(req.body.id_etat_ligne_frais)) {
+
                 var selector = { id : req.body.id };
-                var data = { nom : req.body.nom };
+                var data = { id_etat_ligne_frais : req.body.id_etat_ligne_frais };
                 // Operation
                 LigneDeFraisCRUD.modifierEtatLDF(selector, data, function callback(result) {
                     // Send result to the browser
@@ -216,9 +219,9 @@ module.exports = function(app) {
 
     app.post('/ModifierCatLDF', function(req, res) {
         if (req.body && req.body.length !== 0) {
-            if (req.body.id && req.body.nom) {
+            if (doesParamExist(req.body.id) && doesParamExist(req.body.id_categorie_frais)) {
                 var selector = { id : req.body.id };
-                var data = { nom : req.body.nom };
+                var data = { id_categorie_frais : req.body.id_categorie_frais };
                 // Operation
                 LigneDeFraisCRUD.modifierCatLDF(selector, data, function callback(result) {
                     // Send result to the browser

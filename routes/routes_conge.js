@@ -47,14 +47,14 @@ app.get('/selectConge', function (req, res) {
                 var data = {
                     date_demande: new Date() ,
                     date_debut : req.body.date_debut,
-                    part_matin : req.body.part_matin,
-                    revient_matin : false,
-                    est_paye : false,
-                    motif : req.body.motif,
                     date_fin : req.body.date_fin,
-                    nb_jours_choisis: req.body.nb_jours_pris,
+                    est_paye : req.body.est_paye,
                     id_etat_conge: (req.body.action_to_do == "send") ? 2 : 1 ,
+                    motif : req.body.motif,
                     id_demandeur : req.session.profile.id ,
+                    nb_jours_choisis: req.body.nb_jours_pris,
+                    part_matin : req.body.part_matin,
+                    revient_matin : req.body.revient_matin,
                 };
                 var CongeCRUD = require('../crud/CongeCRUD');
 
@@ -198,5 +198,30 @@ res.send(table);
         }
         // Display Error
         else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
+    });
+
+
+
+    app.post('/modifierEtatConge', function(req, res) {
+        if (req.body && req.body.length !== 0) {
+            
+            if (req.body.id && req.body.id_etat_conge) {
+                
+                var selector = { id : req.body.id };
+                var data = {
+                    id_etat_conge: req.body.id_etat_conge
+                };
+               // Operation
+                CongeCRUD.modifierEtatConge(selector, data, function callback(result) {
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
+            }
+            // Display error
+            else res.send(JSON.stringify(new Erreur("congeErreur", "Les paramètres ne sont pas corrects")));
+        }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("CongeErreur", "La requête est vide")));
+     
     });
 }
