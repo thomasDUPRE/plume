@@ -17,7 +17,6 @@ class MissionCRUD {
         helper.getTable('missions_collaborateurs').load(data, function (err, vals) {
             //mysql callback
             var result = [];
-
             if (!err) {
                 for (var i = 0, len = vals.length; i < len; i++) {
                     result.push(new MissionCollabo(vals[i].id_collaborateur, vals[i].id_mission, vals[i].date_debut_mission, vals[i].date_fin_mission));
