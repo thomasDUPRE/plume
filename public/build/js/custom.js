@@ -1614,9 +1614,10 @@ if (typeof NProgress != 'undefined') {
 			  type: typeMessage,
 			  text: message,
 			  delay: 2000,
-			  nonblock: {
-				  nonblock: true
-			  },
+			  hide: true,
+			  // nonblock: {
+				 //  nonblock: true
+			  // },
 			  addclass: '',
 			  styling: 'bootstrap3',
 			  hide: false,

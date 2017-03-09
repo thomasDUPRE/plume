@@ -14,13 +14,7 @@
     <link href="../vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
     <link src="../vendors/switchery/dist/switchery.css"></link>
     <link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
-
-     <!-- PNotify -->
-    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="../vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
-
-    
+   
     
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
@@ -187,10 +181,8 @@
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="../vendors/dropzone/dist/min/dropzone.min.js"></script>
     <script src="../vendors/switchery/dist/switchery.min.js"></script>
-      <!-- PNotify -->
-    <script src="../vendors/pnotify/dist/pnotify.js"></script>
-    <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="../vendors/pnotify/dist/pnotify.nonblock.js"></script>
+    <script src="../javascripts/bootstrap-notify.js"></script>
+     <script src="../build/js/scripts.js"></script>
 
 
     <script type="text/javascript">
@@ -203,42 +195,12 @@
         var is_paye = 0  ;
         var action ;
 
-         function jourOuvrables (dateDebut,dateFin,departMatin,retourMatin) 
-          {
-           
-           jour= 0.0;
-           momentFin = moment(dateFin,'DD/MM/YYYY');
-           momentDebut = moment(dateDebut,'DD/MM/YYYY');
-          
-                   
-           while (momentDebut < momentFin)
-           {
-               
-              if (momentDebut.isoWeekday() != 6 &&  momentDebut.isoWeekday() != 7 )
-                 {
-                  jour +=1 ;
-                }
-               momentDebut = momentDebut.add(1,'days');
-              
-           }
-
-           if(departMatin == 1 && retourMatin == 0  )
-             {
-               jour += 0.5;
-             }
-
-            if(departMatin == 0 && retourMatin == 1 && jour > 0 )
-             {
-               jour -= 0.5;
-             }
-
-         
-           return jour ;
-          }
+        
 
           function checkSoldeConge () {
               if(is_paye == 1 && jour_restant<jour_pris)
-               alert("Attention le nombre de jours choisis est supérieur à ce qui vous reste ");
+               notifier("warning","<span class='fa fa-exclamation-triangle'> Attention le nombre de jours choisi est supérieur à ce qui vous reste !",null);
+             
           }
         
         $(document).ready(function(){
@@ -354,15 +316,16 @@
             departMatin = radioValue("time-depart") ;
             retourMatin = radioValue("time-retour")
                      
-            if (jour_pris > 0  )    
+            if (jour_pris > 0 )    
                                         
                { 
-                  debut = moment($("#date_debut").val(),'DD/MM/YYYY');
-                  fin = moment($("#date_fin").val(),'DD/MM/YYYY');
+                  debut = moment($("#date_debut").val(),'DD-MM-YYYY');
+                  fin = moment($("#date_fin").val(),'DD-MM-YYYY');
                   $.ajax({
                           url: '/insererConge',
                           type: 'POST',
                           dataType: 'json',
+                          async:false,
                           data: {
                              date_debut : debut.format() ,
                              part_matin : departMatin ,
@@ -374,9 +337,15 @@
                              action_to_do : action 
                           },
                           success: function(response) {
-                            //if (response.type == "CreerConge")
-
-                             //  $("#pageInterne").load("conges.html");
+                            if (response.type == "CreerConge")
+                            {
+                               notifier("success","<span class='fa fa-check'> "+response.message,null);
+                             
+                              setTimeout(function() {
+                                     $("#pageInterne").load("conges.html");
+                                }, 3000);  
+                             
+                            }
                           }
                       });
                  
@@ -386,7 +355,7 @@
                 else
                   {
                     
-                    alert("Le nombre de jour choisi est nul!");
+                    notifier("danger","<span class='fa fa-exclamation-triangle'> Le nombre de jour choisi est nul!",null);
                  
                  }
            
