@@ -24,11 +24,14 @@ module.exports = function(app) {
     app.post('/insererNDF', function(req, res) {
         if (req.body && req.body.length !== 0) {
             
-            if (req.body.date_saisie && req.body.id_collaborateur) {
+            if (req.body.date_saisie && req.body.id_collaborateur
+            && req.body.mois && req.body.annee) {
                 
                 var data = {
                     date_saisie: req.body.date_saisie,
-                    id_collaborateur: req.body.id_collaborateur
+                    id_collaborateur: req.body.id_collaborateur,
+                    mois : req.body.mois,
+                    annee : req.body.annee
                 };
                // Operation
                 NoteDeFraisCRUD.creerNoteDeFrais(data, function callback(result) {
@@ -49,10 +52,12 @@ module.exports = function(app) {
 
         if (typeof req.query !== 'undefined' && req.query) {
             
-            if (req.query.id) {
+            if (doesParamExist(req.query.id) && doesParamExist(req.query.mois) && doesParamExist(req.query.annee)) {
                
                 var data = {
-                    id_collaborateur : req.query.id
+                    id_collaborateur : req.query.id,
+                    mois : req.query.mois,
+                    annee : req.query.annee
                 };
                 
                 NoteDeFraisCRUD.recupererNoteDeFrais(data, function callback(result) {
@@ -72,12 +77,15 @@ module.exports = function(app) {
     
     app.post('/modifierNDF', function(req, res) {
         if (req.body && req.body.length !== 0) {
-            if (req.body.id && req.body.date_saisie && req.body.id_collaborateur) {
+            if (req.body.id && req.body.date_saisie && req.body.id_collaborateur 
+            && req.body.mois && req.body.annee) {
                 
                 var selector = { id : req.body.id };
                 var data = {
                     date_saisie: req.body.date_saisie,
-                    id_collaborateur: req.body.id_collaborateur
+                    id_collaborateur: req.body.id_collaborateur,
+                    mois : req.body.mois,
+                    annee : req.body.annee
                 };
                // Operation
                 NoteDeFraisCRUD.modifierNoteDeFrais(selector, data, function callback(result) {

@@ -47,14 +47,16 @@ app.get('/selectConge', function (req, res) {
                 var data = {
                     date_demande: new Date() ,
                     date_debut : new Date(req.body.date_debut),
-                    part_matin : req.body.part_matin,
-                    revient_matin : false,
-                    est_paye : false,
-                    motif : req.body.motif,
                     date_fin : new Date(req.body.date_fin),
+                    part_matin : req.body.part_matin,
+                    revient_matin : req.body.revient_matin,
+                    est_paye : req.body.is_paye,
+                    motif : req.body.motif,
                     nb_jours_choisis: req.body.nb_jours_pris,
                     id_etat_conge: (req.body.action_to_do == "send") ? 2 : 1 ,
-                    id_demandeur : req.session.profile.id ,
+                    motif : req.body.motif,
+                    id_demandeur : req.session.profile.id 
+                    
                 };
                 var CongeCRUD = require('../crud/CongeCRUD');
 
@@ -189,5 +191,30 @@ app.get('/selectCongeService', function (req, res) {
         }
         // Display Error
         else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
+    });
+
+
+
+    app.post('/modifierEtatConge', function(req, res) {
+        if (req.body && req.body.length !== 0) {
+            
+            if (req.body.id && req.body.id_etat_conge) {
+                
+                var selector = { id : req.body.id };
+                var data = {
+                    id_etat_conge: req.body.id_etat_conge
+                };
+               // Operation
+                CongeCRUD.modifierEtatConge(selector, data, function callback(result) {
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
+            }
+            // Display error
+            else res.send(JSON.stringify(new Erreur("congeErreur", "Les paramètres ne sont pas corrects")));
+        }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("CongeErreur", "La requête est vide")));
+     
     });
 }

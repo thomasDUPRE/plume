@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Plume </title>
+
+
+
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -21,23 +24,28 @@
     <script src="../javascripts/jquery.js"></script>
 
      <script>
+
          function firstToUpperCase(str) {
            return str.substr(0, 1).toUpperCase() + str.substr(1);
          }
+
          function loadCalendar() {
            $('#pageInterne').load('calendar.html');
          }
+
          function loadCreateMission() {
            $('#pageInterne').load('creer_mission.html');
          }
+
          function loadAdminMainView() {
            $('#pageInterne').load('adminMainView.html');
            // Collaborateurs
            $.get("/collaborateurs?role=1", function (data) {
+
              var collaborateurs = JSON.parse(data).data;
              collaborateurs.forEach(function (element) {
                $("#liste-collaborateurs").append('<tr>' +
-                       ' <td>' + firstToUpperCase(element.nom.toLowerCase() ) + '</td>' +
+                       ' <td>' + firstToUpperCase(element.nom.toLowerCase()) + '</td>' +
                        '<td>' + firstToUpperCase(element.prenom.toLowerCase()) + '</td>' +
                        '<td>' + element.service.nom + '</td>' +
                        '<td>' + element.mail + '</td>' +
@@ -52,6 +60,7 @@
            });
            // Chefs de service
            $.get("/collaborateurs?role=2", function (data) {
+
              var chefsservice = JSON.parse(data).data;
              chefsservice.forEach(function (element) {
                $("#liste-chefs-service").append('<tr>' +
@@ -67,6 +76,7 @@
                        '</tr>');
                drawTables("#chef",false,loadAjoutCollab);
              });
+
            });
            $.get("/selectservices", function (data) {
              var services = JSON.parse(data).data;
@@ -83,13 +93,17 @@
              });
              drawTables("#service",true,loadAjoutService);
            });
+
          }
+
          function loadDemandeConge() {
            $('#pageInterne').load('demandeConge.html');
          }
+
          function loadDemandeNFrais() {
            $('#pageInterne').load('demandeNFrais.html');
          }
+
          function loadNFraisDetail() {
            $('#pageInterne').load('notes_de_frais.html');
          }
@@ -103,9 +117,12 @@
          function loadCongesDetail() {
            $('#pageInterne').load('conges.html');
          }
+
+
          function loadDemandeAvance() {
            $('#pageInterne').load('demandeAvance.html');
          }
+
          function loadAjoutCollab() {
            $('#pageInterne').load('adminAjoutCollab.html');
            $.get("/selectroles", function (data) {
@@ -113,19 +130,84 @@
              roles.forEach(function (element) {
                $("#collaborateur-liste-role").append('<option value="' + element.id + '">' + element.nom + '</option>');
              });
+
            });
+
            $.get("/selectservices", function (data) {
              var services = JSON.parse(data).data;
              services.forEach(function (element) {
                $("#collaborateur-liste-service").append('<option value="' + element.id + '">' + element.nom + '</option>');
              });
+
            });
+
          }
+
          function loadAjoutService() {
            $('#pageInterne').load('adminAjoutService.html');
          }
+
+
+         function loadTableauBord() {
+           $('#pageInterne').load('tableau_bord.html');
+           var pattern = 'MM-DD-YYYY hh:mm';
+           $.get("/selectnotifications", function (data) {
+             var notifications = JSON.parse(data).data;
+             notifications.reverse();
+             notifications.forEach(function (element) {
+               var date_not = element.date_notification.substring(0,16).replace("T", " ");
+               var date_time = date_not.substring(8,10)+"-"+date_not.substring(5,7)+"-"+date_not.substring(0,4) + " "+date_not.substring(11,16);
+                console.log(date_time);
+               $("#notification-liste").append(
+                       '<tr>'+
+                       '<td>'+element.sujet+'</td>'+
+                       '<td>'+element.contenu+'</td>'+
+                       '<td>'+date_time+'</td>'+
+                       '</tr>');
+             });
+
+           });
+
+
+           $.get("/vunotifications", function(data){
+             refreshNotifications();
+           });
+         }
+         function refreshNotifications() {
+           $("#menu1 .nouvelle_notification").remove();
+
+           $.get("/selectnotifications?vu=0", function (data) {
+             var jsonNotifications = JSON.parse(data).data;
+             console.log(data);
+             var nbNouvelleNotif = jsonNotifications.length;
+             if (nbNouvelleNotif == 0)  $('#number-notifications').removeClass('bg-green');
+             else $('#number-notifications').addClass('bg-green');
+             $('#number-notifications').html(nbNouvelleNotif);
+             jsonNotifications.reverse();
+             jsonNotifications.forEach(function (notification) {
+
+                 $('#menu1').prepend(' <li onclick="loadTableauBord();" class="nouvelle_notification">' +
+                         '<a>' +
+                         '<span class="image"><img src="../images/user.png" alt="Profile Image" /></span>' +
+                         '<span>' +
+                         '<span>Plume</span>' +
+                         ' </span>' +
+                         '<span class="message">' + notification.sujet + '</span>' +
+                         '</a>' +
+                         '</li>');
+
+             });
+           });
+         }
+
+
     </script>
 
+    <style type="text/css">
+      .notification_vu{
+        background-color:white;
+      }
+    </style>
   </head>
 
   <body class="nav-md">
@@ -259,18 +341,22 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profil</a></li>
-                                     
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Deconnexion</a></li>
-                
-
+                    <li><a href="javascript:;"> Profile</a></li>
+                    <li>
+                      <a href="javascript:;">
+                        <span class="badge bg-red pull-right">50%</span>
+                        <span>Settings</span>
+                      </a>
+                    </li>
+                    <li><a href="javascript:;">Help</a></li>
+                    <li><a href="/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
 
                 <li role="presentation" class="dropdown">
                   <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                     <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">6</span>
+                    <span class="badge bg-green" id="number-notifications">0</span>
                   </a>
                   <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                     <li>
@@ -323,8 +409,8 @@
                     </li>
                     <li>
                       <div class="text-center">
-                        <a>
-                          <strong>See All Alerts</strong>
+                        <a onclick="loadTableauBord();" id="see-all-alerts">
+                          <strong>Mes notifications</strong>
                           <i class="fa fa-angle-right"></i>
                         </a>
                       </div>
@@ -420,7 +506,7 @@
 
   <script type="text/javascript">
 
-    $(document).ready(function () 
+    $(document).ready(function ()
     {
 
       $('.admin-view').each(function(){
@@ -429,7 +515,7 @@
 
         $('.validation-conges').hide();
         $('.creation-mission').hide();
-      
+
 
       function firstToUpperCase( str ) {
         return str.substr(0, 1).toUpperCase() + str.substr(1);
@@ -453,8 +539,8 @@
               $(this).html("("+firstToUpperCase(profile.role["nom"].toLowerCase()) + " - " + profile.service["nom"].toUpperCase()+")");
             }
           });
-                    
-          if(profile.admin == true) 
+
+          if(profile.admin == true)
           {
 
             $('.admin-view').each(function() {
@@ -462,17 +548,61 @@
             });
           }
 
-          if(profile.service.nom == "RH" || profile.role.nom =="Chef de service") 
+          if(profile.service.nom == "RH" || profile.role.nom =="Chef de service")
             $('.validation-conges').show();
 
-          if(profile.role.nom =="Chef de service") 
+          if(profile.role.nom =="Chef de service")
             $('.creation-mission').show();
-            
+
       });
-        //alert("Data: " + data + "\nStatus: " + status);
+      //alert("Data: " + data + "\nStatus: " + status);
+      // Notification
+      refreshNotifications();
+      window.setInterval(function () {
+        refreshNotifications();
+      }, 30000);
+      var notificationsID = [];
+
+      function seeNotifications() {
+        // modifie notifacation en vu !
+        $.get("/vunotifications", function(data){
+          refreshNotifications();
+        });
+      }
+
+
+      function refreshNotifications() {
+        $("#menu1 .nouvelle_notification").remove();
+
+        $.get("/selectnotifications?vu=0", function (data) {
+          var jsonNotifications = JSON.parse(data).data;
+          console.log(data);
+          var nbNouvelleNotif = jsonNotifications.length;
+          if (nbNouvelleNotif == 0)  $('#number-notifications').removeClass('bg-green');
+          else $('#number-notifications').addClass('bg-green');
+          $('#number-notifications').html(nbNouvelleNotif);
+          jsonNotifications.reverse();
+          jsonNotifications.forEach(function (notification) {
+
+              $('#menu1').prepend(' <li onclick="loadTableauBord();" class="nouvelle_notification">' +
+                      '<a>' +
+                      '<span class="image"><img src="../images/user.png" alt="Profile Image" /></span>' +
+                      '<span>' +
+                      '<span>Plume</span>' +
+                      ' </span>' +
+                      '<span class="message">' + notification.sujet + '</span>' +
+                      '</a>' +
+                      '</li>');
+
+          });
+        });
+      }
+
+
+
+
+
     });
   </script>
-
-
   </body>
 </html>

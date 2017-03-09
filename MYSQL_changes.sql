@@ -58,15 +58,25 @@ insert into notification(sujet, contenu, vu, date_notification, id_collaborateur
 ("Bienvenue sur Plume", "Nous vous souhaitons la bienvenue sur l'intranet Plume", false, NOW(), 12);
 
 
-ALTER TABLE mission ADD column responsable int not null;
-ALTER TABLE mission ADD constraint fk_missionResponsable foreign key(responsable) references collaborateur(id) on delete cascade ;
-
 
 --Mamadou 08/03/2017
 Alter table collaborateur modify nb_jours_restants real ;
 Alter table conge add column nb_jours_choisis real not null ;
 Alter table conge add constraint ck_conge CHECK (nb_jours_choisis>=0.5);
+
 --Mamadou 09/03/2017
 drop table admin ;
 
 Alter table collaborateur add column admin boolean not null ;
+
+
+
+--09/03/2017 HK
+
+ALTER TABLE mission ADD column responsable int not null;
+ALTER TABLE mission ADD constraint fk_missionResponsable foreign key(responsable) references collaborateur(id) on delete cascade ;
+
+
+ALTER TABLE note_frais ADD column mois tinyint not null;
+ALTER TABLE note_frais ADD column annee year not null;
+ALTER TABLE note_frais DROP PRIMARY KEY, ADD PRIMARY KEY(id, mois, annee);

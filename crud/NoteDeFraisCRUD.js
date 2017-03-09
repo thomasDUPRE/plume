@@ -19,7 +19,7 @@ class NoteDeFraisCRUD {
             var result = [];
             if (!err) {
                 for (var i = 0, len = vals.length; i < len; i++) {
-                    result.push(new NoteDeFrais(vals[i].id, vals[i].date_saisie , vals[i].id_collaborateur));
+                    result.push(new NoteDeFrais(vals[i].id, vals[i].date_saisie , vals[i].id_collaborateur, vals[i].mois, vals[i].annee));
                 }
             }
             else

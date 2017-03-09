@@ -26,14 +26,16 @@ module.exports = function(app) {
     app.post('/insererMission', function(req, res) {
         if (req.body && req.body.length !== 0) {
             
-            if (req.body.nom && req.body.description &&
-                req.body.date_debut && req.body.date_fin) {
+            if (doesParamExist(req.body.nom) && doesParamExist(req.body.description) &&
+                doesParamExist(req.body.date_debut) && doesParamExist(req.body.date_fin) 
+                && doesParamExist(req.body.responsable)) {
                 
                 var data = {
                     nom : req.body.nom,
                     description : req.body.description,
                     date_debut : req.body.date_debut,
-                    date_fin : req.body.date_fin
+                    date_fin : req.body.date_fin,
+                    responsable : req.body.responsable
                 };
                 // Operation
                 MissionCRUD.creerMission(data, function callback(result) {
@@ -126,12 +128,12 @@ module.exports = function(app) {
 
 
     // Assigner une mission à un collaborateur
-    app.post('/AssignerMission', function(req, res) {
+    app.post('/assignerMission', function(req, res) {
 
         if (req.body && req.body.length !== 0) {
             
-            if (req.body.idMission && req.body.idCollabo &&
-                req.body.date_debut && req.body.date_fin) {
+            if (doesParamExist(req.body.idMission) && doesParamExist(req.body.idCollabo) &&
+                doesParamExist(req.body.date_debut) && doesParamExist(req.body.date_fin)) {
                
                 var data = {
                     id_collaborateur : req.body.idCollabo,
@@ -157,8 +159,9 @@ module.exports = function(app) {
     app.post('/modifierMission', function(req, res) {
         if (req.body && req.body.length !== 0) {
             
-            if (req.body.id && req.body.nom && req.body.description &&
-                req.body.date_debut && req.body.date_fin && req.body.responsable) {
+            if (doesParamExist(req.body.id) && doesParamExist(req.body.nom) 
+                && doesParamExist(req.body.description) && doesParamExist(req.body.date_debut) 
+                && doesParamExist(req.body.date_fin) && doesParamExist(req.body.responsable)) {
                 
                 var selector = {id : req.body.id };
                 var data = {
