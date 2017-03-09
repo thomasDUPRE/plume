@@ -155,8 +155,8 @@
              notifications.reverse();
              notifications.forEach(function (element) {
                var date_not = element.date_notification.substring(0,16).replace("T", " ");
-               var date_time = date_not.substring(8,10)+"-"+date_not.substring(5,7)+"-"+date_not.substring(0,4) + " "+date_not.substring(11,16);
-                console.log(date_time);
+               var date_time = date_not.substring(8,10)+"/"+date_not.substring(5,7)+"/"+date_not.substring(0,4) + " "+date_not.substring(11,16);
+               // console.log(date_time);
                $("#notification-liste").append(
                        '<tr>'+
                        '<td>'+element.sujet+'</td>'+
@@ -364,54 +364,6 @@
                   </a>
                   <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                     <li>
-                      <a>
-                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
                       <div class="text-center">
                         <a onclick="loadTableauBord();" id="see-all-alerts">
                           <strong>Mes notifications</strong>
@@ -483,7 +435,7 @@
       $.get("/name", function(data, status)
       {
           var profile = JSON.parse(data);
-          console.log()
+         // console.log()
           $('.profile-name').each(function() {
             $(this).html(firstToUpperCase(profile.prenom.toLowerCase()) + " " + firstToUpperCase(profile.nom.toLowerCase()));
             //console.log(JSON.stringify(profile));
@@ -535,7 +487,7 @@
 
         $.get("/selectnotifications?vu=0", function (data) {
           var jsonNotifications = JSON.parse(data).data;
-          console.log(data);
+          //console.log(data);
           var nbNouvelleNotif = jsonNotifications.length;
           if (nbNouvelleNotif == 0)  $('#number-notifications').removeClass('bg-green');
           else $('#number-notifications').addClass('bg-green');

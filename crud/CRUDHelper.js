@@ -10,7 +10,7 @@ class CRUDHelper {
         this.pool      =    mysql.createPool({
             connectionLimit : 10,
             host     : 'localhost',
-            user     : 'admin',
+            user     : 'root',
             password : '',
             database : 'plume',
             debug    :  false

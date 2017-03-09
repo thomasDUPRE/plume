@@ -100,8 +100,7 @@ module.exports = function(app) {
                 };
                 
                 LigneDeFraisCRUD.recupererLignesDeFrais(data, function callback(result) {
-                    // Send result to the browser
-                    res.send(JSON.stringify(result));
+                    res.send(JSON.stringify(result))
                 });
 
             }

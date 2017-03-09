@@ -27,7 +27,7 @@ module.exports = function(app) {
         if (req.body && req.body.length !== 0) {
             
             if (doesParamExist(req.body.nom) && doesParamExist(req.body.description) &&
-                doesParamExist(req.body.date_debut) && doesParamExist(req.body.date_fin) 
+                doesParamExist(req.body.date_debut) && doesParamExist(req.body.date_fin)
                 && doesParamExist(req.body.responsable)) {
                 
                 var data = {
@@ -35,12 +35,21 @@ module.exports = function(app) {
                     description : req.body.description,
                     date_debut : req.body.date_debut,
                     date_fin : req.body.date_fin,
-                    responsable : req.body.responsable
+                    responsable : req.session.profile.id
                 };
                 // Operation
                 MissionCRUD.creerMission(data, function callback(result) {
                     // Send result to the browser
-                    res.send(JSON.stringify(result));
+                    if(result instanceof Erreur)  res.send(JSON.stringify(result));
+
+                    else {
+                        MissionCRUD.recupererMesMissions({nom:req.body.nom}, function(mission){
+                            if(mission instanceof Erreur) res.send(JSON.stringify(mission));
+                            else {
+                                res.send(JSON.stringify({id:mission[0].id}));
+                            }
+                        })
+                    }
                 });
             }
             // Display error
@@ -128,18 +137,18 @@ module.exports = function(app) {
 
 
     // Assigner une mission à un collaborateur
-    app.post('/assignerMission', function(req, res) {
+    app.post('/AssignerMission', function(req, res) {
 
         if (req.body && req.body.length !== 0) {
             
-            if (doesParamExist(req.body.idMission) && doesParamExist(req.body.idCollabo) &&
-                doesParamExist(req.body.date_debut) && doesParamExist(req.body.date_fin)) {
+            if (req.body.id_mission && req.body.id_collaborateur &&
+                req.body.date_debut && req.body.date_fin) {
                
                 var data = {
-                    id_collaborateur : req.body.idCollabo,
-                    id_mission : req.body.idMission,
-                    date_debut : req.body.date_debut,
-                    date_fin : req.body.date_fin
+                    id_collaborateur :  parseInt(req.body.id_collaborateur),
+                    id_mission : parseInt(req.body.id_mission),
+                    date_debut_mission : req.body.date_debut,
+                    date_fin_mission : req.body.date_fin
                 };
                 
                 MissionCRUD.assignerMissionCollaborateurs(data, function callback(result) {
@@ -159,8 +168,8 @@ module.exports = function(app) {
     app.post('/modifierMission', function(req, res) {
         if (req.body && req.body.length !== 0) {
             
-            if (doesParamExist(req.body.id) && doesParamExist(req.body.nom) 
-                && doesParamExist(req.body.description) && doesParamExist(req.body.date_debut) 
+            if (doesParamExist(req.body.id) && doesParamExist(req.body.nom)
+                && doesParamExist(req.body.description) && doesParamExist(req.body.date_debut)
                 && doesParamExist(req.body.date_fin) && doesParamExist(req.body.responsable)) {
                 
                 var selector = {id : req.body.id };

@@ -21,31 +21,31 @@ module.exports = function(app) {
         else res.redirect('/');
     }
 
-    app.get('/inserernotification', function(req, res) {
+    app.post('/inserernotification', function(req, res) {
         setResponse(req, res, function(){
             var error = false;
-            if (typeof req.query !== 'undefined' && req.query) {
+            if (typeof req.body !== 'undefined' && req.body) {
                 // if the parameters are ok
-                if (doesParamExist(req.query.type) && doesParamExist(req.query.id) && doesParamExist(req.query.sujet) && doesParamExist(req.query.contenu)) {
+                if (doesParamExist(req.body.type) && doesParamExist(req.body.id) && doesParamExist(req.body.sujet) && doesParamExist(req.body.contenu)) {
                     var date_notification =  new Date().toISOString().slice(0, 19).replace('T', ' ');
                     console.log("date notification: "+date_notification);
                     var data = {
-                        sujet: req.query.sujet,
-                        contenu: req.query.contenu,
+                        sujet: req.body.sujet,
+                        contenu: req.body.contenu,
                         date_notification : date_notification,
                         vu: 0
                     }
-                    if(req.query.type == 'service'){
+                    if(req.body.type == 'service'){
                         // Envoyer notification à tous les collaborateurs du service
                         var selectorService = {
-                            id_service : req.query.id
+                            id_service : req.body.id
                         };
                         CollaborateurCRUD.selectCollaborateurs(selectorService, function(result){
                             if(result instanceof Erreur) { error = true; res.send(JSON.stringify(result));}
                             else{
                                 var callbacks = result.length;
                                 result.forEach(function(collaborateur){
-                                    NotificationCRUD.insererNotification({sujet: req.query.sujet, contenu: req.query.contenu, vu: 0, id_collaborateur: collaborateur.id}
+                                    NotificationCRUD.insererNotification({sujet: req.body.sujet, contenu: req.body.contenu, vu: 0, id_collaborateur: collaborateur.id}
                                     , function(result2){
                                         callbacks--;
                                         if(!error && callbacks<=0){
@@ -56,10 +56,10 @@ module.exports = function(app) {
                             }
                         });
                     }
-                    if(req.query.type == 'chef_service') {
+                    if(req.body.type == 'chef_service') {
                         // Envoyer notification à tous les collaborateurs du service
                         var selectorService = {
-                            id: req.query.id
+                            id: req.body.id
                         };
                         ServiceCRUD.selectServices(selectorService, function(result){
                             if(result instanceof Erreur) { error = true; res.send(JSON.stringify(result));}
@@ -71,9 +71,9 @@ module.exports = function(app) {
                             }
                         });
                     }
-                    else if(req.query.type == 'collaborateur'){
+                    else if(req.body.type == 'collaborateur'){
                         // Envoyer notification à un collaborateur
-                        data.id_collaborateur = req.query.id;
+                        data.id_collaborateur = req.body.id;
                         NotificationCRUD.insererNotification(data, function(result2){
                             res.send(JSON.stringify(result2));
                         });

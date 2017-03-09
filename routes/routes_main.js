@@ -19,7 +19,7 @@ module.exports = function(app) {
 
         // If user is connected
         if (typeof  req.session.profile !== 'undefined' && req.session.profile){
-            console.log("Profile: "+JSON.stringify(req.session.profile));
+            //console.log("Profile: "+JSON.stringify(req.session.profile));
             res.sendFile(path.join(__dirname, '..', 'views/home.html'));
         }
         else {
@@ -54,7 +54,7 @@ module.exports = function(app) {
                         }
                         else if(result.mot_de_passe == req.body.mot_de_passe){
                             req.session.profile = result.getCollaborateur();
-                            console.log("Password ok");
+                           // console.log("Password ok");
                             var path = require("path"),
                                 fs = require("fs");
                             res.send(JSON.stringify(new Validation("BonMotDePasse", "Connexion réalisée")));

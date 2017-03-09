@@ -26,7 +26,9 @@ module.exports = function(app) {
     // Collaborateurs
     app.get("/collaborateurs", function (req, res) {
         var selector = {};
+        if(req.query.service) selector.id_service = parseInt(req.query.service);
         if(req.query.role) selector.id_role = parseInt(req.query.role);
+        //console.log(selector);
         setResponse(req, res, function(){
             CollaborateurCRUD.selectCollaborateurs(selector, function(result){
                 res.send(JSON.stringify({data: result}));
@@ -79,7 +81,7 @@ module.exports = function(app) {
             var DemandeInfoCRUD = require('../crud/DemandeInfoCRUD');
 
             DemandeInfoCRUD.selectDemandes(selector, function callback(result) {
-                console.log("Result :" + JSON.stringify(result));
+               // console.log("Result :" + JSON.stringify(result));
                 // Send result to the browser
                 res.send(JSON.stringify(result));
             })
@@ -122,7 +124,7 @@ module.exports = function(app) {
                     id: req.query.id
                 };
                 DemandeInfoCRUD.supprimerDemande(selector, function callback(result){
-                    console.log("Result :" + JSON.stringify(result));
+                    //console.log("Result :" + JSON.stringify(result));
                     // Send result to the browser
                     res.send(JSON.stringify(result));
                 });
@@ -146,7 +148,8 @@ module.exports = function(app) {
                     nom : req.query.nom
                 };
                 CategorieDemande.insererCategorieDemande(data, function callback(result){
-                    console.log("Result :" + JSON.stringify(result));
+                    //
+                    // console.log("Result :" + JSON.stringify(result));
                     // Send result to the browser
                     res.send(JSON.stringify(result));
                 });
