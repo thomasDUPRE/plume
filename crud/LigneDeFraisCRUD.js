@@ -20,7 +20,7 @@ class LigneDeFraisCRUD {
             if(err1) { result = new Erreur("RecupLigneDeFrais", vals);  callback(result);}
             else {
                 var LDFcompteur = vals.length;
-
+                console.log(JSON.stringify(vals));
                 LigneDeFraisCRUD.recupererEtatLignesDeFrais({}, function(etats) {
                         LigneDeFraisCRUD.recupererCatLignesDeFrais({}, function (cats) {
                             console.log("Size : "+vals.length);
@@ -36,13 +36,25 @@ class LigneDeFraisCRUD {
                                 var id_ndf = vals[i].id_note_frais;
                                 var id_justi =vals[i].justificatif;
                                 var id_miss = vals[i].id_mission;
-                                    MissionCRUD.recupererMesMissions({id: id_miss}, function (missions) {
+                                var ldf = new LigneDeFrais(id, cat, etat, id_ndf, id_miss, id_justi);
+                                console.log(JSON.stringify(ldf));
+                                result.push(ldf);
+                                   /* MissionCRUD.recupererMesMissions({id: id_miss}, function (missions) {
                                         //console.log("mission: "+JSON.stringify(missions));
-                                    result.push(new LigneDeFrais(id, cat, etat, id_ndf, missions[0], id_justi));
+                                        var ldf = new LigneDeFrais(id, cat, etat, id_ndf, missions[0], id_justi);
+                                        console.log(JSON.stringify(ldf));
+                                        result.push(ldf);
+                                        i++;
+
                                     LDFcompteur--;
-                                    if (LDFcompteur <= 0) callback(result);
-                                });
+                                    if (LDFcompteur <= 0) {
+                                      ;
+                                        callback(result);
+                                    }
+                                });*/
+
                             }
+                            callback(result);
                         });
                 });
             }

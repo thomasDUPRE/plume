@@ -153,6 +153,8 @@
            $.get("/selectnotifications", function (data) {
              var notifications = JSON.parse(data).data;
              notifications.reverse();
+               if(notifications.length == 0) $('#notif_empty').text('Vous n\'avez pas de notifications');
+               else $('#notif_empty').text('');
              notifications.forEach(function (element) {
                var date_not = element.date_notification.substring(0,16).replace("T", " ");
                var date_time = date_not.substring(8,10)+"/"+date_not.substring(5,7)+"/"+date_not.substring(0,4) + " "+date_not.substring(11,16);
@@ -211,6 +213,9 @@
       .notification_vu{
         background-color:white;
       }
+       h5{
+           color:#ABB6BF;
+       }
     </style>
   </head>
 
@@ -237,7 +242,8 @@
               <div class="profile_info">
                 <span>Bonjour,</span>
                 <h2 class="profile-name"></h2>
-                <span class="profile-service"></span>
+                <h5 id="service"></h5>
+                  <h5 id="fonction"></h5>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -313,15 +319,7 @@
 
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" data-placement="top" title="">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="Plein ecran">
-                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="">
-                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-              </a>
+
               <a data-toggle="tooltip" data-placement="top" title="Deconnexion" href="/logout">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
@@ -345,15 +343,7 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profile</a></li>
-                    <li>
-                      <a href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a>
-                    </li>
-                    
-                    <li><a href="/logout"><i class="fa fa-sign-out pull-right"></i> Deconnexion</a></li>
+                    <li><a href="/logout"><i class="fa fa-sign-out pull-right"></i>Deconnexion</a></li>
                   </ul>
                 </li>
 
@@ -441,14 +431,19 @@
             //console.log(JSON.stringify(profile));
           });
 
-          $('.profile-service').each(function() {
+          if(profile.role["nom"] != "Dirigeant") {
+              $('#service').text("Service: " + profile.service["nom"].toUpperCase());
+          }
+          $('#fonction').text("Fonction: "+firstToUpperCase(profile.role["nom"]));
+
+          /*$('.profile-service').each(function() {
             if(profile.role["nom"] == "Dirigeant"){
               $(this).html("("+firstToUpperCase(profile.role["nom"].toLowerCase())+")");
             }
             else{
-              $(this).html("("+firstToUpperCase(profile.role["nom"].toLowerCase()) + " - " + profile.service["nom"].toUpperCase()+")");
+              $(this).html("("+firstToUpperCase(profile.role["nom"].toLowerCase()) + " - " + +")");
             }
-          });
+          });*/
 
                     
           if(profile.admin == true ) 
