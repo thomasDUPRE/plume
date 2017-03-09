@@ -1,23 +1,44 @@
  <!DOCTYPE html>
 <html lang="en">
-
-
+    
 <!-- Datatables -->
     <link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
-     <link href="../build/css/custom.min.css" rel="stylesheet">
 
         <!-- page content -->
-        
+ <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       
+        <h4 class="modal-title" id="myModalLabel">justificatif du refus :</h4>
+      </div>
+      <div class="modal-body">
+     <form>
+    <div class="form-group">
+      <label for="comment">Commentaire:</label>
+      <textarea class="form-control" rows="5" id="comment"></textarea>
+    </div>
+  </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="nogo" class="btn btn-default" >Close</button>
+        <button type="button" id="go" class="btn btn-primary" class="close" data-dismiss="modal" >Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Validation de conges </h3>
+                <h3>Mes missions</h3>
               </div>
 
+             
             </div>
 
             <div class="clearfix"></div>
@@ -25,56 +46,20 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="x_panel">
-                  <div class="x_title">
-                    <h2>congés pris <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                       
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    
-                    <div class="clearfix"></div>
-                  </div>
                   <div class="x_content">
 
-                        <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                        <thead>
-                          <tr>
-                            <th>Collaborateur </th>
-                            <th>Service </th>
-                            <th>Date de la demande</th>
+                    <table id="datatable-responsive" class="table table-striped table-bordered table-bordered nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                       <th>Collaborateur </th>
                             <th>Motif</th>
                             <th>Date de début</th>
                             <th>Date de fin</th>
-                            <th>Jours choisis</th>
-                            <th>Jours restants</th>
-                            <th>Statut</th>
                             <th>Congé payé</th>
-                            <th>operation</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Congé maladie</td>
-                            <td>15/03/2016</td>
-                            <td>19/05/2016</td>
-                            <td>Invalidé Cs</td>
-                            <td>0</td>
-                             <td>0</td>
-                              <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                          </tr>
-                         
-                        </tbody>
-                   </table> 
+                              <th>Actions</th>
+                        </tr>
+                      </thead>
+                 </table> 
 
                   </div>
                 </div>
@@ -102,28 +87,146 @@
     <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
 
 
+ <script type="text/javascript">
+     function getName(id_collab){
+          var return_value;
 
-    <script type="text/javascript">
+          $.ajax({
+                    url :"/selectCollaborateurs",
+                    type:'GET',
+                    dataType: 'json',
+                    data: {id: id_collab},
+                    async: false,
+
+                    success: function(doc){
+                      return_value = doc["data"][0]["prenom"];
+                      return_value = return_value + " " + doc["data"][0]["nom"];
+                    }
+          });
+          return return_value;
+           }
+
+
+       function valid(id,etat){
+        
+         $.ajax({
+                            type: "GET",
+                            url: '/modifierConge',
+                            data: {id: id , stat : etat},
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            cache: false,
+
+                            success: function (data) {
+                            },
+                        });
+           $('#pageInterne').load('validation_conge.html');
+         
+};
+       function refuse(id,state){
+       
+$('#myModal').modal('show');
+
+ go.addEventListener("click", function() {
+                                console.log("paaaaaaaaaaaaaaaaaa");
+
+                             $.ajax({
+                            type: "GET",
+                            url: '/modifierConge',
+                            data: {id: id , stat : state  , comment : ($( "#comment" ).val()) },
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            cache: false,
+
+                            success: function (data) {
+                              $('#myModal').modal('hide');
+                            },
+                        });
+
+
+}, false);      
+  nogo.addEventListener("click", function() {
+$('#myModal').modal('hide');
+
+
+}, false);
+
+};
+
+
       $(document).ready(function(){
-
-           $("#datatable-responsive").DataTable({
-              
+       
+           $("#datatable-responsive").DataTable({    
               responsive: true
             });
 
            $.get("/name", function(data, status)
          {
            profile = JSON.parse(data);
+
             if (profile.service.nom == "RH") 
                 {
                   //tous les demandes(sauf les siens) en Etat validé CS
+                  $.ajax({
+
+                            type: "GET",
+                            url: '/selectConge',
+                            data: {},
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            cache: false,
+
+                            success: function (data) {
+
+                              $(data).each(function(){
+
+                               if($(this)[0]["id_etat_conge"]=="5")
+                               {
+                               var trHTML = '';
+                                trHTML += '<tr><td>' + $(this)[0].id_demandeur + '</td><td>' + $(this)[0].motif + '</td><td>' + $(this)[0].dateDebut + '</td><td>' + $(this)[0].dateFin + '</td><td>' + $(this)[0].estPaye + '</td><td>'+ '<button onclick="valid('+this.id+',6)" id='+this.id+' type="buttonValid" class="btn btn-success btn-small"></i>Valider</button><button onclick="refuse('+this.id+',4)" id='+this.id+' class="btn btn-danger btn-small"></i>Refuser</button></td></tr>';
+                                $('#datatable-responsive').append(trHTML);       
+                                   $( "#datatable-responsive" ).DataTable();
+                                }
+
+
+                              })
+
+                            },
+                        });
+                        
 
                 }
 
-            if (profile.role.nom =="Chef de service") 
+            if (profile.service.chef_service==profile.id) 
                 {
-                    //tous les demandes de son service en Etat envoyé 
+                   $.ajax({
 
+                            type: "GET",
+                            url: '/selectCongeServ',
+                            data: {id_service: profile.service.id , bool :"1"},
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            cache: false,
+
+                            success: function (data) {
+
+                              $(data).each(function(){
+
+                               if($(this)[0]["id_etat_conge"]=="2")
+                               {
+                               var trHTML = '';
+                                trHTML += '<tr><td>' + $(this)[0].id_demandeur + '</td><td>' + $(this)[0].motif + '</td><td>' + $(this)[0].dateDebut + '</td><td>' + $(this)[0].dateFin + '</td><td>' + $(this)[0].estPaye + '</td><td>'+ '<button onclick="valid('+this.id+',5)" id='+this.id+' type="buttonValid" class="btn btn-success btn-small"></i>Valider</button><button onclick="refuse('+this.id+',3)" id='+this.id+' class="btn btn-danger btn-small"></i>Refuser</button></td></tr>';
+                                $('#datatable-responsive').append(trHTML);       
+                                }
+
+
+                              })
+                              
+                                   $( "#datatable-responsive" ).DataTable();
+
+                            },
+                        });
+                  
                 }
             
          });
@@ -131,8 +234,6 @@
       });
 
     </script>
+
   </body>
 </html>
-
-
-

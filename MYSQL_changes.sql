@@ -65,3 +65,5 @@ ALTER TABLE mission ADD constraint fk_missionResponsable foreign key(responsable
 Alter table collaborateur modify nb_jours_restants real ;
 Alter table conge add column nb_jours_choisis real not null ;
 Alter table conge add constraint ck_conge CHECK (nb_jours_choisis>=0.5);
+--Yassine 9 mars 
+ALTER TABLE conge ADD motifRefus Varchar(250) NULL;

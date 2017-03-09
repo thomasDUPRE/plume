@@ -5,7 +5,7 @@
 Fonction.initEnum(['annulationEnvoye', 'annulationInvalideCS', 'annulationInvalideRH', 'annulationValideCS', 'annulationValideRH', 'brouillon', 'envoye', 'invalideCS', 'invalideDirigeant', 'invalideRH', 'valideCS', 'valideDirigeant', 'valideRH']);
 */
 class Conge {
-    constructor(id, date_demande, dateDebut, dateFin,estPaye, id_etat_conge, part_matin, revient_matin, motif,id_demandeur ){
+    constructor(id, date_demande, dateDebut, dateFin,estPaye, id_etat_conge, part_matin, revient_matin, motif,id_demandeur,motifRefus ){
         this.id = id;
         this.date_demande=date_demande ;     
         this.estPaye = estPaye;
@@ -16,7 +16,7 @@ class Conge {
 		this.revient_matin=revient_matin;
 		this.motif=motif;
 		this.id_demandeur=id_demandeur;
-
+		this.motifRefus=motifRefus;
 
     }
 }

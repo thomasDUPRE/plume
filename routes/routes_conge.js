@@ -37,6 +37,25 @@ app.get('/selectConge', function (req, res) {
 
     });
 
+app.get('/joursRestants', function (req, res) {
+        // if the request exists
+        if (typeof req.query !== 'undefined' && req.query) {
+            var selector = {};
+            if(doesParamExist(req.query.id_collaborateur)) selector.id = parseInt(req.query.id_collaborateur);
+            var CongeCRUD = require('../crud/CongeCRUD');
+
+            CongeCRUD.selectJoursRestants(selector, function callback(result) {
+                console.log("Result :" + JSON.stringify(result));
+                // Send result to the browser
+                res.send(JSON.stringify(result));
+            })
+
+        }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
+
+    });
+
 
     app.post('/insererConge', function (req, res) {
         if (typeof req.query !== 'undefined' && req.query)
@@ -63,7 +82,6 @@ app.get('/selectConge', function (req, res) {
                     // Send result to the browser
                     res.send(JSON.stringify(result));
                 });
-
             }
             // // Display error
              else {
@@ -94,6 +112,41 @@ app.get('/deleteConge', function (req, res) {
     });
 
 
+app.get('/modifierConge', function(req, res) {
+
+
+
+        if (req.body && req.body.length !== 0) {
+            if (doesParamExist(req.query.id) && doesParamExist(req.query.stat)) {
+                  var CongeCRUD = require('../crud/CongeCRUD');
+                var selector = { id : parseInt(req.query.id)};
+                var data;
+                if( doesParamExist(req.query.comment)){
+				data = {
+					motifRefus : req.query.comment,
+                    id_etat_conge: parseInt(req.query.stat),
+                    
+                };
+                }
+                else{
+                 data = {
+                    id_etat_conge: parseInt(req.query.stat),
+                    
+                };
+            }
+               // Operation
+                CongeCRUD.modifierConge(selector, data, function callback(result) {
+                    // Send result to the browser
+                    res.send(JSON.stringify(result));
+                });
+            }
+            // Display error
+            else res.send(JSON.stringify(new Erreur("CongeErreur", "Les paramètres ne sont pas corrects")));
+        }
+        // Display Error
+        else res.send(JSON.stringify(new Erreur("CongeErreur", "La requête est vide"))); 
+    });
+
 
 
 app.get('/selectCongeServ', function (req, res) {
@@ -114,7 +167,7 @@ app.get('/selectCongeServ', function (req, res) {
 {
             	CongeCRUD.selectConge({id_demandeur:result[i].id },function (result2){
             	for(var j = 0, len2 = result2.length; j < len2; j++){
-				tmpConges.push(new Conge(result2[j].id, result2[j].date_demande, result2[j].date_debut, result2[j].date_fin, result2[j].est_paye, result2[j].id_etat_conge, result2[j].part_matin, result2[j].revient_matin, result2[j].motif,result2[j].id_demandeur));          
+				tmpConges.push(new Conge(result2[j].id, result2[j].date_demande, result2[j].dateDebut, result2[j].dateFin, result2[j].estPaye, result2[j].id_etat_conge, result2[j].part_matin, result2[j].revient_matin, result2[j].motif,result2[j].id_demandeur));          
   				
   				}
             	compteur--;
@@ -132,7 +185,6 @@ else if (doesParamExist(req.query.bool) && req.query.bool==0)
   						if(parseInt(result[t].role.id)==4)
   							compteur++;
   					}
-  					         		console.log(parseInt(result[i].role.id)==4);
   				  					if(parseInt(result[i].role.id)==4)
 {
 		CongeCRUD.selectConge({id_demandeur:result[i].id },function (result2){
@@ -184,9 +236,9 @@ app.get('/selectCongeService', function (req, res) {
             	for(var i = 0, len = result.length; i < len; i++){
                     tmpConges.push(new Conge(result[i].id, result[i].date_demande, result[i].date_debut, result[i].date_fin, result[i].est_paye, result[i].id_etat_conge, result[i].part_matin, result[i].revient_matin, result[i].motif,result[i].id_demandeur));
                 }
-                              table=(JSON.stringify(tmpConges)).slice(0);
+                             
 
-res.send(table);
+res.send(tmpConges);
 
             })
                 CollaborateurCRUD.selectCollaborateurs({}, function callback(result) {
