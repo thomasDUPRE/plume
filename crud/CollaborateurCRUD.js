@@ -37,7 +37,25 @@ class CollaborateurCRUD{
             helper.close();
         });
     }
+    static selectNomsCollaborateurs(selector, callback) {
+        var helper = new CRUDHelper();
+        var noms = [];
 
+        helper.getTable('collaborateur').load(selector, function (err, vals) {
+            //mysql callback
+
+            if (!err) {
+                vals.forEach(function (collaborateur) {
+                    noms.push(collaborateur.prenom + " " + collaborateur.nom);
+                });
+                callback(vals);
+            }
+            else
+                callback(new Erreur("selectCollaborateursErreur", err));
+            helper.close();
+
+        });
+    }
     static selectCollaborateurs(selector, callback){
         var helper = new CRUDHelper();
 
@@ -84,13 +102,12 @@ class CollaborateurCRUD{
                 }
                 else{
                     ServiceCRUD.selectServices({id:vals[0].id_service}, function(service){
-                        RoleCRUD.selectRoles({id:vals[0].id_role}, function(role){
-                            CollaborateurCRUD.adminCollaborateur({id:vals[0].id}, function(admin){
-                                console.log("admin:"+admin)
-                                result = new CollaborateurLogin(vals[0].id, vals[0].nom, vals[0].prenom, service[0], role[0], admin, vals[0].telephone, vals[0].mail, vals[0].nb_jours_restants, vals[0].mot_de_passe);
-                                callback(result);
-                                helper.close();
-                            });
+                        RoleCRUD.selectRoles({id:vals[0].id_role}, function(role){                        
+                            //console.log("admin:"+admin)
+                            result = new CollaborateurLogin(vals[0].id, vals[0].nom, vals[0].prenom, service[0], role[0], vals[0].admin, vals[0].telephone, vals[0].mail, vals[0].nb_jours_restants, vals[0].mot_de_passe);
+                            callback(result);
+                            helper.close();
+                            
                         });
                     });
 

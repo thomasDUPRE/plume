@@ -8,11 +8,7 @@
     <link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
     
     
-    
   </head>
-
-
-
         <!-- page content -->
           <div class="">
             <div class="page-title">
@@ -20,17 +16,6 @@
                 <h3>Ajouter un nouveau collaborateur </h3>
               </div>
 
-
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                              <button class="btn btn-default" type="button">Go!</button>
-                          </span>
-                  </div>
-                </div>
-              </div>
             </div>
             <div class="clearfix"></div>
 
@@ -44,67 +29,54 @@
                   </div>
                   <div class="x_content">
 
-                    <form id="ajouter-collaborateur" class="form-horizontal form-label-left" novalidate>
-
-                      
+                    <form id="ajouter-collaborateur" class="form-horizontal form-label-left" >
 
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nom  <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="nom" placeholder="" required="required" type="text">
+                          <input id="name" class="form-control col-md-7 col-xs-12"  required="required" type="text">
                         </div>
                       </div>
 
-                      
-
-                   
-
-
-
-
+                    
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Prenom  <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="firstname" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name="prenom" placeholder="" required="required" type="text">
+                          <input id="firstname" class="form-control col-md-7 col-xs-12"  required="required" type="text">
                         </div>
                       </div>
 
 
 
-                        <div class="item form-group bad">
+                        <div class="item form-group ">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mail">Email <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="email" id="mail" name="mail" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="email" id="mail" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
-                      <div class="alert">adresse email invalide</div></div>
-
-                      <div class="item form-group bad">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mail">Confirmation d'email <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="email" id="email2" name="confirm_email" data-validate-linked="mail" required="required" class="form-control col-md-7 col-xs-12">
-                        </div>
-                      <div class="alert">confirmation incorrecte</div></div>
+                      <div class="alert email">adresse email invalide</div></div>
 
 
-                   <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">Telephone <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="tel" id="telephone" name="telephone" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
-                        </div>
-                      </div>
+                
 
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">Mot de passe <span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" id="mot_de_passe" name="mot_de_passe" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
+                                <input type="password" id="mot_de_passe"  required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
                             </div>
                         </div>
+
+                           <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">Telephone <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="number" id="telephone"  required="required" length="10" pattern="{10}" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+                        
 
 
                       <div class="item form-group">
@@ -113,7 +85,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                          
 
-                          <select name="role" id="collaborateur-liste-role" class="form-control">
+                          <select  id="collaborateur-liste-role" class="form-control">
 
                           </select>
 
@@ -127,7 +99,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                          
 
-                          <select name="service" id="collaborateur-liste-service" class="form-control">
+                          <select id="collaborateur-liste-service" class="form-control">
 
                           </select>
 
@@ -138,9 +110,9 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Admin :
                         </label>
 
-                        <div class="col-md-4 col-sm-6 col-xs-12 checkbox">
+                        <div class="col-md-4 col-sm-6 col-xs-12 ">
                             <label>
-                              <input type="checkbox" class="js-switch" name="isadmin" />
+                              <input type="checkbox"  id="is_admin" />
                             </label>
                           </div>
 
@@ -148,41 +120,11 @@
 
                         </div>
 
-                         <div class="item form-group" id ="invalidePage">
-                        
-                      </div>
-
-                    
-
-
-
-
-
-
-          
-
-
-
-
-
-
-                    
-                
-                      
-
-
-                 
-               
-
-
-
-
-
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
-                          <button type="submit" class="btn btn-primary">Cancel</button>
-                          <button id="send" type="submit" class="btn btn-success">Submit</button>
+                          <button type="submit" class="btn btn-warning">Annuler</button>
+                          <button id="send" type="submit" class="btn btn-success">Créer le collaborateur</button>
                         </div>
                       </div>
                     </form>
@@ -194,44 +136,69 @@
         
         <!-- /page content -->
 
-       
+   <script src="../vendors/validator/validator.js"></script>
+   <script src="../vendors/moment/min/moment.min.js"></script>
+   <script src="../vendors/switchery/dist/switchery.min.js"></script>
+   <script src="../javascripts/bootstrap-notify.js"></script>
+   <script src="../build/js/scripts.js"></script>
+ 
 
    <script type="text/javascript">
-   $.('#ajouter-collaborateur').submit(function(){
-       /*$.post("/login",
-               {
-                   mail: $("#input-mail").val(),
-                   mot_de_passe:$("#input-password").val()
-               },
-               function(data, status){
-                   $('#form-warning').html("");
-                   var json = JSON.parse(data);
-                   if(json.type == "MauvaisUtilisateur"){
-                       $('#form-warning').html("L'utilisateur rentré n'existe pas !");
-                   }
-                   else if(json.type == "MauvaisMotDePasse"){
-                       $('#form-warning').html("Le mot de passe rentré n'est pas le bon !");
-                   }
-                   else if(json.type == "BonMotDePasse"){
-                       window.location.href = "/";
+   var is_admin = 0  ;
+   $(document).ready(function  () {
 
-                   }
-                   else {
-                       console.log("Data: " + data + "\nStatus: " + status);
-                   }
-               });*/
-       return false;
+        $(".alert.email").hide();
+
+        $("#is_admin").change(function () {
+        if( this.checked)
+          is_admin = 1 ;
+        else
+          is_admin = 0 ;
+        
+      });
+
+         $('#ajouter-collaborateur').submit(function(){
+           event.preventDefault();
+
+           if($("#mail").val() != $("#mail2").val())
+             console.log("error");
+          
+          $.ajax({
+                          url: '/inserercollaborateur',
+                          type: 'POST',
+                          dataType: 'json',
+                          async:false,
+                          data: {
+                               mail: $("#mail").val() ,
+                               mot_de_passe: $("#mot_de_passe").val() ,
+                               nom : $("#name").val() ,
+                               prenom: $("#firstname").val() ,
+                               telephone: $("#telephone").val()  ,
+                               service: parseInt( $("#collaborateur-liste-role").val() ),
+                               role : parseInt( $("#collaborateur-liste-service").val() ),
+                               admin: parseInt(is_admin)
+                          },
+                          success: function(response) {
+                            if (response.type == "insererCollaborateurValidation")
+                            {
+                               notifier("success","<span class='fa fa-check'> "+response.message,null);
+                             
+                              setTimeout(function() {
+                                     $("#pageInterne").load("adminAjoutCollab.html");
+                                }, 3000);  
+                             
+                            }
+                          }
+                      });
+            
+      
+     }); 
+
+
    });
+
    </script>
-   
-    <script src="../vendors/validator/validator.js"></script>
-    <script src="../vendors/moment/min/moment.min.js"></script>
+     
 
-    <script src="../vendors/switchery/dist/switchery.min.js"></script>
-
-
-    
-
-	
   </body>
 </html>

@@ -10,7 +10,7 @@ class CongeCRUD {
             //mysql callback
             var result;
             if (!err)
-            result = new Validation("CreerConge", "Le conge a bien été créé");
+                result = new Validation("CreerConge", "Le conge a bien été créé");
             else
                 result = new Erreur("CreerCongeErreur", err);
             callback(result);
@@ -147,6 +147,21 @@ for(var i = 0, len = result.length; i < len; i++){
                 result = new Erreur("supprimerCongeErreur", err);
             callback(result);
         });
-    }}
+    }
+
+    static modifierEtatConge(selector, data, callback) {
+        var helper = new CRUDHelper();
+        helper.getTable('conge').update(selector, data, function (err) {
+            //mysql callback
+            var result;
+            if (!err)
+                result = new Validation("EtatConge", "L'état du conge a bien été validé");
+            else
+                result = new Erreur("EtatcongeErreur", err);
+            callback(result);
+        });
+    }
+
+}
 
 module.exports = CongeCRUD;

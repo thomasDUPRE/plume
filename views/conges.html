@@ -90,6 +90,11 @@
             }
       }
 
+      function detectButtonModif(id_conge) {
+
+          $("#pageInterne").load("demandeConge.html");
+      }
+
       function refreshConge(){
 
         $.ajax({
@@ -123,8 +128,8 @@
                               var part = $(this)[0]["part_matin"];
                               var revient = $(this)[0]["revient_matin"];
 
-                              if(part==1) debut_conge=debut_conge+" Après-midi";
-                              if(revient==1) fin_conge=fin_conge+" Après-midi";
+                              debut_conge +=(part==1) ? " matin " :" Après-midi" ;
+                              fin_conge   +=(revient==1) ? " matin " :" Après-midi" ;
                               if(estPaye == "1") estPaye="Oui";
                               else estPaye="Non";
 

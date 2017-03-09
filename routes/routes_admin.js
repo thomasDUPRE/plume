@@ -19,27 +19,27 @@ module.exports = function(app) {
     }
 // --- Admin
 // Login
-// TODO : Yassine
-    app.get('/admin', function(req, res) {});
-
-
     // Collaborateur
-    app.get('/inserercollaborateur', function(req, res) {
+    app.post('/inserercollaborateur', function(req, res) {
 
-        if (typeof req.query !== 'undefined' && req.query) {
+        if (typeof req.body !== 'undefined' && req.body) {
             // if the parameters are ok
-            if (doesParamExist(req.query.mail) && doesParamExist(req.query.mot_de_passe)){
+            if (doesParamExist(req.body.mail) && doesParamExist(req.body.mot_de_passe)){
 
                 var data = {
-                    mail : req.query.mail,
-                    mot_de_passe : req.query.mot_de_passe
+                    mail : req.body.mail,
+                    mot_de_passe : req.body.mot_de_passe
                 };
 
-                if(doesParamExist(req.query.nom)) data.nom = req.query.nom;
-                if(doesParamExist(req.query.prenom)) data.prenom = req.query.prenom;
-                if(doesParamExist(req.query.telephone)) data.telephone = req.query.telephone;
-                if(doesParamExist(req.query.id_service)) data.id_service = parseInt(req.query.service);
-                if(doesParamExist(req.query.nb_jours_restants)) data.nb_jours_restants = parseInt(req.query.nb_jours_restants);
+                if(doesParamExist(req.body.nom)) data.nom = req.body.nom;
+                if(doesParamExist(req.body.prenom)) data.prenom = req.body.prenom;
+                if(doesParamExist(req.body.telephone)) data.telephone = req.body.telephone;
+                if(doesParamExist(req.body.service)) data.id_service = req.body.service;
+                if(doesParamExist(req.body.role)) data.id_role = req.body.role;
+                if(doesParamExist(req.body.admin)) data.admin = req.body.admin;
+
+                
+                data.nb_jours_restants = 0;
 
                 Collaborateur.insererCollaborateur(data, function(result){
                     console.log("Result :" + JSON.stringify(result));
