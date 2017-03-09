@@ -147,7 +147,6 @@
            $('#pageInterne').load('adminAjoutService.html');
          }
 
-
          function loadTableauBord() {
            $('#pageInterne').load('tableau_bord.html');
            var pattern = 'MM-DD-YYYY hh:mm';
@@ -201,6 +200,11 @@
          }
 
 
+         function loadValidationConges() {
+           $('#pageInterne').load('validation_conge.html');
+         }
+        
+
     </script>
 
     <style type="text/css">
@@ -251,7 +255,7 @@
                       <li><a  onclick="loadCalendar()">Calendrier congé</a></li>
                       <li><a onclick="loadCongesDetail()">Mes conges</a></li>
                       <li><a onclick="loadDemandeConge()"> Nouvelle demande</a></li>
-                      <li class="validation-conges"><a onclick="loadValidationCongés()">Congés à valider</a></li>
+                      <li class="validation-conges"><a onclick="loadValidationConges()">Congés à valider</a></li>
                     </ul>
                   </li>
 
@@ -540,7 +544,8 @@
             }
           });
 
-          if(profile.admin == true)
+                    
+          if(profile.admin == true ) 
           {
 
             $('.admin-view').each(function() {

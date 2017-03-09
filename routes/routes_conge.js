@@ -50,7 +50,7 @@ app.get('/selectConge', function (req, res) {
                     date_fin : new Date(req.body.date_fin),
                     part_matin : req.body.part_matin,
                     revient_matin : req.body.revient_matin,
-                    est_paye : req.body.is_paye,
+                    est_paye : req.body.est_paye,
                     motif : req.body.motif,
                     nb_jours_choisis: req.body.nb_jours_pris,
                     id_etat_conge: (req.body.action_to_do == "send") ? 2 : 1 ,

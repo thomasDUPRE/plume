@@ -100,6 +100,8 @@
     <script src="../vendors/jszip/dist/jszip.min.js"></script>
     <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="../build/js/scripts.js"></script>
+    <script src="../javascripts/bootstrap-notify.js"></script>
 
 
 
@@ -118,12 +120,26 @@
                 {
                   //tous les demandes(sauf les siens) en Etat validé CS
 
+                    $.get("/selectConge", function(data, status){
+                      var conges = JSON.parse(data); 
+                     // console.log(conges);
+                    });
+
+                     $.get("/selectCongeServ", {id_service  : 1} ,function(data, status){
+                      var conges = JSON.parse(data); 
+                     // console.log(conges);
+                    });
+
+
                 }
 
             if (profile.role.nom =="Chef de service") 
                 {
                     //tous les demandes de son service en Etat envoyé 
-
+                     $.get("/selectCongeServ", {id_service  : 1} ,function(data, status){
+                      var conges = JSON.parse(data); 
+                     // console.log(conges);
+                    });
                 }
             
          });
