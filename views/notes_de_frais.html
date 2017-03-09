@@ -1,19 +1,19 @@
- <!DOCTYPE html>
- <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
- <!-- Datatables -->
- <link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
- <link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
- <link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
- <link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
- <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
- <link href="../stylesheets/monthpicker.css" rel="stylesheet" type="text/css">
+<!-- Datatables -->
+<link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+<link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+<link href="../stylesheets/monthpicker.css" rel="stylesheet" type="text/css">
 
- <!-- page content -->
+<!-- page content -->
 
 <!-- POPUP ADD N FRAIS  -->
 
- <div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+<div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content" style="width: 800px !important; ">
       <div class="modal-header">
@@ -194,14 +194,14 @@
 
         <div class="item form-group">
           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Du Mois: </label>
-          
+
           <div class="input-prepend input-group col-md-6 col-sm-6 col-xs-12">
             <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-            <input type="text" style="width: 200px" name="moisNf" id="moisNf" class="form-control" value="Janvier">
+            <input type="text" style="width: 200px" name="moisNf" id="moisNf" onclick="calendarInit();" class="form-control" >
           </div>
         </div>
 
-        
+
 
 
 
@@ -213,8 +213,8 @@
 
       <div class="title_right">
         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Statut : </label>
-        <label class="control-label col-md-6 col-sm-6 col-xs-12" for="name">Brouillon </label>
+          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Statut: </label>
+          <i><label class="control-label col-md-6 col-sm-6 col-xs-12" for="name">Brouillon </label></i>
         </div>
       </div>
     </div>
@@ -222,12 +222,12 @@
     <div class="clearfix"></div>
 
 
-<!-- N Frais Tableau -->
+    <!-- N Frais Tableau -->
     <div class="row">
       <div class="col-md-12">
         <div class="x_panel">
           <div class="x_title">
-            <h2> Lignes de la note de frais du mois de <b>janvier 2016 </b><small></small></h2>
+            <h2> Lignes de la note de frais du mois de <b id="moisCourant"></b><small></small></h2>
             <ul class="nav navbar-right panel_toolbox">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
               </li>
@@ -280,8 +280,8 @@
   </div>
 
 
-  
-  
+
+
   <!-- /page content -->
 
   <!-- Datatables -->
@@ -315,132 +315,264 @@
       }
       nbr++;
 
-      // var amount = $('#amount').val();
-      
-      // inputs.innerHTML = "";
-      // for(i = 0; i < nbr; i++) {
-        // inputs.append('<input type="text" class="control-label col-md-6 col-sm-12 col-xs-12 name="input[' + nbr + ']" /> ');
-        inputs.append('  <div class="ln_solid"></div> <div class="item form-group">                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Mission<span class="required">*</span>                </label>                <div class="col-md-6 col-sm-6 col-xs-12">                  <select id = "mission'+nbr+'" name = "mission'+nbr+'" class="form-control">                    <option>Mission1</option>                    <option>Mission2</option>                    <option>Mission3</option>                  </select>                </div>              </div><div class="item form-group">                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Typologie de Frais<span class="required">*</span>                </label>                <div class="col-md-6 col-sm-6 col-xs-12">                  <select class="form-control" id = "typologie'+nbr+'" name = "typologie'+nbr+'">                    <option>Transport</option>                    <option>Restaurant</option>                    <option>Hotel</option>                  </select>                </div>              </div>              <div class="item form-group">                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Descriptif  <span class="required">*</span>                </label>                <div class="col-md-6 col-sm-6 col-xs-12">                  <input id = "descriptif'+nbr+'"  class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name = "name'+nbr+'" placeholder="" required="required" type="text">                </div>              </div>              <div class="item form-group">                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Somme  <span class="required">*</span>                </label>                <div class="col-md-6 col-sm-6 col-xs-12">                  <input id = "somme'+nbr+'" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name = "somme'+nbr+'" placeholder="En euros" required="required" type="text">                 </div>              </div>              <div class="item form-group">                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Justificatif                   </label>                <div class="col-md-4 col-sm-6 col-xs-12 checkbox">                  <label>                    <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" id = "file'+nbr+'" name = "file'+nbr+'" >                  </label>                </div>                <div class="col-md-4 col-sm-6 col-xs-12 checkbox">                  <div class="item form-group">                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Justificatif perdu:                       </label>                    <div class="col-md-4 col-sm-6 col-xs-12 checkbox">                      <label>                        <input type="checkbox" class="js-switch"  />                       </label>                    </div>                  </div>                </div>              </div>');
-      // }
-    }
+    // var amount = $('#amount').val();
+    
+    // inputs.innerHTML = "";
+    // for(i = 0; i < nbr; i++) {
+      // inputs.append('<input type="text" class="control-label col-md-6 col-sm-12 col-xs-12 name="input[' + nbr + ']" /> ');
+      inputs.append('  <div class="ln_solid"></div> <div class="item form-group">                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Mission<span class="required">*</span>                </label>                <div class="col-md-6 col-sm-6 col-xs-12">                  <select id = "mission'+nbr+'" name = "mission'+nbr+'" class="form-control">                    <option>Mission1</option>                    <option>Mission2</option>                    <option>Mission3</option>                  </select>                </div>              </div><div class="item form-group">                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Typologie de Frais<span class="required">*</span>                </label>                <div class="col-md-6 col-sm-6 col-xs-12">                  <select class="form-control" id = "typologie'+nbr+'" name = "typologie'+nbr+'">                    <option>Transport</option>                    <option>Restaurant</option>                    <option>Hotel</option>                  </select>                </div>              </div>              <div class="item form-group">                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Descriptif  <span class="required">*</span>                </label>                <div class="col-md-6 col-sm-6 col-xs-12">                  <input id = "descriptif'+nbr+'"  class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name = "name'+nbr+'" placeholder="" required="required" type="text">                </div>              </div>              <div class="item form-group">                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Somme  <span class="required">*</span>                </label>                <div class="col-md-6 col-sm-6 col-xs-12">                  <input id = "somme'+nbr+'" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1" name = "somme'+nbr+'" placeholder="En euros" required="required" type="text">                 </div>              </div>              <div class="item form-group">                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Justificatif                   </label>                <div class="col-md-4 col-sm-6 col-xs-12 checkbox">                  <label>                    <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" id = "file'+nbr+'" name = "file'+nbr+'" >                  </label>                </div>                <div class="col-md-4 col-sm-6 col-xs-12 checkbox">                  <div class="item form-group">                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Justificatif perdu:                       </label>                    <div class="col-md-4 col-sm-6 col-xs-12 checkbox">                      <label>                        <input type="checkbox" class="js-switch"  />                       </label>                    </div>                  </div>                </div>              </div>');
+    // }
+  }
 
 
-    $(document).ready(function(){
-
-      var handleDataTableButtons = function() {
-        if ($("#datatable-buttons").length) {
-          $("#datatable-buttons").DataTable({
-            dom: "Bfrtip",
-            buttons: [
-            {
-              text : "<span class='fa fa-plus'></span> Ajouter une ligne",
-              action : function () {
-
-                setTimeout(
-                  function () {
-
-                    $('#addForm').modal({backdrop: 'static', keyboard: true})
-
-                  }, 500)
-              }
+  // Month Picker Proprietes
 
 
-            },
-
-            ],
-            responsive: true
-          });
-        }
-      };
 
 
-  var handleDataTableButtons2 = function() {
-        if ($("#datatable2-buttons").length) {
-          $("#datatable2-buttons").DataTable({
-            dom: "Bfrtip",
-            buttons: [
-            {
-              text : "<span class='fa fa-plus'></span> Ajouter une ligne",
-              action : function () {
+  var today = new Date();
+  var mm = today.getMonth()+1; 
+  var yyyy = today.getFullYear();
 
-                setTimeout(
-                  function () {
+  if(mm<10) {
+    mm='0'+mm
+  } 
+  today = mm+'/'+yyyy;
 
-                    $('#addForm2').modal({backdrop: 'static', keyboard: true})
-
-                  }, 500)
-              }
+  console.log(today);
 
 
-            },
+  function calendarInit(){
 
-            ],
-            responsive: true
-          });
-        }
-      };
+    $('#moisNf').Monthpicker({
 
-      TableManageButtons = function() {
-        "use strict";
-        return {
-          init: function() {
-            handleDataTableButtons();
-          }
-        };
-      }();
-
-       TableManageButtons2 = function() {
-        "use strict";
-        return {
-          init: function() {
-            handleDataTableButtons2();
-          }
-        };
-      }();
-
-      $('#datatable').dataTable();
-
-      $('#datatable-keytable').DataTable({
-        keys: true
-      });
-
-      $('#datatable-responsive').DataTable();
-
-      $('#datatable-scroller').DataTable({
-        ajax: "js/datatables/json/scroller-demo.json",
-        deferRender: true,
-        scrollY: 380,
-        scrollCollapse: true,
-        scroller: true
-      });
-
-      $('#datatable-fixed-header').DataTable({
-        fixedHeader: true
-      });
-
-      var $datatable = $('#datatable-checkbox');
-
-      $datatable.dataTable({
-        'order': [[ 1, 'asc' ]],
-        'columnDefs': [
-        { orderable: false, targets: [0] }
-        ]
-      });
-      $datatable.on('draw.dt', function() {
-        $('checkbox input').iCheck({
-          checkboxClass: 'icheckbox_flat-green'
-        });
-      });
-
-      TableManageButtons.init();
-      TableManageButtons2.init();
+      onSelect: function () {
+        console.log($('#moisNf').val());
+        $('#moisCourant').html($('#moisNf').val());
+      }
     });
 
+    $('#moisNf').Monthpicker('option', { maxValue: today });
+  }
 
 
 
-    $('#moisNf').Monthpicker();
-  </script>
+
+  $(document).ready(function(){
+
+
+
+    var month ;
+
+    switch (mm){
+      case "01" :
+      month = "Jan";
+      break;
+      case "02" :
+      month = "Fev";
+      break;
+      case "03" :
+      month = "Mar";
+      break;
+      case "04" :
+      month = "Avr";
+      break;
+      case "05" :
+      month = "Mai";
+      break;
+      case "06" :
+      month = "Jun";
+      break;
+      case "07" :
+      month = "Jul";
+      break;
+      case "08" :
+      month = "Aou";
+      break;
+      case "09" :
+      month = "Sep";
+      break;
+      case "10" :
+      month = "Oct";
+      break;
+      case "11" :
+      month = "Nov";
+      break;
+      case "12" :
+      month = "Dec";
+      break;
+    }
+
+    $('#moisCourant').html(mm+"/"+yyyy);
+
+    $('#moisNf').val(month+" "+yyyy);
+
+
+    var handleDataTableButtons = function() {
+      if ($("#datatable-buttons").length) {
+        $("#datatable-buttons").DataTable({
+          dom: "Bfrtip",
+          buttons: [
+          {
+            text : "<span class='fa fa-plus'></span> Ajouter une ligne",
+            action : function () {
+
+              setTimeout(
+                function () {
+
+                  $('#addForm').modal({backdrop: 'static', keyboard: true})
+
+                }, 500)
+            }
+
+
+          },
+
+          ],
+          responsive: true
+        });
+      }
+    };
+
+
+    var handleDataTableButtons2 = function() {
+      if ($("#datatable2-buttons").length) {
+        $("#datatable2-buttons").DataTable({
+          dom: "Bfrtip",
+          buttons: [
+          {
+            text : "<span class='fa fa-plus'></span> Ajouter une ligne",
+            action : function () {
+
+              setTimeout(
+                function () {
+
+                  $('#addForm2').modal({backdrop: 'static', keyboard: true})
+
+                }, 500)
+            }
+
+
+          },
+
+          ],
+          responsive: true
+        });
+      }
+    };
+
+    TableManageButtons = function() {
+      "use strict";
+      return {
+        init: function() {
+          handleDataTableButtons();
+        }
+      };
+    }();
+
+    TableManageButtons2 = function() {
+      "use strict";
+      return {
+        init: function() {
+          handleDataTableButtons2();
+        }
+      };
+    }();
+
+    $('#datatable').dataTable();
+
+    $('#datatable-keytable').DataTable({
+      keys: true
+    });
+
+    $('#datatable-responsive').DataTable();
+
+    $('#datatable-scroller').DataTable({
+      ajax: "js/datatables/json/scroller-demo.json",
+      deferRender: true,
+      scrollY: 380,
+      scrollCollapse: true,
+      scroller: true
+    });
+
+    $('#datatable-fixed-header').DataTable({
+      fixedHeader: true
+    });
+
+    var $datatable = $('#datatable-checkbox');
+
+    $datatable.dataTable({
+      'order': [[ 1, 'asc' ]],
+      'columnDefs': [
+      { orderable: false, targets: [0] }
+      ]
+    });
+    $datatable.on('draw.dt', function() {
+      $('checkbox input').iCheck({
+        checkboxClass: 'icheckbox_flat-green'
+      });
+    });
+
+    TableManageButtons.init();
+    TableManageButtons2.init();
+  });
+
+
+  var id_collabo ; 
+
+  $.ajax({
+    url :"/name",
+    type:'GET',
+    dataType: 'json',
+    data: {},
+
+    success: function(doc){
+
+      $(doc).each(function() {
+        id_collabo = $(this)[0]["id"];
+        console.log("ssss"+id_collabo);
+
+
+        $.ajax({
+          url :"/getNDF",
+          type:'GET',
+          dataType: 'json',
+          data: {id : id_collabo},
+
+          success: function(doc){
+
+            $(doc).each(function() {
+              console.log($(this));
+
+            })
+
+            if(nom_service != "RH" && role_collabo != "Dirigeant"){
+              $('#filtre_services').hide();
+            }
+
+
+          }
+
+        });
+
+        
+      })
+
+
+      
+
+
+
+    }
+
+  });
+
+
+
+
+
+
+</script>
 
 
 
