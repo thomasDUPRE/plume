@@ -39,18 +39,21 @@ app.get('/selectConge', function (req, res) {
 
 
     app.post('/insererConge', function (req, res) {
-        if (typeof req.query !== 'undefined' && req.query) {
+        if (typeof req.query !== 'undefined' && req.query)
+         {
             // if the parameters are ok
-            if ( doesParamExist(req.query.date_debut) && doesParamExist(req.query.part_matin) && doesParamExist(req.query.id_etat_conge) && doesParamExist(req.query.est_paye) && doesParamExist(req.query.revient_matin) && doesParamExist(req.query.motif) &&doesParamExist(req.query.date_fin) &&  oesParamExist(req.query.id_demandeur) ){
+            if (doesParamExist(req.body.action_to_do) && doesParamExist(req.body.nb_jours_pris) && doesParamExist(req.body.date_debut) && doesParamExist(req.body.part_matin)  && doesParamExist(req.body.est_paye) && doesParamExist(req.body.revient_matin) && doesParamExist(req.body.motif) &&doesParamExist(req.body.date_fin)  ){
+                console.log(new Date(req.body.date_fin));
                 var data = {
                     date_demande: new Date() ,
-                    date_debut : req.query.date_debut,
-                    part_matin : req.query.part_matin,
+                    date_debut : req.body.date_debut,
+                    part_matin : req.body.part_matin,
                     revient_matin : false,
                     est_paye : false,
-                    motif : req.query.motif,
-                    date_fin : req.query.date_fin,
-                    id_etat_conge: 1,
+                    motif : req.body.motif,
+                    date_fin : req.body.date_fin,
+                    nb_jours_choisis: req.body.nb_jours_pris,
+                    id_etat_conge: (req.body.action_to_do == "send") ? 2 : 1 ,
                     id_demandeur : req.session.profile.id ,
                 };
                 var CongeCRUD = require('../crud/CongeCRUD');
@@ -62,8 +65,11 @@ app.get('/selectConge', function (req, res) {
                 });
 
             }
-            // Display error
-            else res.send(JSON.stringify(new Erreur("ParamErreur", Erreur.WRONG_PARAM)));
+            // // Display error
+             else {
+                 res.send(JSON.stringify(new Erreur("ParamErreur", Erreur.WRONG_PARAM)));
+                 console.log("error");
+             }
         }
         // Display Error
         else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));

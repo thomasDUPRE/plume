@@ -12,10 +12,7 @@
     <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
     <link href="../vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
-
-    <link href="../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../vendors/iCheck/skins/flat/green.css">
-
+    <link src="../vendors/switchery/dist/switchery.css"></link>
     <link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
 
      <!-- PNotify -->
@@ -121,7 +118,7 @@
  
                               <div class="col-md-6 col-sm-6 col-xs-6   col-lg-1 ">
                                 <label>
-                                  <input type="radio" class="flat" name ="time-retour" value="true"  /> 
+                                  <input type="radio" name ="time-retour" value="true"  /> 
                                 </label>
                               </div>
 
@@ -131,11 +128,23 @@
  
                               <div class="col-md-6 col-sm-6 col-xs-6   col-lg-1 ">
                                 <label>
-                                  <input type="radio" name ="time-retour" value="false" class="flat"  /> 
+                                  <input type="radio"  name ="time-retour" value="false"   /> 
                                 </label>
                               </div>
                            
                           </div>   
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Nombre de jours pris  :   
+                        </label>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 ">
+                            <h3 id="jours"> 
+                               0 
+                            </h3>
+                          </div>
+
                       </div>
 
                       <div class="item form-group">
@@ -144,7 +153,7 @@
 
                         <div class="col-md-6 col-sm-6 col-xs-12 checkbox">
                             <label>
-                              <input type="checkbox" name="" id="sansSolde"class="js-switch" checked /> 
+                              <input type="checkbox" id="sansSolde" checked /> 
                             </label>
                           </div>
 
@@ -153,9 +162,9 @@
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
-                          <button type="submit" class="btn btn-warning">Annuler</button>
-                          <button id="save"   class="submit btn btn-primary">Enregistrer</button>
-                          <input type ="button" id="send" class="submit btn btn-success" value ="Envoyer" />
+                          <button type="button" class="btn btn-warning">Annuler</button>
+                          <input id="save" type="submit"  class="btn btn-primary" value="Enregistrer" />
+                          <input type ="submit" id="send" class="btn btn-success" value ="Envoyer" />
                         </div>
                       </div>
 
@@ -178,7 +187,6 @@
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="../vendors/dropzone/dist/min/dropzone.min.js"></script>
     <script src="../vendors/switchery/dist/switchery.min.js"></script>
-    <script src="../vendors/iCheck/icheck.min.js"></script>
       <!-- PNotify -->
     <script src="../vendors/pnotify/dist/pnotify.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
@@ -187,18 +195,25 @@
 
     <script type="text/javascript">
 
-        function jourOuvrables (dateDebut,dateFin,departMatin,retourMatin) 
-        {
+       
+        
+        var dateFinChanged = false ;
+        var jour_pris ;
+        var jour_restant  ;
+        var is_paye = 0  ;
+        var action ;
+
+         function jourOuvrables (dateDebut,dateFin,departMatin,retourMatin) 
+          {
+           
            jour= 0.0;
            momentFin = moment(dateFin,'DD/MM/YYYY');
            momentDebut = moment(dateDebut,'DD/MM/YYYY');
           
-         
-           
+                   
            while (momentDebut < momentFin)
            {
-              
-          
+               
               if (momentDebut.isoWeekday() != 6 &&  momentDebut.isoWeekday() != 7 )
                  {
                   jour +=1 ;
@@ -207,27 +222,42 @@
               
            }
 
-           if(departMatin == true && retourMatin == false  )
+           if(departMatin == 1 && retourMatin == 0  )
              {
                jour += 0.5;
              }
 
-            if(departMatin == false && retourMatin == true  )
+            if(departMatin == 0 && retourMatin == 1 && jour > 0 )
              {
                jour -= 0.5;
              }
 
+         
            return jour ;
-        }
-        
-        var dateFinChanged = false ;
+          }
+
+          function checkSoldeConge () {
+              if(is_paye == 1 && jour_restant<jour_pris)
+               alert("Attention le nombre de jours choisis est supérieur à ce qui vous reste ");
+          }
         
         $(document).ready(function(){
         
-             
+          function radioValue (radioName) 
+           {
+               value =  $('input[name='+radioName+']:checked').val();
+               if (value == "false" ) 
+                value =  0;
+               else 
+                value =  1;
+
+               return value ;
+           }
+
           $.get("/name", function(data, status){
             var profile = JSON.parse(data); 
-            $("#daysLeft").text(profile.nb_jours_restants);     
+            jour_restant = profile.nb_jours_restants ;
+            $("#daysLeft").text(jour_restant);     
           });
 
           $('.datepicker').daterangepicker({
@@ -253,6 +283,14 @@
    
         });
 
+      $("#sansSolde").change(function () {
+        if( this.checked)
+          is_paye = 0 ;
+        else
+          is_paye = 1 ;
+          checkSoldeConge();
+      });
+
       $("#date_debut").change(function () {
         if (dateFinChanged == false ) 
             {
@@ -263,6 +301,12 @@
                checkDate();
 
             }
+
+          jour_pris = jourOuvrables( $("#date_debut").val(), $("#date_fin").val(),radioValue("time-depart"),radioValue("time-retour" ));
+
+          checkSoldeConge();
+
+          $("#jours").text(jour_pris);
           
       });
 
@@ -276,78 +320,77 @@
             {
               checkDate();
             }
+
+           jour_pris = jourOuvrables( $("#date_debut").val(), $("#date_fin").val(),radioValue("time-depart"),radioValue("time-retour" ));
+           checkSoldeConge();
+           $("#jours").text(jour_pris);
           
       });
 
-    
-      if ($(".js-switch")[0]) {
-        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-        elems.forEach(function (html) {
-            var switchery = new Switchery(html, {
-                color: '#26B99A'
-            });
-        });
 
-     
-        }
-
-         $('input.flat').iCheck({
-            checkboxClass: 'icheckbox_flat-green',
-             radioClass: 'iradio_flat-green'
+      $('input[name=time-depart]:radio').click(function () {
+            
+                jour_pris = jourOuvrables( $("#date_debut").val(), $("#date_fin").val(),radioValue("time-depart"),radioValue("time-retour" ));
+                checkSoldeConge();
+                 $("#jours").text(jour_pris);
+              
+          });
+       $('input[name=time-retour]:radio').click(function () {
+            
+                jour_pris = jourOuvrables( $("#date_debut").val(), $("#date_fin").val(),radioValue("time-depart"),radioValue("time-retour" ));
+                checkSoldeConge();
+                 $("#jours").text(jour_pris);
+              
+          });
+          
+          $('input[type=submit]').click(function  (event) {
+             action = this.id;
           });
 
-         $('input[type="radio"]').change(function () {
-                 console.log( $(this).val() );
-          });
+         $("form").submit(function(event){
+            // cancels the form submission
+            event.preventDefault();
 
-        $(".submit").click(function () {      
-         
-          departMatin = $('input[name="time-depart"]:checked').val();
-          retourMatin = $('input[name="time-retour"]:checked').val();
+            departMatin = radioValue("time-depart") ;
+            retourMatin = radioValue("time-retour")
+                     
+            if (jour_pris > 0  )    
+                                        
+               { 
+                  debut = moment($("#date_debut").val(),'DD/MM/YYYY');
+                  fin = moment($("#date_fin").val(),'DD/MM/YYYY');
+                  $.ajax({
+                          url: '/insererConge',
+                          type: 'POST',
+                          dataType: 'json',
+                          data: {
+                             date_debut : debut.format() ,
+                             part_matin : departMatin ,
+                             est_paye : is_paye,
+                             revient_matin :retourMatin,
+                             motif : $("#motif").val(),
+                             date_fin : fin.format() ,
+                             nb_jours_pris : jour_pris,
+                             action_to_do : action 
+                          },
+                          success: function(response) {
+                            //if (response.type == "CreerConge")
 
-        if ( 
-              (
-                (
-                  ( departMatin == true &&  retourMatin == false) || ( departMatin =='undefined' &&     retourMatin == 'undefined' )  
-                ) 
-              )
-            ||  $("#date_debut").val() < $("#date_fin").val() 
-          )    
+                             //  $("#pageInterne").load("conges.html");
+                          }
+                      });
+                 
                       
+                }
              
-           { 
-              console.log("boukki");
-             //   $.ajax({
-            //           url: '/insererConge',
-            //           type: 'POST',
-            //           dataType: 'json',
-            //           data: {
-            //              date_debut : $("#date_debut").val(),
-            //              part_matin : (req.query.part_matin),
-            //              est_paye : req.query.est_paye,
-            //              revient_matin : req.query.revient_matin,
-            //              motif : $("#motif").val(),
-            //              date_fin :  $("#date_fin").val(),
-            //           },
-            //           success: function() {
-                      
-            //           }
-            //       });
-             return false ;  
-                  
-            }
-         
-            else
-              {
-                console.log("golo");
-             // init_PNotify("Erreur de validation","error","Le depart et la reprise ne doivent pas se faire en même temps");
-
-              return false ;
-          }
+                else
+                  {
+                    
+                    alert("Le nombre de jour choisi est nul!");
+                 
+                 }
            
-
-         });
-
+          });
       });
     </script>
   </body>
