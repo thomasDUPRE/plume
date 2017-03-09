@@ -111,7 +111,7 @@ class LigneDeFraisCRUD {
 
     static modifierCatLDF(selector, values, callback) {
         var helper = new CRUDHelper();
-        helper.getTable('categorie_frais').update(selector, values, function (err) {
+        helper.getTable('ligne_frais').update(selector, values, function (err) {
             //mysql callback
             var result;
             if (!err)
@@ -124,7 +124,7 @@ class LigneDeFraisCRUD {
 
     static modifierEtatLDF(selector, values, callback) {
         var helper = new CRUDHelper();
-        helper.getTable('etat_ligne_frais').update(selector, values, function (err) {
+        helper.getTable('ligne_frais').update(selector, values, function (err) {
             //mysql callback
             var result;
             if (!err)
