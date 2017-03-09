@@ -299,7 +299,7 @@
 	                                           etat: $etat,
 	                                           collaborateur: $(this)[0]["id_demandeur"],
 	                                           service: service_collabo,
-	                                           collaborateurName: getName($(this)[0]["id_demandeur"]),
+	                                           collaborateurName: getName($(this)[0]["id_demandeur"])
 	                                         
 						                    });
 					                	}
@@ -312,13 +312,14 @@
 					    },
 		      timeFormat: 'H:mm',
 		      eventRender: function (event, element) {
+		      			//event.end.toISOString()+
 		      			 var demande = event.dateDemande.split("T")[0];
                          element.popover({
 	                        trigger : 'hover',
 	                        title: event.title,
 	                        placement:'bottom',
 	                        html:true,
-	                        content: "Etat: "+event.etat+", id: "+event.id+", Debut: "+event.start.toISOString()+", Fin: "+event.end.toISOString()+", Demandé le: "+demande+", Demandeur: "+event.collaborateurName,
+	                        content: "Etat: "+event.etat+", id: "+event.id+", Debut: "+event.start.toISOString()+", Fin: "+", Demandé le: "+demande+", Demandeur: "+event.collaborateurName
                     	});   
                }
 

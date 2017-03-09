@@ -314,10 +314,13 @@
             event.preventDefault();
 
             departMatin = radioValue("time-depart") ;
-            retourMatin = radioValue("time-retour")
+
+            retourMatin = radioValue("time-retour");
+
+            if (jour_pris > 0  )    
+              retourMatin = radioValue("time-retour")
                      
-            if (jour_pris > 0 )    
-                                        
+            if (jour_pris > 0 )         
                { 
                   debut = moment($("#date_debut").val(),'DD-MM-YYYY');
                   fin = moment($("#date_fin").val(),'DD-MM-YYYY');
@@ -337,6 +340,11 @@
                              action_to_do : action 
                           },
                           success: function(response) {
+
+                            //if (response.type == "CreerConge")
+                            
+                             //  $("#pageInterne").load("conges.html");
+
                             if (response.type == "CreerConge")
                             {
                                notifier("success","<span class='fa fa-check'> "+response.message,null);
@@ -346,6 +354,7 @@
                                 }, 3000);  
                              
                             }
+
                           }
                       });
                  

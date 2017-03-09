@@ -100,6 +100,10 @@
            $('#pageInterne').load('demandeConge.html');
          }
 
+          function loadValidationCongés(){
+             $('#pageInterne').load('validation_conge.html');
+          }
+
          function loadDemandeNFrais() {
            $('#pageInterne').load('demandeNFrais.html');
          }
@@ -274,7 +278,7 @@
 
                   <li><a><i class="fa fa-university"></i> Mission <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li  class="validation-conges" onclick="loadCreateMission()"><a>Nouvelle mission </a></li>
+                      <li  class="creation-mission" onclick="loadCreateMission()"><a>Nouvelle mission </a></li>
                       <li onclick="loadMesMissions()"><a>Mes missions en détail</a></li>
                       <!-- <li><a>Nouvelle demande</a></li> -->
                     </ul>
@@ -371,7 +375,7 @@
 
         <!-- page content -->
         <div class="right_col" role="main" id="pageInterne">
-          
+
         </div>
         <!-- /page content -->
 
