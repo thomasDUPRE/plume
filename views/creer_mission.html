@@ -241,6 +241,19 @@
                                         id_mission: mission_id
                                     },
                                     success: function (data) {
+                                        $.ajax({
+                                            url: '/inserernotification',
+                                            type: 'POST',
+                                            dataType: 'json',
+                                            data: {
+                                                type: 'collaborateur',
+                                                id: id_collab,
+                                                sujet: 'Nouvelle mission',
+                                                contenu: 'Vous avez assigné à une nouvelle mission'
+                                            }});
+
+
+
                                         console.log("data: "+JSON.stringify(data));
                                         compteurCollab--;
                                         if (compteurCollab <= 0) loadMesMissions();
