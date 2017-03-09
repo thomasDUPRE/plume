@@ -352,13 +352,13 @@
             event.preventDefault();
 
             departMatin = radioValue("time-depart") ;
-            retourMatin = radioValue("time-retour")
-                     
+            retourMatin = radioValue("time-retour");
+
             if (jour_pris > 0  )    
                                         
                { 
-                  debut = moment($("#date_debut").val(),'DD/MM/YYYY');
-                  fin = moment($("#date_fin").val(),'DD/MM/YYYY');
+                  debut = moment($("#date_debut").val(),'DD-MM-YYYY');
+                  fin = moment($("#date_fin").val(),'DD-MM-YYYY');
                   $.ajax({
                           url: '/insererConge',
                           type: 'POST',
@@ -375,7 +375,7 @@
                           },
                           success: function(response) {
                             //if (response.type == "CreerConge")
-
+                            
                              //  $("#pageInterne").load("conges.html");
                           }
                       });
