@@ -26,7 +26,7 @@
                   </div>
                   <div class="x_content">
 
-                    <form class="form-horizontal form-label-left" >
+                    <form id="mission_form" class="form-horizontal form-label-left" >
 
                       
 
@@ -54,9 +54,9 @@
                           <span class="required">*</span>
                           </label>
                           <div class="col-md-6 col-sm-6 col-xs-12 xdisplay_inputx form-group has-feedback">
-                              <input type="text" class="datepicker form-control has-feedback-left" id="date_debut" placeholder="date de début" aria-describedby="inputSuccess2Status4">
+                              <input type="text" id="datepicker_mission_d" class="datepicker form-control has-feedback-left" id="date_debut" placeholder="date de début" aria-describedby="inputSuccess2Status4">
                               <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-                              <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                              <span id="" class="sr-only">(success)</span>
                            
                           </div>    
                       </div>
@@ -66,19 +66,41 @@
                           <span class="required">*</span>
                           </label>
                           <div class="col-md-6 col-sm-6 col-xs-12 xdisplay_inputx form-group has-feedback">
-                             <input type="text" class="datepicker form-control has-feedback-left" id="date_fin" placeholder="date de fin" aria-describedby="inputSuccess2Status4">
+                             <input type="text" id="datepicker_mission_f" class="datepicker form-control has-feedback-left" id="date_fin" placeholder="date de fin" aria-describedby="inputSuccess2Status4">
                              <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                               <span id="inputSuccess2Status4" class="sr-only">(success)</span>
                            
                           </div>    
                       </div>
 
-                      
+
+
+                        <div class="item form-group" id="div_lignes_collaborateurs">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Ajouter des Collaborateurs</label><br/>
+                            <div class="col-md-6 col-sm-6 col-xs-12 xdisplay_inputx form-group has-feedback">
+                              <table>
+                                  <thead>
+                                    <th class="col-md-3">Service</th>
+                                    <th class="col-md-3">Nom</th>
+                                    <th class="col-md-3">Date de début</th>
+                                    <th class="col-md-3">Date de fin</th>
+                                    <th></th>
+
+                                  </thead>
+                                  <tbody id="lignes_collaborateurs">
+
+                                  </tbody>
+                              </table>
+                                <div class="col-md-12" id="is_collab"></div>
+                                <div class="col-md-1" > <button type="button" onclick="ajouterLigneCollaborateur()">+</button></div>
+                            </div>
+                        </div>
+
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
                           <button type="submit" class="btn btn-warning">Annuler </button>
-                          <button id="send" type="submit" class="btn btn-success">Créer la mission</button>
+                          <button id="send" type="button" onclick="creerMission()" class="btn btn-success">Créer la mission</button>
                         </div>
                       </div>
                     </form>
@@ -90,27 +112,168 @@
         
         <!-- /page content -->
 
-          
-    <script src="../vendors/validator/validator.js"></script>
-      <!-- bootstrap-daterangepicker -->
-    <script src="../vendors/moment/min/moment.min.js"></script>
-    <script src="../vendors/moment/locale/fr.js"></script>
-    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script src="../vendors/switchery/dist/switchery.min.js"></script>
+  <script src="../vendors/validator/validator.js"></script>
+  <!-- bootstrap-daterangepicker -->
+  <script src="../vendors/moment/min/moment.min.js"></script>
+  <script src="../vendors/moment/locale/fr.js"></script>
+  <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <script src="../vendors/switchery/dist/switchery.min.js"></script>
+
      <script type="text/javascript">
+         var services = [];
+         var lignesCollaborateur=0;
 
-    
 
-        $(document).ready(function(){
+         function supprimerLigneCollaborateur(id_ligne){
+             $('#lignes_collaborateurs #ligne'+id_ligne).remove();
+             addIfNoCollab();
+         }
 
-          $('.datepicker').daterangepicker({
-          singleDatePicker: true,
-          singleClasses: "picker_4",
-          minDate : moment().startOf('day'),
-        }, function(start, end, label) {
-        console.log(start.toISOString(), end.toISOString(), label);
 
-      });
+         function selectCollaborateurs(id_service, ligne_collaborateur) {
+             $.get("/collaborateurs?service="+id_service, function (data) {
+                 var collaborateurs = JSON.parse(data).data;
+                 console.log(JSON.stringify(collaborateurs));
+                 $('#select_ligne'+ligne_collaborateur +' option').remove();
+                 $('#select_ligne'+ligne_collaborateur).append($('<option>', {
+                     selected:true,
+                     value: -1,
+                     text: 'Nom'
+                 }));
+                 for(var i=0;i<collaborateurs.length; i++) {
+
+
+                     $('#select_ligne'+ligne_collaborateur).append($('<option>', {
+                         value: collaborateurs[i].id,
+                         text: firstToUpperCase(collaborateurs[i].prenom.toLowerCase()) + " " + firstToUpperCase(collaborateurs[i].nom.toLowerCase())
+                     }));
+                 }
+             });
+         }
+
+         function addIfNoCollab(){
+             if($('.lignes_collab').length == 0){
+                 $('#is_collab ').text("Pas de collaborateurs");
+             }
+             else{
+                 $('#is_collab ').text("");
+             }
+         }
+         function ajouterLigneCollaborateur(){
+             var id_ligne = 'ligne'+lignesCollaborateur;
+
+             var append = '<tr class="lignes_collab" id="'+id_ligne+'">'+
+                     '<td class="col-md-3">'+
+                     '<select  onchange="selectCollaborateurs(value, '+lignesCollaborateur+')" class="form-control">'+
+                     '<option selected>Service</option>';
+
+             for(var i=0;i<services.length;i++) {
+                 append +='<option value='+services[i].id+'>'+services[i].nom+'</option>';
+             }
+
+             append+= '</select>'+
+                     '</td>'+
+                     '<td class="col-md-3">'+
+                     '<select id="select_ligne'+lignesCollaborateur+'" class="form-control id_collaborateur">'+
+                     '<option value="-1" selected>Nom</option>'+
+
+                     '</select>'+
+                     '</td>'+
+                     '<td ><input type="text" size="7" class="datepicker form-control datepicker_debut" id="date_debut_c_'+lignesCollaborateur+'"></div></td>'+
+                     '<td ><input type="text" size="7" class="datepicker form-control datepicker_fin" id="date_fin_c_'+lignesCollaborateur+'"></div></td>'+
+                     '<td><button onclick="supprimerLigneCollaborateur('+lignesCollaborateur+');" type="button">X</button></td>'+
+                     '</tr>';
+
+
+
+
+             $('#lignes_collaborateurs').append(append);
+
+             refreshDatePicker('#date_debut_c_'+lignesCollaborateur);
+             refreshDatePicker('#date_fin_c_'+lignesCollaborateur);
+             addIfNoCollab();
+             lignesCollaborateur++;
+         }
+         function refreshDatePicker(id){
+             $(id).daterangepicker({
+                 singleDatePicker: true,
+                 singleClasses: "picker_4",
+                 minDate : moment().startOf('day'),
+             }, function(start, end, label) {
+                 console.log(start.toISOString(), end.toISOString(), label);
+
+             });
+         }
+         function creerMission(){
+
+             var debut = moment($("#datepicker_mission_f").val(),'DD/MM/YYYY');
+             var fin = moment($("#datepicker_mission_d").val(),'DD/MM/YYYY');
+             $.ajax({
+                 url: '/insererMission',
+                 type: 'POST',
+                 dataType: 'json',
+                 data: {
+                     date_debut : debut.format(),
+                     nom:   $("#name").val(),
+                     description:$("#description").val(),
+                     date_fin :  fin.format(),
+                 },
+                 success: function(data) {
+                    var mission_id = data.id;
+
+                     var compteurCollab = $('.lignes_collab').length;
+                     $('.lignes_collab').each(function (select_collab) {
+                         var id_collab = parseInt($(this).find(".id_collaborateur").first().val());
+                            if(id_collab != -1) {
+
+                                // Insert
+                                var debut_c = moment($(this).find(".datepicker_debut").first().val(), 'DD/MM/YYYY');
+                                var fin_c = moment($(this).find(".datepicker_fin").first().val(), 'DD/MM/YYYY');
+                                console.log("Id collab :"+id_collab);
+                                $.ajax({
+                                    url: '/AssignerMission',
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {
+                                        date_debut: debut_c.format(),
+                                        date_fin: fin_c.format(),
+                                        id_collaborateur: id_collab,
+                                        id_mission: mission_id
+                                    },
+                                    success: function (data) {
+                                        console.log("data: "+JSON.stringify(data));
+                                        compteurCollab--;
+                                        if (compteurCollab <= 0) loadMesMissions();
+                                    }
+                                });
+                                if (compteurCollab <= 0) loadMesMissions();
+                            }
+                            compteurCollab--;
+
+
+                     });
+                 }
+             });
+
+
+
+
+
+         }
+
+        $(document).ready(function() {
+
+
+            $.get("/selectservices", function (data) {
+                services = JSON.parse(data).data;
+                addIfNoCollab();
+               // ajouterLigneCollaborateur();
+
+            });
+
+            refreshDatePicker('#datepicker_mission_d');
+            refreshDatePicker('#datepicker_mission_f');
+
       if ($(".js-switch")[0]) {
         var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
         elems.forEach(function (html) {
@@ -146,28 +309,13 @@
           
       });
 
-      $("form").submit(function () {
-                
-             $.ajax({
-                      url: '/insererMission',
-                      type: 'POST',
-                      dataType: 'json',
-                      data: {
-                         date_debut : $("#date_debut").val(),
-                         nom:   $("#name").val(),
-                         description:$("#description").val(),
-                         date_fin :  $("#date_fin").text(),
-                      },
-                      success: function() {
-                      
-                      }
-                  });
-            return false ;  
-          
-         });
+
+
 
         });
+
     </script>
-	
+
+
   </body>
 </html>

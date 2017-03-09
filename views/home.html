@@ -157,7 +157,7 @@
              notifications.forEach(function (element) {
                var date_not = element.date_notification.substring(0,16).replace("T", " ");
                var date_time = date_not.substring(8,10)+"-"+date_not.substring(5,7)+"-"+date_not.substring(0,4) + " "+date_not.substring(11,16);
-                console.log(date_time);
+               // console.log(date_time);
                $("#notification-liste").append(
                        '<tr>'+
                        '<td>'+element.sujet+'</td>'+
@@ -525,7 +525,7 @@
       $.get("/name", function(data, status)
       {
           var profile = JSON.parse(data);
-          console.log()
+         // console.log()
           $('.profile-name').each(function() {
             $(this).html(firstToUpperCase(profile.prenom.toLowerCase()) + " " + firstToUpperCase(profile.nom.toLowerCase()));
             //console.log(JSON.stringify(profile));
@@ -576,7 +576,7 @@
 
         $.get("/selectnotifications?vu=0", function (data) {
           var jsonNotifications = JSON.parse(data).data;
-          console.log(data);
+          //console.log(data);
           var nbNouvelleNotif = jsonNotifications.length;
           if (nbNouvelleNotif == 0)  $('#number-notifications').removeClass('bg-green');
           else $('#number-notifications').addClass('bg-green');
