@@ -43,15 +43,15 @@ app.get('/selectConge', function (req, res) {
          {
             // if the parameters are ok
             if (doesParamExist(req.body.action_to_do) && doesParamExist(req.body.nb_jours_pris) && doesParamExist(req.body.date_debut) && doesParamExist(req.body.part_matin)  && doesParamExist(req.body.est_paye) && doesParamExist(req.body.revient_matin) && doesParamExist(req.body.motif) &&doesParamExist(req.body.date_fin)  ){
-                console.log(new Date(req.body.date_fin));
+                console.log(req.body.date_fin);
                 var data = {
                     date_demande: new Date() ,
-                    date_debut : req.body.date_debut,
+                    date_debut : new Date(req.body.date_debut),
                     part_matin : req.body.part_matin,
                     revient_matin : false,
                     est_paye : false,
                     motif : req.body.motif,
-                    date_fin : req.body.date_fin,
+                    date_fin : new Date(req.body.date_fin),
                     nb_jours_choisis: req.body.nb_jours_pris,
                     id_etat_conge: (req.body.action_to_do == "send") ? 2 : 1 ,
                     id_demandeur : req.session.profile.id ,
@@ -111,7 +111,7 @@ app.get('/selectCongeServ', function (req, res) {
             	var compteur=result.length;
             	for(var i = 0, len = result.length; i < len; i++){
             		if (doesParamExist(req.query.bool) && req.query.bool==1) 
-{
+        {
             	CongeCRUD.selectConge({id_demandeur:result[i].id },function (result2){
             	for(var j = 0, len2 = result2.length; j < len2; j++){
 				tmpConges.push(new Conge(result2[j].id, result2[j].date_demande, result2[j].date_debut, result2[j].date_fin, result2[j].est_paye, result2[j].id_etat_conge, result2[j].part_matin, result2[j].revient_matin, result2[j].motif,result2[j].id_demandeur));          
@@ -122,7 +122,7 @@ app.get('/selectCongeServ', function (req, res) {
             		res.send(JSON.stringify(tmpConges));
             	}
             });
-}
+        }
 
 
 else if (doesParamExist(req.query.bool) && req.query.bool==0) 
@@ -134,8 +134,8 @@ else if (doesParamExist(req.query.bool) && req.query.bool==0)
   					}
   					         		console.log(parseInt(result[i].role.id)==4);
   				  					if(parseInt(result[i].role.id)==4)
-{
-		CongeCRUD.selectConge({id_demandeur:result[i].id },function (result2){
+        {   
+		  CongeCRUD.selectConge({id_demandeur:result[i].id },function (result2){
             	for(var j = 0, len2 = result2.length; j < len2; j++){
 				tmpConges.push(new Conge(result2[j].id, result2[j].date_demande, result2[j].date_debut, result2[j].date_fin, result2[j].est_paye, result2[j].id_etat_conge, result2[j].part_matin, result2[j].revient_matin, result2[j].motif,result2[j].id_demandeur));          
   				
@@ -146,7 +146,7 @@ else if (doesParamExist(req.query.bool) && req.query.bool==0)
             	}
             });
 
-  				}
+  		}
   				
   			}
             }
@@ -157,15 +157,6 @@ else if (doesParamExist(req.query.bool) && req.query.bool==0)
 
     });
         
-
-
-
-
-
-
-
-
-
 
 
 app.get('/selectCongeService', function (req, res) {
@@ -186,7 +177,7 @@ app.get('/selectCongeService', function (req, res) {
                 }
                               table=(JSON.stringify(tmpConges)).slice(0);
 
-res.send(table);
+                            res.send(table);
 
             })
                 CollaborateurCRUD.selectCollaborateurs({}, function callback(result) {
