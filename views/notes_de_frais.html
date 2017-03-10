@@ -10,6 +10,47 @@
 <link href="../stylesheets/monthpicker.css" rel="stylesheet" type="text/css">
 
 <!-- page content -->
+<!-- POP delete Ligne de Frais -->
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                                class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <div class="panel-title text-center"><i class="glyphicon glyphicon-trash"></i>&nbsp;Suppression
+                            de Ligne de Frais
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Vous etes sur le
+                    point de supprimer definitivement cette Ligne de Frais !
+                </div>
+
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-danger btn-ok" id="delete"><span class="glyphicon glyphicon-remove"
+                                                                                      style="color : rgba(74, 3, 1, 0.6);"></span>&nbsp;Supprimer
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class=""></span>Annuler
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- POP delete Ligne de Frais -->
+
+
+
+
+
+
 
 <!-- POPUP ADD N FRAIS  -->
 
@@ -34,7 +75,7 @@
 
         <!-- <form class="modal-body form-horizontal" role="form" > -->
 
-        <form action="" class="modal-body form-horizontal" role="form" name="form-add-projet" id="form-add-ligne"
+        <form action="" class="modal-body form-horizontal" role="form" name="form-add-Ligne de Frais" id="form-add-ligne"
         enctype="multipart/form-data" method="POST">
 
 
@@ -670,9 +711,12 @@ $('#noteFrais tbody').remove();
 
                                 function successCallback3(nom_mission, categ, etatlf){
 
+                                    if(etatlf=="Invalide_CS" || etatlf=="Brouillon" || etatlf=="Invalide_RH") 
+                                      a ="";
+                                    else a= "disabled=\"disabled\"";
                                     var trHTML = '';
                                     trHTML += '<tr><td>' + nom_mission + '</td><td>' + categ + '</td><td>' + justificatif + '</td><td>' + etatlf + '</td><td align="center" valign="middle" >' +
-                                    ' <button type="button" class="btn btn-round btn-info"><a style="color: black" title = "Editer la ligne"><i class="fa fa-pencil"></i> </a></button>  &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-round btn-danger"><a style="color: black" title = "Supprimer la ligne" ><i class="fa fa-trash-o"></i></a> </button> ' 
+                                    ' <button onclick= \'editer(\"'+nom_mission+'\",\"'+categ+'\"); \' '+a+'type="button " class="btn btn-round btn-info"><a style="color: black" title = "Editer la ligne"><i class="fa fa-pencil"></i> </a></button>  &nbsp;&nbsp;&nbsp;<button '+a+'type="button" onclick= "removeLF();" class="btn btn-round btn-danger"><a style="color: black" title = "Supprimer la ligne" ><i class=" fa fa-trash-o"></i></a> </button> ' 
 
                                     + '</td></tr>';
 
@@ -817,6 +861,15 @@ function afficherForm () {
 
 
 
+function afficherForm () {
+              setTimeout(
+                function () {
+                  $('#addForm').modal({backdrop: 'static', keyboard: true})
+                }, 500)
+            }
+
+
+
 
 
 
@@ -880,6 +933,41 @@ function afficherForm () {
                
            
           });
+
+
+
+
+
+
+
+
+
+
+ function removeLF() {
+
+             setTimeout(
+                function () {
+                  $('#confirm-delete').modal({backdrop: 'static', keyboard: true})
+                }, 500)
+            }
+
+
+
+ function editer(nommission, cat) {
+
+            console.log(nommission+"ss"+cat);
+             setTimeout(
+                function () {
+                  $('#addForm').modal({backdrop: 'static', keyboard: true})
+                }, 500)
+            }
+
+
+
+
+
+
+
 
 </script>
 
