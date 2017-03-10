@@ -10,6 +10,47 @@
 <link href="../stylesheets/monthpicker.css" rel="stylesheet" type="text/css">
 
 <!-- page content -->
+<!-- POP delete Ligne de Frais -->
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                                class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <div class="panel-title text-center"><i class="glyphicon glyphicon-trash"></i>&nbsp;Suppression
+                            de Ligne de Frais
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Vous etes sur le
+                    point de supprimer definitivement cette Ligne de Frais !
+                </div>
+
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-danger btn-ok" id="delete"><span class="glyphicon glyphicon-remove"
+                                                                                      style="color : rgba(74, 3, 1, 0.6);"></span>&nbsp;Supprimer
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class=""></span>Annuler
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- POP delete Ligne de Frais -->
+
+
+
+
+
+
 
 <!-- POPUP ADD N FRAIS  -->
 
@@ -34,7 +75,7 @@
 
         <!-- <form class="modal-body form-horizontal" role="form" > -->
 
-        <form action="" class="modal-body form-horizontal" role="form" name="form-add-projet" id="form-add-projet"
+        <form action="" class="modal-body form-horizontal" role="form" name="form-add-Ligne de Frais" id="form-add-ligne"
         enctype="multipart/form-data" method="POST">
 
 
@@ -46,9 +87,7 @@
           </label>
           <div class="col-md-6 col-sm-6 col-xs-12">
             <select id = "mission0" name = "mission0" class="form-control">
-              <option>Mission1</option>
-              <option>Mission2</option>
-              <option>Mission3</option>
+              
             </select>
           </div>
         </div>
@@ -59,30 +98,24 @@
           </label>
           <div class="col-md-6 col-sm-6 col-xs-12">
             <select id = "typologie0" name = "typologie0" class="form-control">
-              <option>Transport</option>
-              <option>Restaurant</option>
-              <option>Hotel</option>
+              <option value ="1">Logement</option>
+              <option value ="2">Transport</option>
+              <option value ="3">Nourriture</option>
+              <option value ="3">Autre</option>
             </select>
           </div>
         </div>
 
 
-        <div class="item form-group">
-          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Descriptif  <span class="required">*</span>
-          </label>
-          <div class="col-md-6 col-sm-6 col-xs-12">
-            <input id = "descriptif0" name = "descriptif0" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1"  placeholder="" required="required" type="text">
-          </div>
-        </div>
 
 
-        <div class="item form-group">
+        <!-- <div class="item form-group">
           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Somme  <span class="required">*</span>
           </label>
           <div class="col-md-6 col-sm-6 col-xs-12">
             <input id = "somm0" name = "somme0" class="form-control col-md-7 col-xs-12" data-validate-length-range="5" data-validate-words="1"  placeholder="En euros" required="required" type="text"> 
           </div>
-        </div>
+        </div> -->
 
 
         <div class="item form-group">
@@ -134,7 +167,7 @@
 
       <div id="ButtonPlus" class="item form-group">
 
-        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">  Ajouter une lignes de Frais <span class="required">*</span>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">  Ajouter une lignes de Frais 
         </label>
 
         <div class="col-md-4 col-sm-6 col-xs-12 checkbox">
@@ -176,6 +209,13 @@
 </div>
 <!-- /.modal-dialog -->
 </div>
+
+
+
+
+
+
+
 
 
 
@@ -244,6 +284,10 @@
           </div>
           <div class="x_content">
 
+                <a onclick="afficherForm();" class="btn btn-app">
+                      <i class="fa fa-plus"></i> Ajouter une ligne
+                    </a>
+
             <table id="noteFrais" class="table table-striped table-bordered">
 
               <thead>
@@ -254,9 +298,9 @@
                   <th>Statut</th>
                   <th style="text-align: center">Operation</th>
                 </tr>
-
               </thead>
               <tbody>
+
               </tbody>
             </table> 
 
@@ -330,7 +374,7 @@
   } 
   today = mm+'/'+yyyy;
 
-  console.log(today);
+  console.log(today+"yoyo");
 
 
   function calendarInit(){
@@ -340,6 +384,10 @@
       onSelect: function () {
         console.log($('#moisNf').val());
         $('#moisCourant').html($('#moisNf').val());
+
+        var res = $('#moisNf').val().split("/");
+        // console.log("1 = "+res[0]+"lll"+res[1]);
+        loadTable(res[0], res[1]);
       }
     });
 
@@ -397,7 +445,7 @@
     $('#moisCourant').html(mm+"/"+yyyy);
 
     $('#moisNf').val(month+" "+yyyy);
-
+      loadTable(mm, yyyy);
 
 
     var handleDataTableButtons = function() {
@@ -430,18 +478,25 @@
     }();
 
     
-    TableManageButtons.init();
+ });
+    // TableManageButtons.init();
 
-  });
 
 
+
+ 
+
+function loadTable(mm, yyyy){
+
+  console.log("month = "+mm+" year " +yyyy);
+
+$('#noteFrais tbody').remove();
   var id_collabo ; 
   var etat_ligne_frais  ; 
   var categorie_frais ;
   var mission ;
   var taille_LF;
-  var tabID =new Array();
-
+  var tabIdLf =new Array();
 
 
   $.ajax({
@@ -449,7 +504,7 @@
     type:'GET',
     dataType: 'json',
     data: {},
-
+    async: true,
     success: function(doc){
 
       $(doc).each(function() {
@@ -460,169 +515,452 @@
           url :"/getNDF",
           type:'GET',
           dataType: 'json',
-          data: {id : id_collabo,
-            moi: "03",
-            annee: "2017"},
-
+           data: {id : id_collabo,
+            mois: mm,
+            annee: yyyy},
+            async: true,
           success: function(doc){
-
-            taille_LF =doc.length ; 
-            console.log(taille_LF);
+            console.log("count ndf "+ doc.length);
             $(doc).each(function() {
-            var id_nf = $(this)[0]["id"];
-            tabID.push(id_nf);
-            console.log("TABID note Frais = " + tabID);
-              
+               id_nf = $(this)[0]["id"];
 
+               console.log("getNDF"+JSON.stringify($(this)));
+               console.log("id note de frais "+id_nf);
+              
               $.ajax({
                 url :"/getLDF",
                 type:'GET',
                 dataType: 'json',
                 data: {id : id_nf},
-
-                success: function(doc){
-                  $(doc).each(function() {
-                   id_categorie_frais = $(this)[0]["id_categorie_frais"];
-                   id_etat_ligne_frais = $(this)[0]["id_etat_ligne_frais"];
-                   id_mission = $(this)[0]["id_mission"];
-                
-
-                 })
-
-                }
-
-              });
-
-
-
-            })
-
-          }
-
-        });
-
-      })
-
-
-
-
-
-
-    }
-
-  });
-                  // for(i=0; i<taille_LF; i++){
-
-                  // }
+                async: true,
+                success: function(doc2){
                   
+                  
+                  i=0 ; 
+                  while (doc2.length > i)
+                  {
+
+                    // console.log("count ldf "+ doc2.length);
+                    console.log("getLDF"+JSON.stringify(doc2[i]));
+                    
+                    idLF = doc2[i]["id"] ; 
+                    idmission = doc2[i]["id_mission"] ; 
+                    iDcategFrais = doc2[i]["id_categorie_frais"] ; 
+                    justificatif = doc2[i]["justificatif"];
+                    iDetatLDF = doc2[i]["id_etat_ligne_frais"];
+                    var nomEtat ;
+                    var categFrais ; 
+
+
+                    switch(iDetatLDF){
+                      case 1 :
+                      nomEtat = "Brouillon";
+                      break;
+                      case 2 :
+                      nomEtat = "Envoyé";
+                      break;
+                      case 3 :
+                      nomEtat = "Invalide_CS";
+                      break;
+                      case 4 :
+                      nomEtat = "Invalide_RH";
+                      break;
+                      case 5 :
+                      nomEtat = "Valide_CS";
+                      break;
+                      case 6 :
+                      nomEtat = "Valide_RH";
+                      break;
+                      case 7 :
+                      nomEtat = "Valide_Dirigeant";
+                      break;
+                      case 8 :
+                      nomEtat = "Invalide_Dirigeant";
+                      break;
+                      case 9 :
+                      nomEtat = "Annulation_Envoyé";
+                      break;
+                      case 10 :
+                      nomEtat = "Annulation_Invalide_CS";
+                      break;
+                      case 11 :
+                      nomEtat = "Annulation_Valide_CS";
+                      break;
+                      case 12 :
+                      nomEtat = "Annulation_Invalide_RH";
+                      break;
+                      case 13 :
+                      nomEtat = "Annulation_Valide_RH";
+                      break;
+
+                    }
+                    switch (iDcategFrais){
+                      case 1 : 
+                      categFrais = "Transport"; 
+                      break;
+                      case 2 : 
+                      categFrais = "Logement"; 
+                      break;
+                      case 3 : 
+                      categFrais = "Nourriture"; 
+                      break;
+                      case 4 : 
+                      categFrais = "Autre"; 
+                      break;
+
+                    }
+
+                    
+
+
+                                
+
+
+                        $.ajax({
+
+                            type: "GET",
+                            url: '/missions',
+                            data: {id: idmission},
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            cache: false,
+                            async: false,
+                            success: function (data) {
+
+                              $(data).each(function(){
+
+                                var nom_mission = $(this)[0]["nom"];
+                                
+
+                                successCallback(nom_mission);
+
+
+
+                              })
+
+                            },
+                        });
 
 
 
 
 
 
-                                                      // Requete Pour recuperer l'etat de la ligne de Frais 
-                                                      // $.ajax({
-                                                      //   url :"/getEtatLDF",
-                                                      //   type:'GET',
-                                                      //   dataType: 'json',
-                                                      //   data: {id : id_etat_ligne_frais},
 
-                                                      //   success: function(doc){
-
-                                                      //     $(doc).each(function() {
-
-                                                      //       etat_ligne_frais = $(this)[0]["nom"];
-
-
-                                                      //     })
-
-                                                      //   }
-
-                                                      // });
-                                                      // // Requete Pour recuperer l'etat de la ligne de Frais 
-                                                      // // Requete Pour recuperer la categorie de la ligne de Frais 
-                                                      // $.ajax({
-                                                      //   url :"/getCatLDF",
-                                                      //   type:'GET',
-                                                      //   dataType: 'json',
-                                                      //   data: {id : id_categorie_frais},
-
-                                                      //   success: function(doc){
-
-                                                      //     $(doc).each(function() {
-                                                      //       categorie_frais  = $(this)[0]["nom"];
-
-
-                                                      //     })
+                            function successCallback(nom_mission){
+                                // console.log("ouhouhouhouh "+JSON.stringify(data));
+                                /*  Remplissage de  tableau  */
 
 
 
+                               $.ajax({
 
-                                                      //   }
+                            type: "GET",
+                            url: '/getCatLDF',
+                            data: {id: idLF},
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            cache: false,
+                            async: false,
+                            success: function (data) {
 
-                                                      // });
-                                                      //   // Requete Pour recuperer la categorie de la ligne de Frais 
-                                                      //   // Requete Pour recuperer la mission de la ligne de Frais 
-                                                      //   $.ajax({
-                                                      //     url :"/missions",
-                                                      //     type:'GET',
-                                                      //     dataType: 'json',
-                                                      //     data: {id : id_mission},
+                              $(data).each(function(){
 
-                                                      //     success: function(doc){
+                                var categ = $(this)[0]["nom"];
+                                
 
-                                                      //       $(doc).each(function() {
-                                                      //         mission  = $(this)[0]["nom"];
+                                console.log("idlf  "+idLF+" catg = "+categ)
 
-                                                      //         /*  Remplissage de  tableau  */
+                                  successCallback2(nom_mission, categ);
 
-                                                      //         var trHTML = '';
-                                                      //         trHTML += '<tr><td>' + mission + '</td><td>' + categorie_frais + '</td><td>' + mission + '</td><td>' + etat_ligne_frais + '</td><td align="center" valign="middle" >' +
-                                                      //         ' <button type="button" class="btn btn-round btn-info"><a style="color: black" title = "Editer la ligne"><i class="fa fa-pencil"></i> </a></button>  &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-round btn-danger"><a style="color: black" title = "Supprimer la ligne" ><i class="fa fa-trash-o"></i></a> </button> ' 
+                              })
 
-                                                      //         + '</td></tr>';
-
-                                                      //         $('#noteFrais').append(trHTML);
-                                                      //       })
+                            },
+                        });
+                             }
 
 
+                              function successCallback2(nom_mission, categ){
+
+                            $.ajax({
+
+                            type: "GET",
+                            url: '/getEtatLDF',
+                            data: {id: iDetatLDF},
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            cache: false,
+                            async: false,
+                            success: function (data) {
+
+                              $(data).each(function(){
+
+                                var etatlf = $(this)[0]["nom"];
+                                
 
 
-                                                      //     }
 
-                                                      //   });
-                      // Requete Pour recuperer la mission de la ligne de Frais 
+                                  successCallback3(nom_mission, categ, etatlf);
 
-//                     })
+                              })
 
-
-
-
+                            },
+                        });
+                             }
 
 
+                                function successCallback3(nom_mission, categ, etatlf){
+
+                                    if(etatlf=="Invalide_CS" || etatlf=="Brouillon" || etatlf=="Invalide_RH") 
+                                      a ="";
+                                    else a= "disabled=\"disabled\"";
+                                    var trHTML = '';
+                                    trHTML += '<tr><td>' + nom_mission + '</td><td>' + categ + '</td><td>' + justificatif + '</td><td>' + etatlf + '</td><td align="center" valign="middle" >' +
+                                    ' <button onclick= \'editer(\"'+nom_mission+'\",\"'+categ+'\"); \' '+a+'type="button " class="btn btn-round btn-info"><a style="color: black" title = "Editer la ligne"><i class="fa fa-pencil"></i> </a></button>  &nbsp;&nbsp;&nbsp;<button '+a+'type="button" onclick= "removeLF();" class="btn btn-round btn-danger"><a style="color: black" title = "Supprimer la ligne" ><i class=" fa fa-trash-o"></i></a> </button> ' 
+
+                                    + '</td></tr>';
+
+                                    $('#noteFrais').append(trHTML);
+
+                            }
 
 
 
+                   
 
 
-// }
+                      i++;
 
-// });
+                    }
 
 
 
 
+}
 
-// })
+});
 
 
 
 
-// }
 
-// });
 
+
+})
+
+
+
+
+}
+
+});
+
+
+})
+
+
+
+
+
+
+}
+
+});
+
+
+
+
+
+
+
+
+
+             //Appel Ajax pour recuperer le profil
+            $.ajax({
+              url :"/name",
+              type:'GET',
+              dataType: 'json',
+              data: {},
+
+              success: function(doc){
+
+                $(doc).each(function() {
+                  id_collabo = $(this)[0]["id"];
+
+
+                  //Appel Ajax pour recuper l'id des missions du collaborateur
+                  $.ajax({
+
+                    type: "GET",
+                    url: '/getMissions',
+                    data: {idCollabo: id_collabo},
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    cache: false,
+
+                    success: function (data) {
+
+                      $(data).each(function() {
+                        var id_mission = $(this)[0]["id_mission"];
+
+                        //Appel Ajax pour recuperer les details de la mission
+                          $.ajax({
+
+                            type: "GET",
+                            url: '/missions',
+                            data: {id: id_mission},
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            cache: false,
+
+                            success: function (data) {
+
+                              $(data).each(function(){
+
+
+                                var nom_mission = $(this)[0]["nom"];
+
+                                 var itemval = '<option value='+id_mission+'>'+nom_mission+'</option>';
+                                // console.log( "nom mission ==> " + itemval);
+                                $("#mission0").append(itemval);
+
+                              })
+
+                            },
+                        });
+
+                      })                    
+                    },
+                });
+
+              })
+              
+            }
+
+          });
+
+
+}
+ 
+
+
+
+
+
+function afficherForm () {
+              setTimeout(
+                function () {
+                  $('#addForm').modal({backdrop: 'static', keyboard: true})
+                }, 500)
+            }
+
+
+
+
+
+
+
+
+function afficherForm () {
+              setTimeout(
+                function () {
+                  $('#addForm').modal({backdrop: 'static', keyboard: true})
+                }, 500)
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+         $('#form-add-ligne').submit(function() {
+          console.log("submit");           
+
+            id_mission_f = $("#mission0").val();
+            id_categorie_f = $("#typologie0").val();
+
+            
+                  $.ajax({
+                          url: '/insererLDF',
+                          type: 'POST',
+                          dataType: 'json',
+                          async:false,
+                          data: {
+                             id_note_frais : "1" ,
+                             id_categorie_frais : id_categorie_f ,
+                             id_etat_ligne_frais : "1",
+                             id_mission :id_mission_f,
+                             justificatif : "nulll"
+                          },
+                          success: function(response) {
+                            alert(JSON.stringify(response));
+                              // console.log(response);
+                          //   if (response.type == "CreerConge")
+                          //   {
+                          //      notifier("success","<span class='fa fa-check'> "+response.message,null);
+                             
+                          //     setTimeout(function() {
+                          //            $("#pageInterne").load("conges.html");
+                          //       }, 3000);  
+                             
+                            
+                          // }
+                      },
+                          error: function(err){
+                        alert(JSON.stringify(err));
+                      } 
+                });
+                 
+             
+               
+           
+          });
+
+
+
+
+
+
+
+
+
+
+ function removeLF() {
+
+             setTimeout(
+                function () {
+                  $('#confirm-delete').modal({backdrop: 'static', keyboard: true})
+                }, 500)
+            }
+
+
+
+ function editer(nommission, cat) {
+
+            console.log(nommission+"ss"+cat);
+             setTimeout(
+                function () {
+                  $('#addForm').modal({backdrop: 'static', keyboard: true})
+                }, 500)
+            }
 
 
 
@@ -638,6 +976,9 @@
 
 </body>
 </html>
+
+
+
 
 
 
