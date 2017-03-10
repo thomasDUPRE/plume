@@ -229,17 +229,18 @@
                                 // Insert
                                 var debut_c = moment($(this).find(".datepicker_debut").first().val(), 'DD/MM/YYYY');
                                 var fin_c = moment($(this).find(".datepicker_fin").first().val(), 'DD/MM/YYYY');
-                                console.log("Id collab :"+id_collab);
+                                var     data= {
+                                    date_debut: debut_c.format(),
+                                            date_fin: fin_c.format(),
+                                            id_collaborateur: id_collab,
+                                            id_mission: mission_id
+                                };
+                                console.log("data :"+JSON.stringify(data));
                                 $.ajax({
                                     url: '/AssignerMission',
                                     type: 'POST',
                                     dataType: 'json',
-                                    data: {
-                                        date_debut: debut_c.format(),
-                                        date_fin: fin_c.format(),
-                                        id_collaborateur: id_collab,
-                                        id_mission: mission_id
-                                    },
+                                    data: data,
                                     success: function (data) {
                                         $.ajax({
                                             url: '/inserernotification',
@@ -259,10 +260,10 @@
                                         if (compteurCollab <= 0) loadMesMissions();
                                     }
                                 });
-                                if (compteurCollab <= 0) loadMesMissions();
+                                //if (compteurCollab <= 0) loadMesMissions();
                             }
                             compteurCollab--;
-
+                            //if(compteurCollab == 0)loadMesMissions();
 
                      });
                  }

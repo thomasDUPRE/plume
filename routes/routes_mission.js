@@ -27,8 +27,7 @@ module.exports = function(app) {
         if (req.body && req.body.length !== 0) {
             
             if (doesParamExist(req.body.nom) && doesParamExist(req.body.description) &&
-                doesParamExist(req.body.date_debut) && doesParamExist(req.body.date_fin)
-                && doesParamExist(req.body.responsable)) {
+                doesParamExist(req.body.date_debut) && doesParamExist(req.body.date_fin)) {
                 
                 var data = {
                     nom : req.body.nom,
@@ -38,6 +37,7 @@ module.exports = function(app) {
                     responsable : req.session.profile.id
                 };
                 // Operation
+                console.log("mission: "+JSON.stringify(data));
                 MissionCRUD.creerMission(data, function callback(result) {
                     // Send result to the browser
                     if(result instanceof Erreur)  res.send(JSON.stringify(result));
@@ -158,10 +158,10 @@ module.exports = function(app) {
 
             }
             // Display error
-            else res.send(JSON.stringify(new Erreur("ParamErreur", "Les paramètres ne sont pas corrects")));
+            else res.send(JSON.stringify(new Erreur("ParamErreurAssignerMission", "Les paramètres ne sont pas corrects")));
          }
         // Display Error
-        else res.send(JSON.stringify(new Erreur("RequeteErreur", "La requête est vide")));
+        else res.send(JSON.stringify(new Erreur("RequeteErreurAssignerMission", "La requête est vide")));
 
     });
     
