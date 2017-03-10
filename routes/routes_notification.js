@@ -44,15 +44,15 @@ module.exports = function(app) {
                             if(result instanceof Erreur) { error = true; res.send(JSON.stringify(result));}
                             else{
                                 var callbacks = result.length;
-                                result.forEach(function(collaborateur){
-                                    NotificationCRUD.insererNotification({sujet: req.body.sujet, contenu: req.body.contenu, vu: 0, id_collaborateur: collaborateur.id}
+                                for(var i=0;i<result.length;i++){
+                                NotificationCRUD.insererNotification({sujet: req.body.sujet, contenu: req.body.contenu, vu: 0, id_collaborateur: result[i].id}
                                     , function(result2){
                                         callbacks--;
                                         if(!error && callbacks<=0){
                                             res.send(JSON.stringify(result2));
                                         }
                                     });
-                                });
+                                }
                             }
                         });
                     }

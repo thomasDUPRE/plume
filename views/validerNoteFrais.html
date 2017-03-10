@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<!-- Datatables -->
+<link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+<link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+<!-- page content -->
+
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Mes notes de frais à valider</h3>
+        </div>
+
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Date</th>
+                            <th>Opération</th>
+                        </tr>
+                        </thead>
+                        <tbody id="ndf-liste">
+
+                        </tbody>
+                    </table>
+                    <div id="ndf_empty"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="lignes_frais" class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+
+                    <table id="datatable-buttons" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Categorie</th>
+                            <th>Valider</th>
+                            <th>Commentaire</th>
+                        </tr>
+                        </thead>
+                        <tbody id="lndf-liste">
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function validerLNDF(id_note_de_frais, id_ligne_de_frais){
+        $.get("/validerLNDF?id="+id_ligne_de_frais, function (data) {
+            $.get("/name", function(data, status) {
+                var profile = JSON.parse(data);
+                if(profile.role.nom =="Chef de service"){
+                    /*$.ajax({
+                        url: '/inserernotification',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            type: 'service',
+                            id: 2,
+                            vu:0,
+                            sujet: 'Nouvelle ligne de frais',
+                            contenu: 'Nouvelle ligne de frais à valider'
+                        }
+                    });*/
+                }
+            });
+            montrerLNDFs(id_note_de_frais);
+        });
+    }
+    function invaliderLNDF(id_note_de_frais, id_ligne_de_frais, id_collab){
+        $.get("/invaliderLNDF?id="+id_ligne_de_frais, function (data) {
+            $.ajax({
+                url: '/inserernotification',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    type: 'collaborateur',
+                    id: id_collab,
+                    vu:0,
+                    sujet: 'Ligne de frais invalidé',
+                    contenu: 'Vous avez une ligne de frais invalidé'
+                }
+            });
+            montrerLNDFs(id_note_de_frais);
+        });
+    }
+    function montrerLNDFs(id_note_de_frais, id_collab){
+
+        $.get("/getLDFVal?id="+id_note_de_frais, function (data) {
+            $('#lndf-liste .lndf').remove();
+            $('#lignes_frais').show();
+            var lndfs = JSON.parse(data);
+            console.log(JSON.stringify(lndfs));
+            if(lndfs.length == 0) refresh();
+            for (var i = 0; i < lndfs.length; i++) {
+                console.log(JSON.stringify(lndfs[i]));
+                $('#lndf-liste').append('<tr class="lndf">' +
+                        '<td>' + lndfs[i].id_categorie_frais[0].nom + '</td>' +
+                        '<td ><button type="button" onclick="validerLNDF(' + id_note_de_frais + ',' + lndfs[i].id + ')">Valider</button><button type="button" onclick="invaliderLNDF(' + id_note_de_frais + ',' + lndfs[i].id + ', '+id_collab+')">Invalider</button></td> ' +
+                        '<td><input type="text" value="" id="commentaire' + lndfs[i].id + '"/></td> ' +
+                        '</tr>'
+                );
+
+            }
+        });
+    }
+
+    function refresh(){
+        $.get("/getCollaNDF", function (data) {
+            $('#ndf-liste .ndf').remove();
+            var ndfs = JSON.parse(data);
+           console.log(JSON.stringify(ndfs));
+            if (ndfs.length == 0)$('#ndf_empty').text("Pas de note de frais à valider");
+            else $('#ndf_empty').text("");
+
+            for (var i = 0; i < ndfs.length; i++) {
+                $('#ndf-liste').append('<tr class="ndf">>' +
+                        '<td>' + firstToUpperCase(ndfs[i].prenom.toLowerCase()) + " " + firstToUpperCase(ndfs[i].nom.toLowerCase()) + '</td>' +
+                        '<td>' + ndfs[i].date.split('T')[0] + '</td> ' +
+                        '<td ><button type ="button" onclick="montrerLNDFs(' + ndfs[i].id_note_frais + ', '+ndfs[i].id+')" > Voir </button></td> ' +
+                        '</tr>'
+                );
+            }
+        });
+        $('#lignes_frais').hide();
+    }
+
+    $(document).ready(function(){
+        refresh();
+    });
+
+
+</script>
+
+<!-- /page content -->
+
+<!-- Datatables -->
+<script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+<script src="../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+
+</body>
+</html>
+
+
+

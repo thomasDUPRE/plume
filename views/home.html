@@ -123,6 +123,9 @@
          }
 
 
+         function loadValiderNoteDeFrais(){
+             $('#pageInterne').load('validerNoteFrais.html');
+         }
          function loadDemandeAvance() {
            $('#pageInterne').load('demandeAvance.html');
          }
@@ -273,6 +276,8 @@
                     <ul class="nav child_menu">
                       <li><a onclick="loadMesNFrais()">Mes notes de Frais</a></li>
                       <li><a onclick="loadDemandeAvance()"> Mes demande d'avances</a></li>
+                        <li id="traiter_ndf"><a onclick="loadValiderNoteDeFrais()">Notes de frais à valider</a></li>
+
                     </ul>
                   </li>
 
@@ -457,8 +462,10 @@
               $(this).show();
             });
           }
-
           if(profile.service.nom == "RH" || profile.role.nom =="Chef de service")
+              $('#valider-ndf').hide()
+
+          if(profile.service.nom == "Comptabilité" || profile.role.nom =="Chef de service")
             $('.validation-conges').show();
 
           if(profile.role.nom =="Chef de service")
