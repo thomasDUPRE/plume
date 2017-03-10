@@ -10,6 +10,7 @@ var ServiceCRUD = require('./ServiceCRUD');
 var RoleCRUD = require('./RoleCRUD');
 
 class CollaborateurCRUD{
+    
     static insererCollaborateur(data, callback) {
         var helper = new CRUDHelper();
         helper.getTable('collaborateur').create(data, function (err) {

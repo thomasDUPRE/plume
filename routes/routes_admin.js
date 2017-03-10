@@ -54,7 +54,6 @@ module.exports = function(app) {
         else res.send(JSON.stringify(new Erreur("RequeteErreur", Erreur.UNDEFINED)));
 
     });
-
     app.get('/selectcollaborateurs', function(req, res) {
 
         if (typeof req.query !== 'undefined' && req.query) {

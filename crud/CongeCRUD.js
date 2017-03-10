@@ -25,7 +25,7 @@ class CongeCRUD {
             if (!err){
                 var result = [];
                 for(var i = 0, len = vals.length; i < len; i++){
-                    result.push(new Conge(vals[i].id, vals[i].date_demande, vals[i].date_debut, vals[i].date_fin, vals[i].est_paye, vals[i].id_etat_conge, vals[i].part_matin, vals[i].revient_matin, vals[i].motif,vals[i].id_demandeur));
+                    result.push(new Conge(vals[i].id, vals[i].date_demande, vals[i].date_debut, vals[i].date_fin, vals[i].est_paye, vals[i].id_etat_conge, vals[i].part_matin, vals[i].revient_matin, vals[i].motif,vals[i].id_demandeur,vals[i].motifRefus));
                 	  }
                 test=JSON.parse(JSON.stringify(result));
                 callback(test);
@@ -37,7 +37,47 @@ class CongeCRUD {
         });
     }
 
-    
+    static modifierConge(selector, values, callback) {
+        var helper = new CRUDHelper();
+        console.log(values);
+        helper.getTable('conge').update(selector, values, function (err) {
+            //mysql callback
+            var result;
+            if (!err)
+                result = new Validation("ModifierCongeValidation", "Le conge a bien été modifiée");
+            else
+                result = new Erreur("ModifierCongeErreur", err);
+            callback(result);
+        });
+    }
+
+    static selectJoursRestants(data, callback){
+ var helper = new CRUDHelper();
+
+ helper.getTable('collaborateur').load(data, function (err, vals) {
+            //mysql callback
+            if (!err){
+                var result = [];
+                for(var i = 0, len = vals.length; i < len; i++){
+                    var service = services.filter(function (el){
+                                return (el.id == vals[i].id_service);
+                            });
+                            var role = roles.filter(function (el){
+                                return (el.id == vals[i].id_role);
+                            });
+
+                            result.push(new Collaborateur(vals[i].id, vals[i].nom, vals[i].prenom, service[0], role[0], undefined, vals[i].telephone, vals[i].mail, vals[i].nb_jours_restants));
+                              }
+                test=JSON.parse(JSON.stringify(result));
+                callback(test);
+            }
+            else
+                callback(new Erreur("RecupMesCongeErreur", err));
+
+
+        });
+
+    }
         static selectCongeService(data, callback){
         var conge = new CongeCRUD();
         
