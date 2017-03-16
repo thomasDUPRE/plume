@@ -291,8 +291,8 @@
 						                    events.push({
 						                       id: $(this)[0]["id"],
 	                                           title: $(this)[0]["motif"],
-	                                           start: $(this)[0]["dateDebut"],
-	                                           end: $(this)[0]["dateFin"],
+	                                           start: moment($(this)[0]["dateDebut"].split('T')[0],"YYYY-MM-DD").add(1,'days').format(),
+	                                           end: moment($(this)[0]["dateFin"].split('T')[0],"YYYY-MM-DD").add(1,'days').format(),
 	                                           dateDemande: $(this)[0]["date_demande"],
 	                                           type: $conge_paye,
 	                                           color: $couleur,

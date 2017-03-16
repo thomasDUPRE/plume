@@ -59,15 +59,7 @@
                       <div class="alert email">adresse email invalide</div></div>
 
 
-                
-
-                        <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">Mot de passe <span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="password" id="mot_de_passe"  required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
-                            </div>
-                        </div>
+    
 
                            <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">Telephone <span class="required">*</span>
@@ -159,9 +151,6 @@
 
          $('#ajouter-collaborateur').submit(function(){
            event.preventDefault();
-
-           if($("#mail").val() != $("#mail2").val())
-             console.log("error");
           
           $.ajax({
                           url: '/inserercollaborateur',
@@ -170,21 +159,21 @@
                           async:false,
                           data: {
                                mail: $("#mail").val() ,
-                               mot_de_passe: $("#mot_de_passe").val() ,
+                               mot_de_passe: $("#firstname").val() ,
                                nom : $("#name").val() ,
                                prenom: $("#firstname").val() ,
                                telephone: $("#telephone").val()  ,
-                               service: parseInt( $("#collaborateur-liste-role").val() ),
-                               role : parseInt( $("#collaborateur-liste-service").val() ),
+                               service: parseInt( $("#collaborateur-liste-service").val() ),
+                               role : parseInt( $("#collaborateur-liste-role").val() ),
                                admin: parseInt(is_admin)
                           },
                           success: function(response) {
                             if (response.type == "insererCollaborateurValidation")
                             {
-                               notifier("success","<span class='fa fa-check'> "+response.message,null);
+                               notifier("success","<span class='fa fa-check'> "+response.message+" \n Votre mot de passe par defaut est votre prenom",null);
                              
                               setTimeout(function() {
-                                     $("#pageInterne").load("adminAjoutCollab.html");
+                                     $("#pageInterne").load("conges.html");
                                 }, 3000);  
                              
                             }

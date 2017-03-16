@@ -350,8 +350,29 @@
                                notifier("success","<span class='fa fa-check'> "+response.message,null);
                              
                               setTimeout(function() {
+                                  
+                                  var profile;
+                                  $.get("/name", function(data, status){
+                                    profile = JSON.parse(data); 
+
+                                    $.ajax({
+                                            url: '/inserernotification',
+                                              type: 'POST',
+                                              dataType: 'json',
+                                              data: {
+                                                  type: 'chef_service',
+                                                  id: profile.service.id,
+                                                  sujet: 'Congé à valider '+profile.prenom+' '+profile.nom+' (Envoyé)',
+                                                  contenu: 'Congé de '+ profile.prenom+' '+profile.nom+' à valider',
+                                              }
+                                    });   
+                                  });
+                                      
+                                      
                                      $("#pageInterne").load("conges.html");
-                                }, 3000);  
+                                }, 3000);
+
+
                              
                             }
 

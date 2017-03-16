@@ -26,7 +26,7 @@ class CongeCRUD {
                 var result = [];
                 for(var i = 0, len = vals.length; i < len; i++){
                     result.push(new Conge(vals[i].id, vals[i].date_demande, vals[i].date_debut, vals[i].date_fin, vals[i].est_paye, vals[i].id_etat_conge, vals[i].part_matin, vals[i].revient_matin, vals[i].motif,vals[i].id_demandeur,vals[i].motifRefus));
-                	  }
+                  }
                 test=JSON.parse(JSON.stringify(result));
                 callback(test);
             }
